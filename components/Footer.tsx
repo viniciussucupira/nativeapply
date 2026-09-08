@@ -16,6 +16,14 @@ export default function Footer() {
           </a>{" "}
           product
         </span>
+        <a
+          href="https://www.retoneai.net"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-black"
+        >
+          Retone — AI Text Rewriter
+        </a>
         <Link href="/cover-letter-for-non-native-speakers" className="hover:text-black">
           Cover Letter Rewriter
         </Link>
