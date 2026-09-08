@@ -19,6 +19,18 @@ export default function Home({
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  async function handleCopy() {
+    if (!result) return;
+    try {
+      await navigator.clipboard.writeText(result);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setError("Could not copy the text.");
+    }
+  }
 
   async function handleRewrite() {
     if (!text.trim()) return;
@@ -90,17 +102,42 @@ export default function Home({
       {error && <p className="text-center text-sm text-red-600">{error}</p>}
 
       {result && (
-        <div className="flex flex-col gap-2 border border-neutral-200 rounded-xl p-4 bg-neutral-50">
+        <div className="flex flex-col gap-3 border border-neutral-200 rounded-xl p-4 bg-neutral-50">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-neutral-700">Rewritten</span>
             <button
-              onClick={() => navigator.clipboard.writeText(result)}
+              onClick={handleCopy}
               className="text-xs text-neutral-500 hover:text-black underline"
             >
-              Copy
+              {copied ? "Copied!" : "Copy"}
             </button>
           </div>
           <p className="whitespace-pre-wrap text-base text-black">{result}</p>
+          <div className="flex items-center gap-4 pt-2 border-t border-neutral-200">
+            <span className="text-xs text-neutral-400">Send it:</span>
+            <a
+              href={`mailto:?subject=${encodeURIComponent(
+                CONTEXT_TYPES.find((c) => c.value === context)?.label ?? "Message"
+              )}&body=${encodeURIComponent(result)}`}
+              className="text-xs text-neutral-500 hover:text-black underline"
+            >
+              Email
+            </a>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(result)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-neutral-500 hover:text-black underline"
+            >
+              WhatsApp
+            </a>
+            <a
+              href={`sms:&body=${encodeURIComponent(result)}`}
+              className="text-xs text-neutral-500 hover:text-black underline"
+            >
+              Messages
+            </a>
+          </div>
         </div>
       )}
 
