@@ -4,11 +4,11 @@ import Home from "@/components/Home";
 export const metadata: Metadata = {
   title: "CV English Rewriter | NativeApply",
   description:
-    "Free AI tool that rewrites your CV bullet points in the concise, native English style UK and European recruiters expect — without changing your facts or achievements.",
+        "AI tool that rewrites your CV bullet points in the concise, native English style UK and European recruiters expect — without changing your facts or achievements. Free to try, Pro unlocks unlimited rewrites.",
   alternates: { canonical: "/cv-english-rewriter" },
   openGraph: {
     title: "CV English Rewriter",
-    description: "Paste your CV bullet points and get them back sounding natural and native — free.",
+        description: "Paste your CV bullet points and get them back sounding natural and native. Free to try, no signup required.",
   },
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     <Home
       initialContext="resume-bullet"
       heading="Make your CV sound native"
-      subheading="Paste your CV bullet points. Get them back polished in the concise, native English style recruiters expect — free, no signup."
+            subheading="Paste your CV bullet points. Get them back polished in the concise, native English style recruiters expect. Free to try, no signup required."
     />
   );
 }
