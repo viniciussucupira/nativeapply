@@ -36,7 +36,7 @@ export default function ProfessionPage({
           <div className="flex flex-col gap-4">
             <div>
               <p className="text-sm font-medium text-black">
-                What makes a {docLabel} sound native for {profession.singular}?
+                What makes your {docLabel} sound native for {profession.singular}?
               </p>
               <p className="text-sm text-neutral-500">
                 It uses the vocabulary and tone hiring managers expect in that field, avoids literal
