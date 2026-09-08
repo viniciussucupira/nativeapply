@@ -6,13 +6,13 @@ const SITE_URL = "https://www.nativeapply.net";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "NativeApply — Sound Native in Your Job Application | Free AI Tool",
+    title: "NativeApply — Sound Native in Your Job Application",
   description:
-    "Free AI tool that rewrites your cover letter, resume bullets, and recruiter messages so they sound like a native English speaker wrote them. Built for non-native professionals applying for jobs in the US, UK, Canada, and Europe.",
+        "AI tool that rewrites your cover letter, resume bullets, and recruiter messages so they sound like a native English speaker wrote them. Free to try, Pro unlocks unlimited rewrites. Built for non-native professionals applying for jobs in the US, UK, Canada, and Europe.",
   openGraph: {
     title: "NativeApply — Sound Native in Your Job Application",
     description:
-      "Paste your cover letter, resume, or LinkedIn message. Get it back polished and natural — free, no signup.",
+            "Paste your cover letter, resume, or LinkedIn message. Get it back polished and natural. Free to try, no signup required.",
     url: SITE_URL,
     siteName: "NativeApply",
     type: "website",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "NativeApply — Sound Native in Your Job Application",
     description:
-      "Paste your cover letter, resume, or LinkedIn message. Get it back polished and natural — free, no signup.",
+            "Paste your cover letter, resume, or LinkedIn message. Get it back polished and natural. Free to try, no signup required.",
   },
   verification: {
       google: "PPtQILt6oZAUpSMtxJiEetgcxi5jLKAXjkpSLPreuk0",
