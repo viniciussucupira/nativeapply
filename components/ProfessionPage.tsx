@@ -41,7 +41,7 @@ export default function ProfessionPage({
               <p className="text-sm text-neutral-500">
                 It uses the vocabulary and tone hiring managers expect in that field, avoids literal
                 translations from other languages, and keeps the structure short and direct — the way a
-                native English-speaking {profession.singular} would write it.
+                native English speaker working as {profession.singular} would write it.
               </p>
             </div>
             <div>
