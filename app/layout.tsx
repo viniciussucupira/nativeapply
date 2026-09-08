@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description:
       "Paste your cover letter, resume, or LinkedIn message. Get it back polished and natural — free, no signup.",
   },
+  verification: {
+      google: "PPtQILt6oZAUpSMtxJiEetgcxi5jLKAXjkpSLPreuk0",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
