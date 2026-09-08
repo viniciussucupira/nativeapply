@@ -11,7 +11,12 @@ type PaddleCheckoutEvent = {
 type PaddleClient = {
   Environment: { set: (env: string) => void };
   Setup: (options: { token?: string; eventCallback: (event: PaddleCheckoutEvent) => void }) => void;
-  Checkout: { open: (options: { items: { priceId: string; quantity: number }[] }) => void };
+  Checkout: {
+    open: (options: {
+      items: { priceId: string; quantity: number }[];
+      settings?: { locale?: string };
+    }) => void;
+  };
 };
 
 declare global {
@@ -62,6 +67,7 @@ export default function CheckoutPage() {
     if (!window.Paddle) return;
     window.Paddle.Checkout.open({
       items: [{ priceId, quantity: 1 }],
+      settings: { locale: "en" },
     });
   }
 
