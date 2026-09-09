@@ -1,9 +1,9 @@
 export const APP_NAME = "NativeApply";
 
-export const FREE_LIMIT_PER_DAY = 5;
+export const FREE_LIMIT_PER_DAY = 1;
 
 export const FREE_LIMIT_MESSAGE =
-  "You've used today's 5 free rewrites. Upgrade to NativeApply Pro for unlimited rewrites.";
+    "You've used today's 1 free rewrite. Upgrade to NativeApply Pro for unlimited rewrites.";
 
 export const CONTEXT_TYPES = [
   {
