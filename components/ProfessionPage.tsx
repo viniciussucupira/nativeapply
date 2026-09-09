@@ -49,7 +49,7 @@ export default function ProfessionPage({
                 Is this tool free for {profession.label.toLowerCase()}?
               </p>
               <p className="text-sm text-neutral-500">
-                Yes. You get 5 free rewrites a day. Upgrade to NativeApply Pro for unlimited rewrites.
+                Yes. You get 1 free rewrite a day. Upgrade to NativeApply Pro for unlimited rewrites.
               </p>
             </div>
             <div>
