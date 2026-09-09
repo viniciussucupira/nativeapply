@@ -20,7 +20,7 @@ export default function TermsPage() {
       <p>
         NativeApply rewrites text you submit — such as cover letters, resume bullet points, and messages
         to recruiters — using artificial intelligence, so it reads more naturally to a native English
-        speaker. Free accounts are limited to 5 rewrites per day. Paid plans remove this limit.
+        speaker. Free accounts are limited to 1 rewrite per day. Paid plans remove this limit.
       </p>
 
       <h2 className="text-lg font-semibold text-black mt-4">2. Your content</h2>
