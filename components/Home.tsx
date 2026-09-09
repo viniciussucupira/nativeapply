@@ -11,7 +11,7 @@ type Props = {
 
 export default function Home({
   heading = "Sound like a native English speaker in your job application",
-  subheading = "Paste your cover letter, resume bullets, or a message to a recruiter. Get it back polished, natural, and professional. $14/month or $49 lifetime — 5 free rewrites a day to try it first, no signup needed.",
+  subheading = "Paste your cover letter, resume bullets, or a message to a recruiter. Get it back polished, natural, and professional. $14/month or $49 lifetime — 1 free rewrite a day to try it first, no signup needed.",
   initialContext = "cover-letter",
 }: Props) {
   const [text, setText] = useState("");
@@ -146,7 +146,7 @@ export default function Home({
         <a href="/checkout" className="underline hover:text-black">
           Upgrade to Pro
         </a>
-        . 5 free rewrites a day to try it first.
+        . 1 free rewrite a day to try it first.
       </p>
     </div>
   );
