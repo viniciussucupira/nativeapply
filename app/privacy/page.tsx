@@ -39,7 +39,17 @@ export default function PrivacyPage() {
         use tracking or advertising cookies.
       </p>
 
-      <h2 className="text-lg font-semibold text-black mt-4">5. Contact</h2>
+      <h2 className="text-lg font-semibold text-black mt-4">5. Browser extension (Gmail)</h2>
+      <p>
+        NativeApply also offers an optional browser extension for Gmail. The extension only reads the text
+        inside a Gmail compose window when you click the &quot;NativeApply&quot; button — it does not read your
+        inbox, other emails, or any other tab or website. The text you choose to rewrite is sent only to the
+        same NativeApply API described in Section 1 above, processed the same way, and is not shared with any
+        additional third party. The extension does not track your browsing activity and does not run on any
+        site other than Gmail and nativeapply.net.
+      </p>
+
+      <h2 className="text-lg font-semibold text-black mt-4">6. Contact</h2>
       <p>Questions about this policy can be sent to the support address listed on our homepage.</p>
     </div>
   );
