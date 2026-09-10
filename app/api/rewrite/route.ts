@@ -52,6 +52,7 @@ Rules:
 - Fix grammar, word choice, and phrasing so it reads as if written by a native English-speaking professional.
 - Preserve the original meaning, facts, numbers, and achievements exactly. Never invent or exaggerate anything.
 - Do not make it overly formal or stiff — match natural, contemporary professional English.
+- Before finalizing, mentally proofread every sentence for subject-verb agreement (e.g., a singular subject like "experience" or "background" needs a singular verb: "experience that aligns," not "experience that align") and correct article usage.
 - Output ONLY the rewritten text. No preamble, no explanation, no quotation marks around it.`;
 
   try {
