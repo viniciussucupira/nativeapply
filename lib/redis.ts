@@ -23,15 +23,25 @@ const DAY_SECONDS = 60 * 60 * 24;
  * and this always returns 1 so the free limit never blocks local testing.
  */
 export async function incrementDailyUsage(ip: string): Promise<number> {
-  const client = getRedis();
-  if (!client) return 1;
+    const client = getRedis();
+    if (!client) {
+          console.error("na:rate-limit: no Redis client (missing env vars)");
+          return 1;
+    }
 
-  const key = `na:usage:${ip}:${new Date().toISOString().slice(0, 10)}`;
-  const count = await client.incr(key);
-  if (count === 1) {
-    await client.expire(key, DAY_SECONDS);
-  }
-  return count;
+    const key = `na:usage:${ip}:${new Date().toISOString().slice(0, 10)}`;
+    try {
+          const count = await client.incr(key);
+          if (count === 1) {
+                  await client.expire(key, DAY_SECONDS);
+          }
+          console.log(`na:rate-limit: ip=${ip} key=${key} count=${count}`);
+          return count;
+    } catch (err) {
+          console.error(`na:rate-limit: incr failed for key=${key}`, err);
+          // Fail closed: if we can't verify usage, don't silently grant unlimited free use.
+          return Number.MAX_SAFE_INTEGER;
+    }
 }
 
 export async function isPro(email: string): Promise<boolean> {
