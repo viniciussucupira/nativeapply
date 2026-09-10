@@ -5,14 +5,29 @@ import { Redis } from "@upstash/redis";
 // never reads or writes Retone's keys, and vice versa.
 let redis: Redis | null = null;
 
+function firstNonEmptyEnv(...names: string[]): string | undefined {
+    for (const name of names) {
+          const value = process.env[name];
+          if (value && value.trim().length > 0) return value;
+    }
+    return undefined;
+}
+
 function getRedis(): Redis | null {
-  const url =
-        process.env.UPSTASH_REDIS_REST_URL ?? process.env.UPSTASH_REDIS_REST_KV_REST_API_URL;
-    const token =
-          process.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.UPSTASH_REDIS_REST_KV_REST_API_TOKEN;
-  if (!url || !token) return null;
-  if (!redis) redis = new Redis({ url, token });
-  return redis;
+    // Prefer the KV_REST_API_* vars (auto-provisioned by the Vercel/Upstash
+    // integration) since the plain UPSTASH_REDIS_REST_URL/TOKEN vars have
+    // been empty in this project before — ?? doesn't fall through on "".
+    const url = firstNonEmptyEnv(
+          "UPSTASH_REDIS_REST_KV_REST_API_URL",
+          "UPSTASH_REDIS_REST_URL"
+        );
+    const token = firstNonEmptyEnv(
+          "UPSTASH_REDIS_REST_KV_REST_API_TOKEN",
+          "UPSTASH_REDIS_REST_TOKEN"
+        );
+    if (!url || !token) return null;
+    if (!redis) redis = new Redis({ url, token });
+    return redis;
 }
 
 const DAY_SECONDS = 60 * 60 * 24;
