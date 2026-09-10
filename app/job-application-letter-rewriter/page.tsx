@@ -4,11 +4,11 @@ import Home from "@/components/Home";
 export const metadata: Metadata = {
   title: "Job Application Letter Rewriter | NativeApply",
   description:
-        "AI tool that rewrites your job application letter so it reads naturally and professionally in English, without changing your facts or experience. Free to try, Pro unlocks unlimited rewrites.",
+    "AI tool that rewrites your job application letter so it reads naturally and professionally in English, without changing your facts or experience. $14/month or $49 lifetime, with a free daily rewrite to try it first.",
   alternates: { canonical: "/job-application-letter-rewriter" },
   openGraph: {
     title: "Job Application Letter Rewriter",
-        description: "Paste your job application letter and get it back sounding natural and confident. Free to try, no signup required.",
+    description: "Paste your job application letter and get it back sounding natural and confident. $14/month or $49 lifetime — try it free first, no signup required.",
   },
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     <Home
       initialContext="cover-letter"
       heading="Rewrite your job application letter in native English"
-            subheading="Paste the letter you're about to send. Get it back polished, natural, and professional. Free to try, no signup required."
-    />
-  );
+      subheading="Paste the letter you're about to send. Get it back polished, natural, and professional. $14/month or $49 lifetime — try it free first, no signup required."
+      />
+    );
 }
