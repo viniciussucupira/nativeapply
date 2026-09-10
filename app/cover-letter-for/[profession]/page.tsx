@@ -16,15 +16,15 @@ export async function generateMetadata({
   const profession = PROFESSIONS.find((p) => p.slug === slug);
   if (!profession) return {};
 
-  const title = `Cover Letter for ${profession.label} | NativeApply`;
-  const description = `Free AI tool that rewrites a cover letter for ${profession.label.toLowerCase()} so it sounds like a native English-speaking professional wrote it.`;
+const title = `Cover Letter for ${profession.label} | NativeApply`;
+  const description = `AI tool that rewrites a cover letter for ${profession.label.toLowerCase()} so it sounds like a native English-speaking professional wrote it. $14/month or $49 lifetime, with a free daily rewrite to try it first.`;
 
-  return {
-    title,
-    description,
-    alternates: { canonical: `/cover-letter-for/${slug}` },
-    openGraph: { title: `Cover Letter for ${profession.label}`, description },
-  };
+return {
+  title,
+  description,
+  alternates: { canonical: `/cover-letter-for/${slug}` },
+  openGraph: { title: `Cover Letter for ${profession.label}`, description },
+};
 }
 
 export default async function Page({
@@ -36,13 +36,13 @@ export default async function Page({
   const profession = PROFESSIONS.find((p) => p.slug === slug);
   if (!profession) notFound();
 
-  return (
-    <ProfessionPage
-      docLabel="cover letter"
-      docLabelCapitalized="Cover Letter"
-      urlPrefix="cover-letter-for"
-      context="cover-letter"
-      profession={profession}
+return (
+  <ProfessionPage
+    docLabel="cover letter"
+    docLabelCapitalized="Cover Letter"
+    urlPrefix="cover-letter-for"
+    context="cover-letter"
+    profession={profession}
     />
   );
 }
