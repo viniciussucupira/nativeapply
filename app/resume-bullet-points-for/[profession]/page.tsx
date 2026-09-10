@@ -16,15 +16,15 @@ export async function generateMetadata({
   const profession = PROFESSIONS.find((p) => p.slug === slug);
   if (!profession) return {};
 
-  const title = `Resume Bullet Points for ${profession.label} | NativeApply`;
-  const description = `Free AI tool that rewrites resume bullet points for ${profession.label.toLowerCase()} so they sound like a native English-speaking professional wrote them.`;
+const title = `Resume Bullet Points for ${profession.label} | NativeApply`;
+  const description = `AI tool that rewrites resume bullet points for ${profession.label.toLowerCase()} so they sound like a native English-speaking professional wrote them. $14/month or $49 lifetime, with a free daily rewrite to try it first.`;
 
-  return {
-    title,
-    description,
-    alternates: { canonical: `/resume-bullet-points-for/${slug}` },
-    openGraph: { title: `Resume Bullet Points for ${profession.label}`, description },
-  };
+return {
+  title,
+  description,
+  alternates: { canonical: `/resume-bullet-points-for/${slug}` },
+  openGraph: { title: `Resume Bullet Points for ${profession.label}`, description },
+};
 }
 
 export default async function Page({
@@ -36,13 +36,13 @@ export default async function Page({
   const profession = PROFESSIONS.find((p) => p.slug === slug);
   if (!profession) notFound();
 
-  return (
-    <ProfessionPage
-      docLabel="resume bullet points"
-      docLabelCapitalized="Resume Bullet Points"
-      urlPrefix="resume-bullet-points-for"
-      context="resume-bullet"
-      profession={profession}
+return (
+  <ProfessionPage
+    docLabel="resume bullet points"
+    docLabelCapitalized="Resume Bullet Points"
+    urlPrefix="resume-bullet-points-for"
+    context="resume-bullet"
+    profession={profession}
     />
   );
 }
