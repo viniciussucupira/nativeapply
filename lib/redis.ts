@@ -69,5 +69,5 @@ export async function isPro(email: string): Promise<boolean> {
 export async function setPro(email: string): Promise<void> {
   const client = getRedis();
   if (!client) return;
-  await client.set(`na:pro:${email.toLowerCase()}`, "1");
+  await client.set(`na:pro:${email.toLowerCase()}`, "1");}export async function saveLeadEmail(email: string): Promise<boolean> {  const trimmed = email.trim().toLowerCase();  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return false;  const client = getRedis();  if (!client) return true;  try {    await client.sadd("na:captured_emails", trimmed);  } catch (err) {    console.error("na:leads: failed to save email", err);  }  return true;
 }
