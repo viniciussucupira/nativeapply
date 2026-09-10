@@ -16,15 +16,15 @@ export async function generateMetadata({
   const profession = PROFESSIONS.find((p) => p.slug === slug);
   if (!profession) return {};
 
-  const title = `Follow-Up Email for ${profession.label} | NativeApply`;
-  const description = `Free AI tool that rewrites a job-application follow-up email for ${profession.label.toLowerCase()} so it sounds like a native English-speaking professional wrote it.`;
+const title = `Follow-Up Email for ${profession.label} | NativeApply`;
+  const description = `AI tool that rewrites a job-application follow-up email for ${profession.label.toLowerCase()} so it sounds like a native English-speaking professional wrote it. $14/month or $49 lifetime, with a free daily rewrite to try it first.`;
 
-  return {
-    title,
-    description,
-    alternates: { canonical: `/follow-up-email-for/${slug}` },
-    openGraph: { title: `Follow-Up Email for ${profession.label}`, description },
-  };
+return {
+  title,
+  description,
+  alternates: { canonical: `/follow-up-email-for/${slug}` },
+  openGraph: { title: `Follow-Up Email for ${profession.label}`, description },
+};
 }
 
 export default async function Page({
@@ -36,13 +36,13 @@ export default async function Page({
   const profession = PROFESSIONS.find((p) => p.slug === slug);
   if (!profession) notFound();
 
-  return (
-    <ProfessionPage
-      docLabel="follow-up email"
-      docLabelCapitalized="Follow-Up Email"
-      urlPrefix="follow-up-email-for"
-      context="follow-up-email"
-      profession={profession}
+return (
+  <ProfessionPage
+    docLabel="follow-up email"
+    docLabelCapitalized="Follow-Up Email"
+    urlPrefix="follow-up-email-for"
+    context="follow-up-email"
+    profession={profession}
     />
   );
 }
