@@ -16,15 +16,15 @@ export async function generateMetadata({
   const profession = PROFESSIONS.find((p) => p.slug === slug);
   if (!profession) return {};
 
-  const title = `LinkedIn Message for ${profession.label} | NativeApply`;
-  const description = `Free AI tool that rewrites a LinkedIn message to a recruiter for ${profession.label.toLowerCase()} so it sounds like a native English-speaking professional wrote it.`;
+const title = `LinkedIn Message for ${profession.label} | NativeApply`;
+  const description = `AI tool that rewrites a LinkedIn message to a recruiter for ${profession.label.toLowerCase()} so it sounds like a native English-speaking professional wrote it. $14/month or $49 lifetime, with a free daily rewrite to try it first.`;
 
-  return {
-    title,
-    description,
-    alternates: { canonical: `/linkedin-message-for/${slug}` },
-    openGraph: { title: `LinkedIn Message for ${profession.label}`, description },
-  };
+return {
+  title,
+  description,
+  alternates: { canonical: `/linkedin-message-for/${slug}` },
+  openGraph: { title: `LinkedIn Message for ${profession.label}`, description },
+};
 }
 
 export default async function Page({
@@ -36,13 +36,13 @@ export default async function Page({
   const profession = PROFESSIONS.find((p) => p.slug === slug);
   if (!profession) notFound();
 
-  return (
-    <ProfessionPage
-      docLabel="LinkedIn message"
-      docLabelCapitalized="LinkedIn Message"
-      urlPrefix="linkedin-message-for"
-      context="linkedin-message"
-      profession={profession}
+return (
+  <ProfessionPage
+    docLabel="LinkedIn message"
+    docLabelCapitalized="LinkedIn Message"
+    urlPrefix="linkedin-message-for"
+    context="linkedin-message"
+    profession={profession}
     />
   );
 }
