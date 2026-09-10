@@ -25,7 +25,7 @@ export default function ProfessionPage({
       <Home
         initialContext={context}
         heading={`${docLabelCapitalized} for ${profession.label}`}
-        subheading={`Paste your ${docLabel} as ${profession.singular}. Get it back polished, natural, and professional — free, no signup.`}
+        subheading={`Paste your ${docLabel} as ${profession.singular}. Get it back polished, natural, and professional. $14/month or $49 lifetime — 1 free rewrite a day to try it first.`}
       />
 
       <div className="w-full max-w-2xl mx-auto px-6 pb-16 flex flex-col gap-8">
