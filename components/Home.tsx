@@ -19,7 +19,7 @@ export default function Home({
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [copied, setCopied] = useState(false); const [emailUnlocked, setEmailUnlocked] = useState(false); const [gateEmail, setGateEmail] = useState(""); const [gateSubmitting, setGateSubmitting] = useState(false); const [gateError, setGateError] = useState("");
+  const [copied, setCopied] = useState(false); const [emailUnlocked, setEmailUnlocked] = useState(false); const [gateEmail, setGateEmail] = useState(""); const [gateSubmitting, setGateSubmitting] = useState(false); const [gateError, setGateError] = useState(""); const [totalRewrites, setTotalRewrites] = useState<number | null>(null); useEffect(() => { async function fetchStats() { try { const response = await fetch("/api/stats"); if (!response.ok) return; const data = await response.json(); if (typeof data.totalRewrites === "number") { setTotalRewrites(data.totalRewrites); } } catch { } } fetchStats(); }, []);
 
   useEffect(() => { try { if (window.localStorage.getItem("na_unlocked") === "true") { setEmailUnlocked(true); } } catch { /* ignore */ } }, []);async function handleGateSubmit(event: FormEvent) {  event.preventDefault();  setGateError("");  const trimmed = gateEmail.trim();  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {    setGateError("Enter a valid email.");    return;  }  setGateSubmitting(true);  try {    await fetch("/api/capture-email", {      method: "POST",      headers: { "Content-Type": "application/json" },      body: JSON.stringify({ email: trimmed }),    });  } catch {  } finally {    try {      window.localStorage.setItem("na_unlocked", "true");    } catch {    }    setEmailUnlocked(true);    setGateSubmitting(false);  } } async function handleCopy() {
     if (!result) return;
@@ -62,7 +62,7 @@ export default function Home({
     <div className="w-full max-w-2xl mx-auto px-6 py-16 flex flex-col gap-8">
       <div className="text-center flex flex-col gap-3">
         <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-black">{heading}</h1>
-        <p className="text-neutral-500 text-base">{subheading}</p>
+        <p className="text-neutral-500 text-base">{subheading}</p> {totalRewrites !== null && ( <p className="mt-1 text-xs text-neutral-400"> {totalRewrites.toLocaleString("en-US")} applications rewritten so far </p> )}
       </div>
 
       {!emailUnlocked && (<div className="mb-6 rounded border border-neutral-300 bg-neutral-50 p-6"><p className="mb-3 text-sm font-medium text-neutral-800">Enter your email to use NativeApply — 1 free rewrite a day.</p><form onSubmit={handleGateSubmit} className="flex flex-col gap-2 sm:flex-row"><label htmlFor="gate-email" className="sr-only">Email</label><input id="gate-email" type="email" required value={gateEmail} onChange={(e) => setGateEmail(e.target.value)} placeholder="you@example.com" className="w-full rounded border border-neutral-300 bg-white px-3 py-2 text-sm text-black focus:outline-none sm:flex-1" /><button type="submit" disabled={gateSubmitting} className="rounded-full bg-black px-6 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-60">{gateSubmitting ? "..." : "Continue"}</button></form>{gateError && (<p className="mt-2 text-sm text-red-600" role="alert">{gateError}</p>)}</div>)}<div className={"flex flex-col gap-3" + (!emailUnlocked ? " pointer-events-none opacity-40 select-none" : "")}>
