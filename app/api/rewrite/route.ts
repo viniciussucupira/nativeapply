@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { CONTEXT_TYPES, FREE_LIMIT_MESSAGE, FREE_LIMIT_PER_DAY } from "@/lib/constants";
-import { incrementDailyUsage } from "@/lib/redis";
+import { incrementDailyUsage, incrementTotalRewrites } from "@/lib/redis";
 import { getProStatus } from "@/lib/pro";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -70,7 +70,7 @@ Rules:
       .join("\n")
       .trim();
 
-    return NextResponse.json({ rewritten });
+    let totalRewrites; try { totalRewrites = await incrementTotalRewrites(); } catch (error) { console.error("Failed to increment total rewrites:", error); } return NextResponse.json({ rewritten, totalRewrites });
   } catch (err) {
     console.error("rewrite error", err);
     return NextResponse.json(
