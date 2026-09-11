@@ -5,7 +5,7 @@ import { useState } from "react";
 
 type PaddleCheckoutEvent = {
   name: string;
-  data?: { customer?: { email?: string } };
+    data?: { transaction_id?: string };
 };
 
 type PaddleClient = {
@@ -47,19 +47,21 @@ export default function CheckoutPage() {
 
   function eventCallback(event: PaddleCheckoutEvent) {
     if (event.name === "checkout.completed") {
-      const email = event.data?.customer?.email;
-      if (email) {
-        fetch("/api/paddle/confirm", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        }).finally(() => {
-          // Full page navigation (not router.push) is intentional: it forces
-          // the server component on "/" to re-read the now-set Pro cookie.
-          // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-          window.location.assign("/?upgraded=1");
-        });
-      }
+const transactionId = event.data?.transaction_id;
+            if (transactionId) {
+                      fetch("/api/paddle/confirm", {
+                                  method: "POST",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ transactionId }),
+                      }).finally(() => {
+                                  // Full page navigation (not router.push) is intentional: it forces
+                                  // the server component on "/" to re-read the now-set Pro cookie.
+                                  // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+                                  window.location.assign("/?upgraded=1");
+                      });
+            } else {
+                      window.location.assign("/?upgraded=1");
+            }
     }
   }
 
