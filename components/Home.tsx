@@ -83,7 +83,7 @@ export default function Home({
         </select>
       </div>
 
-      <textareadisabled={!emailUnlocked}
+      <textarea disabled={!emailUnlocked}
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Paste your text here..."
