@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/native-sounding-resume" },
   openGraph: {
     title: "Make Your Resume Sound Native",
-    description: "Paste your resume bullet points and get them back sounding natural and native. $14/month or $49 lifetime — try it free first, no signup required.",
+    description: "Paste your resume bullet points and get them back sounding natural and native. $14/month or $49 lifetime — try it free first with just your email, no password.",
   },
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     <Home
       initialContext="resume-bullet"
       heading="Make your resume sound native"
-      subheading="Paste your resume bullet points. Get them back polished in the concise, native English style recruiters expect. $14/month or $49 lifetime — try it free first, no signup required."
+      subheading="Paste your resume bullet points. Get them back polished in the concise, native English style recruiters expect. $14/month or $49 lifetime — try it free first with just your email, no password."
       />
     );
 }
