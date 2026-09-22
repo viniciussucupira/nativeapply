@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/cv-english-rewriter" },
   openGraph: {
     title: "CV English Rewriter",
-    description: "Paste your CV bullet points and get them back sounding natural and native. $14/month or $49 lifetime — try it free first, no signup required.",
+    description: "Paste your CV bullet points and get them back sounding natural and native. $14/month or $49 lifetime — try it free first with just your email, no password.",
   },
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     <Home
       initialContext="resume-bullet"
       heading="Make your CV sound native"
-      subheading="Paste your CV bullet points. Get them back polished in the concise, native English style recruiters expect. $14/month or $49 lifetime — try it free first, no signup required."
+      subheading="Paste your CV bullet points. Get them back polished in the concise, native English style recruiters expect. $14/month or $49 lifetime — try it free first with just your email, no password."
       />
     );
 }
