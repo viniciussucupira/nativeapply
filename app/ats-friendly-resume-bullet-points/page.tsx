@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ATS-Friendly Resume Bullet Points",
     description:
-      "Paste your resume bullet points and get them back concise, native-sounding, and easy for ATS software to parse. $14/month or $49 lifetime — try it free first, no signup required.",
+      "Paste your resume bullet points and get them back concise, native-sounding, and easy for ATS software to parse. $14/month or $49 lifetime — try it free first with just your email, no password.",
   },
 };
 
@@ -18,7 +18,7 @@ export default function Page() {
     <Home
       initialContext="resume-bullet"
       heading="Write ATS-friendly resume bullet points that sound native"
-      subheading="Paste your resume bullet points. Get them back in the concise, native English style both applicant tracking systems and recruiters expect. $14/month or $49 lifetime — try it free first, no signup required."
+      subheading="Paste your resume bullet points. Get them back in the concise, native English style both applicant tracking systems and recruiters expect. $14/month or $49 lifetime — try it free first with just your email, no password."
       />
     );
 }
