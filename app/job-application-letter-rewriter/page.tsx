@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/job-application-letter-rewriter" },
   openGraph: {
     title: "Job Application Letter Rewriter",
-    description: "Paste your job application letter and get it back sounding natural and confident. $14/month or $49 lifetime — try it free first, no signup required.",
+    description: "Paste your job application letter and get it back sounding natural and confident. $14/month or $49 lifetime — try it free first with just your email, no password.",
   },
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     <Home
       initialContext="cover-letter"
       heading="Rewrite your job application letter in native English"
-      subheading="Paste the letter you're about to send. Get it back polished, natural, and professional. $14/month or $49 lifetime — try it free first, no signup required."
+      subheading="Paste the letter you're about to send. Get it back polished, natural, and professional. $14/month or $49 lifetime — try it free first with just your email, no password."
       />
     );
 }
