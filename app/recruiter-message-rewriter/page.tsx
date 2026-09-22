@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/recruiter-message-rewriter" },
   openGraph: {
     title: "Recruiter Message Rewriter",
-    description: "Paste your message to a recruiter and get it back sounding natural and native. $14/month or $49 lifetime — try it free first, no signup required.",
+    description: "Paste your message to a recruiter and get it back sounding natural and native. $14/month or $49 lifetime — try it free first with just your email, no password.",
   },
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     <Home
       initialContext="linkedin-message"
       heading="Message recruiters like a native speaker"
-      subheading="Paste your LinkedIn message or follow-up email. Get it back sounding natural and confident. $14/month or $49 lifetime — try it free first, no signup required."
+      subheading="Paste your LinkedIn message or follow-up email. Get it back sounding natural and confident. $14/month or $49 lifetime — try it free first with just your email, no password."
       />
     );
 }
