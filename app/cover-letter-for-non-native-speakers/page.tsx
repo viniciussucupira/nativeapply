@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/cover-letter-for-non-native-speakers" },
   openGraph: {
     title: "Cover Letter Help for Non-Native English Speakers",
-    description: "Paste your cover letter and get it back sounding natural and professional. $14/month or $49 lifetime — try it free first, no signup required.",
+    description: "Paste your cover letter and get it back sounding natural and professional. $14/month or $49 lifetime — try it free first with just your email, no password.",
   },
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     <Home
       initialContext="cover-letter"
       heading="Write a cover letter that sounds native"
-      subheading="Paste your cover letter draft. Get it back polished, natural, and professional. $14/month or $49 lifetime — try it free first, no signup required."
+      subheading="Paste your cover letter draft. Get it back polished, natural, and professional. $14/month or $49 lifetime — try it free first with just your email, no password."
       />
     );
 }
