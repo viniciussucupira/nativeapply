@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/interview-follow-up-email-generator" },
   openGraph: {
     title: "Interview Follow-Up Email Generator",
-    description: "Paste your follow-up email draft and get it back sounding natural and native. $14/month or $49 lifetime — try it free first, no signup required.",
+    description: "Paste your follow-up email draft and get it back sounding natural and native. $14/month or $49 lifetime — try it free first with just your email, no password.",
   },
 };
 
@@ -17,7 +17,7 @@ export default function Page() {
     <Home
       initialContext="follow-up-email"
       heading="Write an interview follow-up email that sounds native"
-      subheading="Paste your thank-you or follow-up email draft. Get it back polite, brief, and natural. $14/month or $49 lifetime — try it free first, no signup required."
+      subheading="Paste your thank-you or follow-up email draft. Get it back polite, brief, and natural. $14/month or $49 lifetime — try it free first with just your email, no password."
       />
     );
 }
