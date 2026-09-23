@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ProfessionPage from "@/components/ProfessionPage";
-import { PROFESSIONS } from "@/lib/professions";
+import { PROFESSIONS, findProfession } from "@/lib/professions";
+import { DOC_TYPES } from "@/lib/profession-content";
+
+const doc = DOC_TYPES["cover-letter"];
 
 export function generateStaticParams() {
   return PROFESSIONS.map((p) => ({ profession: p.slug }));
@@ -13,18 +16,19 @@ export async function generateMetadata({
   params: Promise<{ profession: string }>;
 }): Promise<Metadata> {
   const { profession: slug } = await params;
-  const profession = PROFESSIONS.find((p) => p.slug === slug);
+  const profession = findProfession(slug);
   if (!profession) return {};
 
-const title = `Cover Letter for ${profession.label} | NativeApply`;
-  const description = `AI tool that rewrites a cover letter for ${profession.label.toLowerCase()} so it sounds like a native English-speaking professional wrote it. $14/month or $49 lifetime, with a free daily rewrite to try it first.`;
+  const heading = `${doc.labelCapitalized} for ${profession.label}`;
+  const description = `Rewrite the ${doc.label} you wrote as ${profession.singular} into natural professional English, with every employer, date and number preserved. $14/month or $49 lifetime, with one free rewrite a day to try it first.`;
 
-return {
-  title,
-  description,
-  alternates: { canonical: `/cover-letter-for/${slug}` },
-  openGraph: { title: `Cover Letter for ${profession.label}`, description },
-};
+  return {
+    title: `${heading} | NativeApply`,
+    description,
+    alternates: { canonical: `/${doc.urlPrefix}/${slug}` },
+    openGraph: { title: heading, description },
+    twitter: { title: heading, description },
+  };
 }
 
 export default async function Page({
@@ -33,16 +37,8 @@ export default async function Page({
   params: Promise<{ profession: string }>;
 }) {
   const { profession: slug } = await params;
-  const profession = PROFESSIONS.find((p) => p.slug === slug);
+  const profession = findProfession(slug);
   if (!profession) notFound();
 
-return (
-  <ProfessionPage
-    docLabel="cover letter"
-    docLabelCapitalized="Cover Letter"
-    urlPrefix="cover-letter-for"
-    context="cover-letter"
-    profession={profession}
-    />
-  );
+  return <ProfessionPage docKey="cover-letter" profession={profession} />;
 }

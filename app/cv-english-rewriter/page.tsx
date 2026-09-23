@@ -1,23 +1,17 @@
 import type { Metadata } from "next";
-import Home from "@/components/Home";
+import ToolLanding from "@/components/ToolLanding";
+import { getToolPage } from "@/lib/tool-pages";
+
+const page = getToolPage("cv-english-rewriter");
 
 export const metadata: Metadata = {
-  title: "CV English Rewriter | NativeApply",
-  description:
-    "AI tool that rewrites your CV bullet points in the concise, native English style UK and European recruiters expect — without changing your facts or achievements. $14/month or $49 lifetime, with a free daily rewrite to try it first.",
-  alternates: { canonical: "/cv-english-rewriter" },
-  openGraph: {
-    title: "CV English Rewriter",
-    description: "Paste your CV bullet points and get them back sounding natural and native. $14/month or $49 lifetime — try it free first with just your email, no password.",
-  },
+  title: page.metaTitle,
+  description: page.metaDescription,
+  alternates: { canonical: `/${page.slug}` },
+  openGraph: { title: page.ogTitle, description: page.ogDescription },
+  twitter: { title: page.ogTitle, description: page.ogDescription },
 };
 
 export default function Page() {
-  return (
-    <Home
-      initialContext="resume-bullet"
-      heading="Make your CV sound native"
-      subheading="Paste your CV bullet points. Get them back polished in the concise, native English style recruiters expect. $14/month or $49 lifetime — try it free first with just your email, no password."
-      />
-    );
+  return <ToolLanding page={page} />;
 }

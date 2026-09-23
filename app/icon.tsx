@@ -13,12 +13,13 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #0ea5e9, #8b5cf6 55%, #f43f5e)",
-          borderRadius: 6,
+          background: "linear-gradient(135deg, #2764E7 0%, #10233F 100%)",
+          borderRadius: 8,
           color: "white",
-          fontSize: 20,
+          fontSize: 21,
           fontWeight: 700,
           fontFamily: "sans-serif",
+          letterSpacing: -1,
         }}
       >
         N

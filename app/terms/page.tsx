@@ -1,68 +1,97 @@
 import type { Metadata } from "next";
+import LegalLayout, { type LegalSection } from "@/components/legal/LegalLayout";
 import { SUPPORT_EMAIL } from "@/lib/constants";
 import { LIFETIME_FULL } from "@/lib/lifetime-policy";
 
 export const metadata: Metadata = {
   title: "Terms of Service | NativeApply",
   description: "Terms of Service for NativeApply.",
+  alternates: { canonical: "/terms" },
 };
+
+const sections: LegalSection[] = [
+  {
+    id: "service",
+    heading: "1. The Service",
+    body: (
+      <p>
+        NativeApply rewrites text you submit — such as cover letters, resume bullet points, and messages to
+        recruiters — using artificial intelligence, so it reads more naturally to a native English speaker. Without a
+        paid plan, use is limited to 1 rewrite per day. NativeApply Pro ($14/month or $49 once for Lifetime access)
+        removes this limit.
+      </p>
+    ),
+  },
+  {
+    id: "content",
+    heading: "2. Your content",
+    body: (
+      <p>
+        You retain all rights to the text you submit. We do not claim ownership over your content, and we do not use
+        your submissions to train AI models. Do not submit content you don&apos;t have the right to share, or content
+        that is unlawful, defamatory, or infringes on someone else&apos;s rights.
+      </p>
+    ),
+  },
+  {
+    id: "no-guarantee",
+    heading: "3. No guaranteed outcome",
+    body: (
+      <p>
+        NativeApply helps you write clearer, more natural English. It does not guarantee that you will get an
+        interview, an offer, or any specific job-search outcome.
+      </p>
+    ),
+  },
+  {
+    id: "payments",
+    heading: "4. Payments",
+    body: (
+      <p>
+        Payments are processed by Paddle.com, our Merchant of Record. Paddle handles billing, taxes, and payment
+        security for all transactions. See our <a href="/refunds">Refund Policy</a> for details on cancellations and
+        refunds.
+      </p>
+    ),
+  },
+  {
+    id: "lifetime",
+    heading: "5. Lifetime plan",
+    body: <p>{LIFETIME_FULL}</p>,
+  },
+  {
+    id: "changes",
+    heading: "6. Changes",
+    body: (
+      <p>
+        We may update these Terms from time to time. Continued use of the Service means you accept the changes.
+        Changes never reduce what you already paid for.
+      </p>
+    ),
+  },
+  {
+    id: "contact",
+    heading: "7. Contact",
+    body: (
+      <p>
+        Questions about these Terms can be sent to <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
+      </p>
+    ),
+  },
+];
 
 export default function TermsPage() {
   return (
-    <div className="w-full max-w-2xl mx-auto px-6 py-16 flex flex-col gap-6 text-sm text-neutral-700 leading-6">
-      <h1 className="text-2xl font-semibold text-black">Terms of Service</h1>
-      <p className="text-neutral-500">Last updated: September 2026</p>
-
-      <p>
-        NativeApply is a product operated by Nimbus Labs (&quot;we&quot;, &quot;us&quot;). By using
-        nativeapply.net (the &quot;Service&quot;), you agree to these Terms.
-      </p>
-
-      <h2 className="text-lg font-semibold text-black mt-4">1. The Service</h2>
-      <p>
-        NativeApply rewrites text you submit — such as cover letters, resume bullet points, and messages
-        to recruiters — using artificial intelligence, so it reads more naturally to a native English
-        speaker. Without a paid plan, use is limited to 1 rewrite per day. NativeApply Pro ($14/month or $49 once for Lifetime access) removes this limit.
-      </p>
-
-      <h2 className="text-lg font-semibold text-black mt-4">2. Your content</h2>
-      <p>
-        You retain all rights to the text you submit. We do not claim ownership over your content, and we
-        do not use your submissions to train AI models. Do not submit content you don&apos;t have the
-        right to share, or content that is unlawful, defamatory, or infringes on someone else&apos;s
-        rights.
-      </p>
-
-      <h2 className="text-lg font-semibold text-black mt-4">3. No guaranteed outcome</h2>
-      <p>
-        NativeApply helps you write clearer, more natural English. It does not guarantee that you will get
-        an interview, an offer, or any specific job-search outcome.
-      </p>
-
-      <h2 className="text-lg font-semibold text-black mt-4">4. Payments</h2>
-      <p>
-        Payments are processed by Paddle.com, our Merchant of Record. Paddle handles billing, taxes, and
-        payment security for all transactions. See our{" "}
-        <a href="/refunds" className="underline">
-          Refund Policy
-        </a>{" "}
-        for details on cancellations and refunds.
-      </p>
-
-      <h2 className="text-lg font-semibold text-black mt-4">5. Lifetime plan</h2>
-      <p>{LIFETIME_FULL}</p>
-
-      <h2 className="text-lg font-semibold text-black mt-4">6. Changes</h2>
-      <p>We may update these Terms from time to time. Continued use of the Service means you accept the changes. Changes never reduce what you already paid for.</p>
-
-      <h2 className="text-lg font-semibold text-black mt-4">7. Contact</h2>
-      <p>
-        Questions about these Terms can be sent to{" "}
-        <a href={`mailto:${SUPPORT_EMAIL}`} className="underline">
-          {SUPPORT_EMAIL}
-        </a>
-        .
-      </p>
-    </div>
+    <LegalLayout
+      title="Terms of Service"
+      updated="September 2026"
+      intro={
+        <>
+          NativeApply is a product operated by Nimbus Labs (&quot;we&quot;, &quot;us&quot;). By using nativeapply.net
+          (the &quot;Service&quot;), you agree to these Terms.
+        </>
+      }
+      sections={sections}
+    />
   );
 }

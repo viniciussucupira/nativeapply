@@ -22,7 +22,7 @@ export const CONTEXT_TYPES = [
   },
   {
     value: "linkedin-message",
-    label: "LinkedIn message to a recruiter",
+    label: "LinkedIn message",
     instruction:
       "This is a LinkedIn message to a recruiter or hiring manager. Keep it short, direct, and natural — the way a native English speaker would casually-but-professionally message someone on LinkedIn. Avoid stiff or overly formal phrasing.",
   },

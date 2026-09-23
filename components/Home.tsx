@@ -1,427 +1,515 @@
-"use client";
-
-import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { CONTEXT_TYPES, ContextType } from "@/lib/constants";
+import Rewriter from "@/components/rewriter/Rewriter";
+import HeroDemo from "@/components/marketing/HeroDemo";
+import AnnotatedLetter from "@/components/marketing/AnnotatedLetter";
+import TrustStrip from "@/components/marketing/TrustStrip";
+import BeforeAfterTabs from "@/components/marketing/BeforeAfterTabs";
+import DeviceShowcase from "@/components/marketing/DeviceShowcase";
+import FinalCta from "@/components/marketing/FinalCta";
+import Faq from "@/components/marketing/Faq";
+import Reveal from "@/components/ui/Reveal";
+import {
+  ButtonLink,
+  Card,
+  Container,
+  Eyebrow,
+  Pill,
+  Section,
+  SectionHeading,
+} from "@/components/ui/Primitives";
+import {
+  IconCheck,
+  IconCoverLetter,
+  IconFacts,
+  IconFollowUpEmail,
+  IconLock,
+  IconRecruiterMessage,
+  IconResumeBullets,
+  IconShield,
+  IconClock,
+} from "@/components/ui/Icons";
+import { FREE_PLAN, LIFETIME_PLAN, MONTHLY_PLAN } from "@/lib/plans";
+import { HOME_FAQ } from "@/lib/faq";
 
-type Props = {
-  heading?: string;
-  subheading?: string;
-  initialContext?: ContextType;
-};
-
-const CONTEXT_STYLES: Record<ContextType, { idle: string; active: string; dot: string }> = {
-  "cover-letter": {
-    idle: "border-sky-200 text-sky-700 hover:bg-sky-50",
-    active: "border-sky-500 bg-sky-500 text-white shadow-sm shadow-sky-200",
-    dot: "bg-sky-400",
+const USE_CASES = [
+  {
+    Icon: IconCoverLetter,
+    title: "Cover letters",
+    body: "The opening paragraph that decides whether a hiring manager keeps reading.",
+    href: "/cover-letter-for-non-native-speakers",
   },
-  "resume-bullet": {
-    idle: "border-violet-200 text-violet-700 hover:bg-violet-50",
-    active: "border-violet-500 bg-violet-500 text-white shadow-sm shadow-violet-200",
-    dot: "bg-violet-400",
+  {
+    Icon: IconResumeBullets,
+    title: "Resume and CV bullets",
+    body: "Short, direct lines that start with a verb and keep every number you earned.",
+    href: "/native-sounding-resume",
   },
-  "linkedin-message": {
-    idle: "border-emerald-200 text-emerald-700 hover:bg-emerald-50",
-    active: "border-emerald-500 bg-emerald-500 text-white shadow-sm shadow-emerald-200",
-    dot: "bg-emerald-400",
+  {
+    Icon: IconRecruiterMessage,
+    title: "Recruiter and LinkedIn messages",
+    body: "Brief, warm notes that read like a colleague wrote them, not a template.",
+    href: "/recruiter-message-rewriter",
   },
-  "follow-up-email": {
-    idle: "border-amber-200 text-amber-700 hover:bg-amber-50",
-    active: "border-amber-500 bg-amber-500 text-white shadow-sm shadow-amber-200",
-    dot: "bg-amber-400",
+  {
+    Icon: IconFollowUpEmail,
+    title: "Interview follow-ups",
+    body: "Polite thank-you notes that stay on the right side of persistent.",
+    href: "/interview-follow-up-email-generator",
   },
-};
+];
 
-const MAX_CHARS = 6000;
+const STEPS = [
+  {
+    n: "01",
+    title: "Paste",
+    body: "Drop in your cover letter, resume bullets, LinkedIn note, or follow-up email — in the English you already wrote.",
+  },
+  {
+    n: "02",
+    title: "Rewrite",
+    body: "Grammar, word choice, and tone are corrected to the register a native professional uses. Your facts stay untouched.",
+  },
+  {
+    n: "03",
+    title: "Apply",
+    body: "Copy the result, or send it straight to email, WhatsApp, or messages, and get on with the application.",
+  },
+];
 
-export default function Home({
-  heading,
-  subheading = "Paste your cover letter, resume bullets, or a message to a recruiter. Get it back polished, natural, and professional. $14/month or $49 lifetime — 1 free rewrite a day to try it first, with just your email.",
-  initialContext = "cover-letter",
-}: Props) {
-  const [text, setText] = useState("");
-  const [context, setContext] = useState<ContextType>(initialContext);
-  const [result, setResult] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [limitReached, setLimitReached] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const [emailUnlocked, setEmailUnlocked] = useState(false);
-  const [gateEmail, setGateEmail] = useState("");
-  const [gateSubmitting, setGateSubmitting] = useState(false);
-  const [gateError, setGateError] = useState("");
-  const [totalRewrites, setTotalRewrites] = useState<number | null>(null);
-  const [isPro, setIsPro] = useState(false);
-  const [justUpgraded, setJustUpgraded] = useState(false);
+const PRIVACY_POINTS = [
+  {
+    Icon: IconShield,
+    title: "Nothing is kept",
+    body: "Your draft is not stored on NativeApply servers. Close the tab and it is gone.",
+  },
+  {
+    Icon: IconLock,
+    title: "Sent only to produce the rewrite",
+    body: "Your text goes to our AI provider, Anthropic, for the single purpose of rewriting it — and to nobody else.",
+  },
+  {
+    Icon: IconFacts,
+    title: "Never used for training",
+    body: "Your writing is not used to train AI models, ours or anyone else's.",
+  },
+  {
+    Icon: IconClock,
+    title: "Card details never touch us",
+    body: "Payments run through Paddle.com, our Merchant of Record. We never see your card.",
+  },
+];
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function init() {
-      const [stats, me] = await Promise.all([
-        fetch("/api/stats").then((r) => (r.ok ? r.json() : null)).catch(() => null),
-        fetch("/api/me").then((r) => (r.ok ? r.json() : null)).catch(() => null),
-      ]);
-      if (cancelled) return;
-
-      if (stats && typeof stats.totalRewrites === "number") setTotalRewrites(stats.totalRewrites);
-
-      let unlocked = false;
-      try {
-        unlocked = window.localStorage.getItem("na_unlocked") === "true";
-      } catch {
-        /* storage unavailable */
-      }
-      if (me?.pro === true) {
-        setIsPro(true);
-        unlocked = true;
-      }
-      setEmailUnlocked(unlocked);
-
-      if (new URLSearchParams(window.location.search).get("upgraded") === "1") {
-        setJustUpgraded(true);
-      }
-    }
-
-    init();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  async function handleGateSubmit(event: FormEvent) {
-    event.preventDefault();
-    setGateError("");
-    const trimmed = gateEmail.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
-      setGateError("Enter a valid email.");
-      return;
-    }
-    setGateSubmitting(true);
-    try {
-      await fetch("/api/capture-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed }),
-      });
-    } catch {
-      /* the gate never blocks on a network error */
-    } finally {
-      try {
-        window.localStorage.setItem("na_unlocked", "true");
-      } catch {
-        /* storage unavailable */
-      }
-      setEmailUnlocked(true);
-      setGateSubmitting(false);
-    }
-  }
-
-  async function handleCopy() {
-    if (!result) return;
-    try {
-      await navigator.clipboard.writeText(result);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      setError("Could not copy the text. Select it and copy it manually.");
-    }
-  }
-
-  async function handleRewrite() {
-    if (!text.trim()) return;
-    setLoading(true);
-    setError("");
-    setLimitReached(false);
-    setResult("");
-
-    try {
-      const res = await fetch("/api/rewrite", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, context }),
-      });
-      const data = await res.json().catch(() => ({}));
-
-      if (!res.ok) {
-        if (res.status === 429) setLimitReached(true);
-        setError(data.message || "Something went wrong. Please try again.");
-        return;
-      }
-      setResult(data.rewritten);
-      if (typeof data.totalRewrites === "number" && data.totalRewrites > 0) {
-        setTotalRewrites(data.totalRewrites);
-      }
-    } catch {
-      setError("Could not reach the server. Check your connection and try again.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const contextLabel = CONTEXT_TYPES.find((c) => c.value === context)?.label ?? "Message";
-  const tooLong = text.length > MAX_CHARS;
-
+function PlanCard({
+  name,
+  price,
+  cadence,
+  summary,
+  features,
+  highlight = false,
+  cta,
+  href,
+  footnote,
+}: {
+  name: string;
+  price: string;
+  cadence: string;
+  summary: string;
+  features: string[];
+  highlight?: boolean;
+  cta: string;
+  href: string;
+  footnote?: string;
+}) {
   return (
-    <div className="relative isolate w-full overflow-hidden">
-      <div aria-hidden="true" className="absolute inset-0 -z-10">
-        <div className="na-blob left-[-6rem] top-[-4rem] h-72 w-72 bg-sky-200" />
-        <div className="na-blob right-[-5rem] top-24 h-80 w-80 bg-violet-200" style={{ animationDelay: "-6s" }} />
-        <div className="na-blob left-1/3 top-[26rem] h-64 w-64 bg-amber-100" style={{ animationDelay: "-12s" }} />
-        <div className="na-blob right-1/4 top-[40rem] h-56 w-56 bg-emerald-100" style={{ animationDelay: "-3s" }} />
-      </div>
-
-      <header className="mx-auto flex w-full max-w-3xl items-center justify-between px-6 pt-6">
-        <Link href="/" className="flex items-center gap-2 text-sm font-semibold text-neutral-900">
-          <span className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br from-sky-500 via-violet-500 to-rose-500 text-xs font-bold text-white">
-            NA
-          </span>
-          NativeApply
-        </Link>
-        {isPro ? (
-          <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800">
-            Pro · unlimited rewrites
-          </span>
-        ) : (
-          <Link
-            href="/checkout"
-            className="rounded-full border border-neutral-300 bg-white/70 px-4 py-1.5 text-xs font-medium text-neutral-800 backdrop-blur hover:border-neutral-900"
-          >
-            Pricing
-          </Link>
-        )}
-      </header>
-
-      <main className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 pb-16 pt-12">
-        <section className="na-rise flex flex-col items-center gap-4 text-center">
-          <span className="rounded-full border border-violet-200 bg-white/70 px-3 py-1 text-xs font-medium text-violet-700 backdrop-blur">
-            For non-native speakers applying for jobs in English
-          </span>
-          <h1 className="text-4xl font-semibold tracking-tight text-neutral-900 sm:text-5xl">
-            {heading ?? (
-              <>
-                Sound like a <span className="na-gradient-text">native English speaker</span> in your job
-                application
-              </>
-            )}
-          </h1>
-          <p className="max-w-xl text-base text-neutral-600">{subheading}</p>
-          {totalRewrites !== null && totalRewrites > 0 && (
-            <p className="text-xs text-neutral-500">
-              {totalRewrites.toLocaleString("en-US")} {totalRewrites === 1 ? "application" : "applications"} rewritten
-              so far
-            </p>
-          )}
-        </section>
-
-        {justUpgraded && (
-          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-center text-sm text-emerald-900">
-            {isPro
-              ? "Payment received — NativeApply Pro is active on this browser. Unlimited rewrites."
-              : "Payment received. If Pro isn't active yet, refresh this page in a minute."}
-          </div>
-        )}
-
-        <section
-          className="na-rise flex flex-col gap-5 rounded-3xl border border-neutral-200 bg-white/90 p-5 shadow-xl shadow-violet-100/60 backdrop-blur sm:p-7"
-          style={{ animationDelay: "0.1s" }}
-        >
-          {!emailUnlocked && (
-            <div className="rounded-2xl bg-gradient-to-r from-sky-50 via-violet-50 to-rose-50 p-5">
-              <p className="mb-3 text-sm font-medium text-neutral-800">
-                Enter your email to use NativeApply — 1 free rewrite a day, no password.
-              </p>
-              <form onSubmit={handleGateSubmit} className="flex flex-col gap-2 sm:flex-row">
-                <label htmlFor="gate-email" className="sr-only">
-                  Email
-                </label>
-                <input
-                  id="gate-email"
-                  type="email"
-                  required
-                  value={gateEmail}
-                  onChange={(e) => setGateEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full rounded-full border border-neutral-300 bg-white px-4 py-2 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-violet-300 sm:flex-1"
-                />
-                <button
-                  type="submit"
-                  disabled={gateSubmitting}
-                  className="rounded-full bg-neutral-900 px-6 py-2 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-60"
-                >
-                  {gateSubmitting ? "..." : "Continue"}
-                </button>
-              </form>
-              {gateError && (
-                <p className="mt-2 text-sm text-red-600" role="alert">
-                  {gateError}
-                </p>
-              )}
-              <p className="mt-3 text-xs text-neutral-500">
-                Already paid on another device?{" "}
-                <Link href="/restore" className="underline hover:text-neutral-900">
-                  Restore Pro
-                </Link>
-              </p>
-            </div>
-          )}
-
-          <fieldset
-            disabled={!emailUnlocked}
-            className={"flex flex-col gap-5" + (!emailUnlocked ? " pointer-events-none select-none opacity-40" : "")}
-          >
-            <div className="flex flex-col gap-2">
-              <p id="na-context-label" className="text-sm font-medium text-neutral-800">What are you writing?</p>
-              <div className="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="na-context-label">
-                {CONTEXT_TYPES.map((c) => {
-                  const selected = c.value === context;
-                  const style = CONTEXT_STYLES[c.value];
-                  return (
-                    <button
-                      key={c.value}
-                      type="button"
-                      role="radio"
-                      aria-checked={selected}
-                      onClick={() => setContext(c.value)}
-                      className={
-                        "flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium transition " +
-                        (selected ? style.active : "bg-white " + style.idle)
-                      }
-                    >
-                      <span className={"h-2 w-2 rounded-full " + (selected ? "bg-white" : style.dot)} />
-                      {c.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label htmlFor="na-text" className="sr-only">
-                Your text
-              </label>
-              <textarea
-                id="na-text"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Paste your text here..."
-                rows={8}
-                className="w-full rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-violet-300"
-              />
-              <p className={"text-right text-xs " + (tooLong ? "text-red-600" : "text-neutral-400")}>
-                {text.length.toLocaleString("en-US")} / {MAX_CHARS.toLocaleString("en-US")}
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleRewrite}
-              disabled={loading || !text.trim() || tooLong}
-              className="self-center rounded-full bg-gradient-to-r from-sky-500 via-violet-500 to-rose-500 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:brightness-110 disabled:opacity-40"
-            >
-              {loading ? "Rewriting..." : "Make it sound native"}
-            </button>
-          </fieldset>
-
-          {error && (
-            <div className="text-center text-sm text-red-600" role="alert">
-              <p>{error}</p>
-              {limitReached && (
-                <Link
-                  href="/checkout"
-                  className="mt-2 inline-block rounded-full bg-neutral-900 px-5 py-2 text-xs font-medium text-white hover:bg-neutral-700"
-                >
-                  See Pro plans — $14/month or $49 lifetime
-                </Link>
-              )}
-            </div>
-          )}
-
-          {result && (
-            <div className="flex flex-col gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-emerald-900">Rewritten</span>
-                <button onClick={handleCopy} className="text-xs font-medium text-emerald-800 underline hover:text-emerald-950">
-                  {copied ? "Copied!" : "Copy"}
-                </button>
-              </div>
-              <p className="whitespace-pre-wrap text-base text-neutral-900">{result}</p>
-              <div className="flex items-center gap-4 border-t border-emerald-200 pt-2">
-                <span className="text-xs text-neutral-500">Send it:</span>
-                <a
-                  href={`mailto:?subject=${encodeURIComponent(contextLabel)}&body=${encodeURIComponent(result)}`}
-                  className="text-xs text-neutral-600 underline hover:text-neutral-900"
-                >
-                  Email
-                </a>
-                <a
-                  href={`https://wa.me/?text=${encodeURIComponent(result)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-neutral-600 underline hover:text-neutral-900"
-                >
-                  WhatsApp
-                </a>
-                <a
-                  href={`sms:?&body=${encodeURIComponent(result)}`}
-                  className="text-xs text-neutral-600 underline hover:text-neutral-900"
-                >
-                  Messages
-                </a>
-              </div>
-            </div>
-          )}
-
-          {!isPro && (
-            <p className="text-center text-xs text-neutral-500">
-              $14/month or $49 lifetime for unlimited rewrites —{" "}
-              <Link href="/checkout" className="font-medium text-violet-700 underline hover:text-violet-900">
-                Upgrade to Pro
-              </Link>
-              . 1 free rewrite a day to try it first.
-            </p>
-          )}
-        </section>
-
-        <section className="grid gap-4 sm:grid-cols-3">
-          {[
-            { n: "1", title: "Paste", body: "Your cover letter, resume bullets, LinkedIn note, or follow-up email.", color: "bg-sky-100 text-sky-700" },
-            { n: "2", title: "Rewrite", body: "Grammar, word choice, and tone fixed — your facts and numbers stay exactly as written.", color: "bg-violet-100 text-violet-700" },
-            { n: "3", title: "Send", body: "Copy it, or send it by email, WhatsApp, or text in one tap.", color: "bg-amber-100 text-amber-700" },
-          ].map((step) => (
-            <div key={step.n} className="rounded-2xl border border-neutral-200 bg-white/80 p-5 backdrop-blur">
-              <span className={"grid h-8 w-8 place-items-center rounded-full text-sm font-semibold " + step.color}>
-                {step.n}
-              </span>
-              <p className="mt-3 text-sm font-semibold text-neutral-900">{step.title}</p>
-              <p className="mt-1 text-sm text-neutral-600">{step.body}</p>
-            </div>
-          ))}
-        </section>
-
-        <section className="flex flex-col gap-3">
-          <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-neutral-500">
-            Example
-          </h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-2xl border border-rose-200 bg-rose-50/70 p-5">
-              <p className="text-xs font-semibold uppercase tracking-wide text-rose-700">Before</p>
-              <p className="mt-2 text-sm text-neutral-800">
-                I am writing for apply to the position of data analyst. I have 5 years of experience in make
-                reports and I am very motivated for work in your company.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-5">
-              <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">After</p>
-              <p className="mt-2 text-sm text-neutral-800">
-                I&apos;m writing to apply for the Data Analyst position. I have five years of experience
-                building reports, and I&apos;m very motivated to work at your company.
-              </p>
-            </div>
-          </div>
-        </section>
-      </main>
+    <div
+      className={
+        "relative flex flex-col rounded-2xl border p-6 sm:p-7 " +
+        (highlight
+          ? "border-brand bg-white shadow-[0_28px_70px_-50px_rgba(16,35,63,0.6)] lg:-my-3 lg:py-9"
+          : "border-line bg-white")
+      }
+    >
+      {highlight && (
+        <span className="absolute -top-3 left-6 rounded-full bg-brand px-3 py-1 text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-white">
+          Best value
+        </span>
+      )}
+      <p className="text-[0.9375rem] font-semibold text-navy">{name}</p>
+      <p className="mt-3 flex items-baseline gap-1.5">
+        <span className="text-[2.5rem] font-semibold leading-none tracking-[-0.03em] text-navy">{price}</span>
+        <span className="text-sm text-muted">{cadence}</span>
+      </p>
+      <p className="mt-3 text-[0.9375rem] leading-6 text-muted">{summary}</p>
+      <ul className="mt-5 flex flex-1 flex-col gap-2.5">
+        {features.map((feature) => (
+          <li key={feature} className="flex items-start gap-2.5 text-[0.9375rem] leading-6 text-ink">
+            <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+            {feature}
+          </li>
+        ))}
+      </ul>
+      <ButtonLink
+        href={href}
+        size="lg"
+        variant={highlight ? "primary" : "secondary"}
+        className="mt-7 w-full"
+      >
+        {cta}
+      </ButtonLink>
+      {footnote && <p className="mt-3 text-center text-[0.8125rem] text-muted">{footnote}</p>}
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <>
+      {/* ---------------- hero ---------------- */}
+      <Section tone="white" className="relative overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[38rem] bg-[radial-gradient(70%_60%_at_65%_0%,rgba(39,100,231,0.08),transparent_70%)]"
+        />
+        <Container size="wide" className="relative py-12 sm:py-16 lg:py-24">
+          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+            <div className="na-rise flex flex-col items-start gap-6">
+              <Pill>
+                <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                For professionals whose first language is not English
+              </Pill>
+              <h1 className="text-[2.25rem] font-semibold leading-[1.08] tracking-[-0.03em] text-navy sm:text-[3rem] lg:text-[3.5rem]">
+                Send job applications that read like{" "}
+                <span className="na-accent-text">native English</span>.
+              </h1>
+              <p className="max-w-xl text-[1.0625rem] leading-7 text-muted sm:text-lg">
+                NativeApply rewrites your cover letters, resume bullets, and recruiter messages into the English a
+                hiring manager in the US, UK, Canada, or Europe expects — without changing a single fact you wrote.
+              </p>
+
+              <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+                <ButtonLink href="#tool" size="lg" className="w-full sm:w-auto">
+                  Rewrite my text
+                </ButtonLink>
+                <ButtonLink href="#examples" size="lg" variant="secondary" className="w-full sm:w-auto">
+                  See an example
+                </ButtonLink>
+              </div>
+
+              <ul className="flex flex-wrap gap-x-5 gap-y-2 text-[0.875rem] text-muted">
+                {[
+                  "No password required",
+                  "1 free rewrite every day",
+                  "Your text is not stored",
+                  "Your facts and numbers stay unchanged",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-1.5">
+                    <IconCheck className="h-4 w-4 shrink-0 text-success" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="na-rise" style={{ animationDelay: "0.12s" }}>
+              <HeroDemo />
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      <TrustStrip />
+
+      {/* ---------------- the tool ---------------- */}
+      <Section tone="white" id="tool" className="scroll-mt-20">
+        <Container size="wide" className="py-14 sm:py-20">
+          <SectionHeading
+            eyebrow="Try it on your own words"
+            title="Paste your draft. Read the difference."
+            description="One rewrite a day is free, with just your email. Unlimited rewrites are $14 a month or $49 once."
+          />
+          <div className="mt-9">
+            <Rewriter />
+          </div>
+        </Container>
+      </Section>
+
+      {/* ---------------- narrative ---------------- */}
+      <Section tone="ivory">
+        <Container size="wide" className="py-16 sm:py-24">
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            <Reveal>
+              <AnnotatedLetter />
+            </Reveal>
+
+            <Reveal delay={80}>
+              <div className="flex flex-col gap-5">
+                <Eyebrow>From draft to confident English</Eyebrow>
+                <h2 className="text-[1.75rem] font-semibold leading-[1.18] tracking-[-0.022em] text-navy sm:text-[2.125rem]">
+                  You know what you want to say. This makes it sound that way.
+                </h2>
+                <p className="text-[1.0625rem] leading-7 text-muted">
+                  Most applications are not rejected for the wrong experience. They are rejected because a sentence
+                  reads a little off — a preposition out of place, a phrase translated word for word, a tone that
+                  lands stiffer than intended.
+                </p>
+                <p className="text-[1.0625rem] leading-7 text-muted">
+                  NativeApply fixes exactly that layer and nothing else. It does not write your application for you,
+                  invent achievements, or inflate what you did. It takes your meaning and puts it in the English a
+                  native professional would have used.
+                </p>
+                <ul className="mt-1 flex flex-col gap-3">
+                  {[
+                    "Grammar, articles, and prepositions corrected",
+                    "Translated-sounding phrasing replaced with natural wording",
+                    "Tone matched to the document — a cover letter is not a LinkedIn note",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-[0.9375rem] leading-6 text-ink">
+                      <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ---------------- steps ---------------- */}
+      <Section tone="white" id="how-it-works" className="scroll-mt-20">
+        <Container size="wide" className="py-16 sm:py-24">
+          <SectionHeading
+            eyebrow="How it works"
+            title="Three steps, about a minute"
+            description="No account to create, no onboarding, no template library to learn."
+          />
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {STEPS.map((step, index) => (
+              <Reveal key={step.n} delay={index * 70}>
+                <div className="flex h-full flex-col gap-3 rounded-2xl border border-line bg-white p-6">
+                  <span className="text-[0.8125rem] font-semibold tracking-[0.14em] text-brand">{step.n}</span>
+                  <h3 className="text-lg font-semibold text-navy">{step.title}</h3>
+                  <p className="text-[0.9375rem] leading-6 text-muted">{step.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* ---------------- before and after ---------------- */}
+      <Section tone="ivory" id="examples" className="scroll-mt-20">
+        <Container size="wide" className="py-16 sm:py-24">
+          <SectionHeading
+            eyebrow="Before and after"
+            title="Real rewrites, four kinds of document"
+            description="Marked words show what changed. Names, dates, and numbers are identical on both sides."
+          />
+          <div className="mt-10">
+            <BeforeAfterTabs />
+          </div>
+        </Container>
+      </Section>
+
+      {/* ---------------- use cases ---------------- */}
+      <Section tone="white" id="use-cases" className="scroll-mt-20">
+        <Container size="wide" className="py-16 sm:py-24">
+          <SectionHeading
+            eyebrow="What it handles"
+            title="The four documents a job search actually needs"
+          />
+          <div className="mt-12 grid gap-5 sm:grid-cols-2">
+            {USE_CASES.map(({ Icon, title, body, href }, index) => (
+              <Reveal key={title} delay={index * 60}>
+                <Link
+                  href={href}
+                  className="group flex h-full items-start gap-4 rounded-2xl border border-line bg-white p-6 transition-colors duration-200 hover:border-brand-300 hover:bg-brand-50/40"
+                >
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <span className="flex flex-col gap-1.5">
+                    <span className="text-[1.0625rem] font-semibold text-navy">{title}</span>
+                    <span className="text-[0.9375rem] leading-6 text-muted">{body}</span>
+                    <span className="mt-1 text-[0.875rem] font-semibold text-brand-700 underline-offset-4 group-hover:underline">
+                      Open this rewriter
+                    </span>
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* ---------------- meaning preserved ---------------- */}
+      <Section tone="navy">
+        <Container size="wide" className="py-16 sm:py-24">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
+            <SectionHeading
+              align="left"
+              onDark
+              eyebrow="What never changes"
+              title="Your name, your dates, your numbers."
+              description="A rewriting tool that quietly edits a figure on your resume is worse than no tool at all. NativeApply changes how a sentence reads, never what it claims."
+            />
+            <div className="flex flex-col gap-4">
+              <div className="rounded-2xl border border-white/12 bg-white/[0.06] p-5">
+                <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-brand-300">You wrote</p>
+                <p className="mt-2 text-[0.9375rem] leading-7 text-white/85">
+                  “I was responsible for the reduction of 23% in the costs of the logistic team in 2024.”
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/12 bg-white/[0.06] p-5">
+                <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-brand-300">
+                  It comes back
+                </p>
+                <p className="mt-2 text-[0.9375rem] leading-7 text-white">
+                  “Cut logistics team costs by 23% in 2024.”
+                </p>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {["23% kept", "2024 kept", "No claim added"].map((tag) => (
+                    <li
+                      key={tag}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/20 px-2.5 py-1 text-[0.6875rem] font-medium text-white/85"
+                    >
+                      <IconCheck className="h-3 w-3" />
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p className="text-[0.875rem] leading-6 text-brand-100/70">
+                Read every rewrite before you send it. It is your application, and you are the last check.
+              </p>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ---------------- privacy ---------------- */}
+      <Section tone="white">
+        <Container size="wide" className="py-16 sm:py-24">
+          <SectionHeading
+            eyebrow="Privacy"
+            title="Your job search is nobody else's business"
+            description="You are pasting the most personal document of your professional life. Here is exactly where it goes."
+          />
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {PRIVACY_POINTS.map(({ Icon, title, body }, index) => (
+              <Reveal key={title} delay={index * 60}>
+                <Card className="flex h-full flex-col gap-3 p-6">
+                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-brand">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <h3 className="text-[1rem] font-semibold text-navy">{title}</h3>
+                  <p className="text-[0.9375rem] leading-6 text-muted">{body}</p>
+                </Card>
+              </Reveal>
+            ))}
+          </div>
+          <p className="mt-8 text-center text-[0.875rem] text-muted">
+            The full detail is in the{" "}
+            <Link href="/privacy" className="font-medium text-brand-700 underline underline-offset-4">
+              Privacy Policy
+            </Link>
+            .
+          </p>
+        </Container>
+      </Section>
+
+      {/* ---------------- devices ---------------- */}
+      <Section tone="ivory">
+        <Container size="wide" className="py-16 sm:py-24">
+          <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+            <div className="flex flex-col gap-5">
+              <Eyebrow>Anywhere you apply</Eyebrow>
+              <h2 className="text-[1.75rem] font-semibold leading-[1.18] tracking-[-0.022em] text-navy sm:text-[2.125rem]">
+                On the laptop at home, on the phone on the way to the interview.
+              </h2>
+              <p className="text-[1.0625rem] leading-7 text-muted">
+                The same editor, the same result, no app to install. Rewrite a recruiter message while you wait for
+                the train and send it from the phone you are holding.
+              </p>
+              <ul className="flex flex-col gap-3">
+                {[
+                  "Works in any modern browser",
+                  "Copy, or send by email, WhatsApp, or messages",
+                  "Pro follows you: restore it on a second device in one step",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-[0.9375rem] leading-6 text-ink">
+                    <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <Reveal>
+              <DeviceShowcase />
+            </Reveal>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ---------------- plans ---------------- */}
+      <Section tone="white" id="pricing" className="scroll-mt-20">
+        <Container size="wide" className="py-16 sm:py-24">
+          <SectionHeading
+            eyebrow="Pricing"
+            title="Unlimited rewrites for $14 a month, or $49 once"
+            description="Both paid plans do exactly the same thing. The only question is whether you would rather stop paying after this job search or never pay again."
+          />
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            <PlanCard
+              name={FREE_PLAN.name}
+              price={FREE_PLAN.price}
+              cadence={FREE_PLAN.cadence}
+              summary={FREE_PLAN.summary}
+              features={FREE_PLAN.features}
+              cta="Start with one rewrite"
+              href="#tool"
+            />
+            <PlanCard
+              name={MONTHLY_PLAN.name}
+              price={MONTHLY_PLAN.price}
+              cadence={MONTHLY_PLAN.cadence}
+              summary={MONTHLY_PLAN.summary}
+              features={MONTHLY_PLAN.features}
+              cta="Subscribe monthly"
+              href="/checkout"
+            />
+            <PlanCard
+              name={LIFETIME_PLAN.name}
+              price={LIFETIME_PLAN.price}
+              cadence={LIFETIME_PLAN.cadence}
+              summary={LIFETIME_PLAN.summary}
+              features={LIFETIME_PLAN.features}
+              cta="Get lifetime access"
+              href="/checkout"
+              highlight
+              footnote="Full refund within 14 days."
+            />
+          </div>
+          <p className="mt-8 text-center text-[0.875rem] text-muted">
+            Secure payment by Paddle.com, our Merchant of Record. NativeApply never stores your card details.{" "}
+            <Link href="/checkout" className="font-medium text-brand-700 underline underline-offset-4">
+              Full pricing details
+            </Link>
+          </p>
+        </Container>
+      </Section>
+
+      {/* ---------------- faq ---------------- */}
+      <Section tone="ivory">
+        <Container size="wide" className="py-16 sm:py-24">
+          <SectionHeading eyebrow="Questions" title="Before you paste anything" />
+          <div className="mt-10">
+            <Faq items={HOME_FAQ} withSchema />
+          </div>
+        </Container>
+      </Section>
+
+      <FinalCta />
+    </>
   );
 }

@@ -1,23 +1,17 @@
 import type { Metadata } from "next";
-import Home from "@/components/Home";
+import ToolLanding from "@/components/ToolLanding";
+import { getToolPage } from "@/lib/tool-pages";
+
+const page = getToolPage("job-application-letter-rewriter");
 
 export const metadata: Metadata = {
-  title: "Job Application Letter Rewriter | NativeApply",
-  description:
-    "AI tool that rewrites your job application letter so it reads naturally and professionally in English, without changing your facts or experience. $14/month or $49 lifetime, with a free daily rewrite to try it first.",
-  alternates: { canonical: "/job-application-letter-rewriter" },
-  openGraph: {
-    title: "Job Application Letter Rewriter",
-    description: "Paste your job application letter and get it back sounding natural and confident. $14/month or $49 lifetime — try it free first with just your email, no password.",
-  },
+  title: page.metaTitle,
+  description: page.metaDescription,
+  alternates: { canonical: `/${page.slug}` },
+  openGraph: { title: page.ogTitle, description: page.ogDescription },
+  twitter: { title: page.ogTitle, description: page.ogDescription },
 };
 
 export default function Page() {
-  return (
-    <Home
-      initialContext="cover-letter"
-      heading="Rewrite your job application letter in native English"
-      subheading="Paste the letter you're about to send. Get it back polished, natural, and professional. $14/month or $49 lifetime — try it free first with just your email, no password."
-      />
-    );
+  return <ToolLanding page={page} />;
 }
