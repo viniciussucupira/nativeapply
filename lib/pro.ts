@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { PRO_COOKIE_NAME } from "./pro-cookie";
 import { isPro as isProInRedis } from "./redis";
+import { refreshMonthlyPro } from "./paddle";
 
 /**
  * Reads the Pro cookie (set after a successful Paddle checkout or manual
@@ -12,6 +13,15 @@ export async function getProStatus(): Promise<{ pro: boolean; email: string | nu
   const email = cookieStore.get(PRO_COOKIE_NAME)?.value ?? null;
   if (!email) return { pro: false, email: null };
 
-  const pro = await isProInRedis(email);
+  let pro = await isProInRedis(email);
+  if (!pro) {
+    // Monthly access lapsed in Redis: confirm with Paddle before locking out
+    // a customer whose renewal simply hasn't been recorded yet.
+    try {
+      pro = await refreshMonthlyPro(email);
+    } catch (err) {
+      console.error("na:pro: failed to refresh monthly subscription", err);
+    }
+  }
   return { pro, email };
 }

@@ -1,4 +1,11 @@
-import { grantLifetimePro, grantMonthlyPro, revokeProForTransaction } from "./redis";
+import {
+  clearSubscriptionId,
+  getSubscriptionId,
+  grantLifetimePro,
+  grantMonthlyPro,
+  revokeProForTransaction,
+  setSubscriptionId,
+} from "./redis";
 
 // The Nimbus Labs Paddle account is shared by several products (Retone,
 // NativeApply, ...). Paddle sends every product's events to every webhook
@@ -70,20 +77,47 @@ type PaddleSubscription = {
   current_billing_period?: { ends_at?: string } | null;
 };
 
+function isActive(sub: PaddleSubscription | null): boolean {
+  return sub?.status === "active" || sub?.status === "past_due" || sub?.status === "trialing";
+}
+
+function toExpiry(endsAtIso: string | undefined): number {
+  const endsAt = endsAtIso ? Date.parse(endsAtIso) : NaN;
+  const base = Number.isFinite(endsAt)
+    ? Math.floor(endsAt / 1000)
+    : Math.floor(Date.now() / 1000) + MONTHLY_FALLBACK_SECONDS;
+  return base + MONTHLY_GRACE_SECONDS;
+}
+
 async function monthlyExpiry(tx: PaddleTransaction): Promise<number> {
   // The subscription's current period is the source of truth (it already
   // reflects later renewals); the transaction's own period is the fallback.
   let endsAtIso = tx.billing_period?.ends_at;
   if (tx.subscription_id) {
     const sub = await paddleGet<PaddleSubscription>(`/subscriptions/${tx.subscription_id}`);
-    const active = sub?.status === "active" || sub?.status === "past_due" || sub?.status === "trialing";
-    if (active && sub?.current_billing_period?.ends_at) endsAtIso = sub.current_billing_period.ends_at;
+    if (isActive(sub) && sub?.current_billing_period?.ends_at) endsAtIso = sub.current_billing_period.ends_at;
   }
-  const endsAt = endsAtIso ? Date.parse(endsAtIso) : NaN;
-  const base = Number.isFinite(endsAt)
-    ? Math.floor(endsAt / 1000)
-    : Math.floor(Date.now() / 1000) + MONTHLY_FALLBACK_SECONDS;
-  return base + MONTHLY_GRACE_SECONDS;
+  return toExpiry(endsAtIso);
+}
+
+/**
+ * For a monthly customer whose access key ran out: asks Paddle whether the
+ * subscription is still active and, if so, extends access to the end of the
+ * current paid period. Returns true when Pro was restored.
+ */
+export async function refreshMonthlyPro(email: string): Promise<boolean> {
+  const subscriptionId = await getSubscriptionId(email);
+  if (!subscriptionId) return false;
+  const sub = await paddleGet<PaddleSubscription>(`/subscriptions/${subscriptionId}`);
+  if (!sub) return false;
+  if (!isActive(sub) || !sub.current_billing_period?.ends_at) {
+    await clearSubscriptionId(email);
+    return false;
+  }
+  const expiresAt = toExpiry(sub.current_billing_period.ends_at);
+  if (expiresAt <= Math.floor(Date.now() / 1000)) return false;
+  await grantMonthlyPro(email, subscriptionId, expiresAt);
+  return true;
 }
 
 /**
@@ -105,6 +139,7 @@ export async function grantProForTransaction(tx: PaddleTransaction): Promise<str
     // An old renewal must not grant access that has already run out.
     if (expiresAt <= Math.floor(Date.now() / 1000)) return null;
     await grantMonthlyPro(email, tx.id, expiresAt);
+    if (tx.subscription_id) await setSubscriptionId(email, tx.subscription_id);
   }
   return email;
 }

@@ -103,6 +103,27 @@ export async function grantMonthlyPro(
   await client.set(proKey(email), `monthly:${transactionId}`, { exat: expiresAtSeconds });
 }
 
+// Remembers which Paddle subscription a monthly customer has, so access can
+// be re-checked with Paddle even if a renewal webhook never arrives.
+export async function setSubscriptionId(email: string, subscriptionId: string): Promise<void> {
+  const client = getRedis();
+  if (!client) return;
+  await client.set(`na:sub:${email.trim().toLowerCase()}`, subscriptionId);
+}
+
+export async function getSubscriptionId(email: string): Promise<string | null> {
+  const client = getRedis();
+  if (!client) return null;
+  const value = await client.get<string>(`na:sub:${email.trim().toLowerCase()}`);
+  return typeof value === "string" && value ? value : null;
+}
+
+export async function clearSubscriptionId(email: string): Promise<void> {
+  const client = getRedis();
+  if (!client) return;
+  await client.del(`na:sub:${email.trim().toLowerCase()}`);
+}
+
 /** Revokes Pro only if it was granted by this exact transaction (refund/chargeback). */
 export async function revokeProForTransaction(email: string, transactionId: string): Promise<void> {
   const client = getRedis();
