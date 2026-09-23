@@ -209,7 +209,8 @@ export default function Home({
           <p className="max-w-xl text-base text-neutral-600">{subheading}</p>
           {totalRewrites !== null && totalRewrites > 0 && (
             <p className="text-xs text-neutral-500">
-              {totalRewrites.toLocaleString("en-US")} applications rewritten so far
+              {totalRewrites.toLocaleString("en-US")} {totalRewrites === 1 ? "application" : "applications"} rewritten
+              so far
             </p>
           )}
         </section>
