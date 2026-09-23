@@ -1,7 +1,9 @@
 "use client";
 
 import Script from "next/script";
+import Link from "next/link";
 import { useState } from "react";
+import { LIFETIME_SHORT } from "@/lib/lifetime-policy";
 
 type PaddleCheckoutEvent = {
   name: string;
@@ -46,27 +48,24 @@ export default function CheckoutPage() {
   }
 
   function eventCallback(event: PaddleCheckoutEvent) {
-    if (event.name === "checkout.completed") {
-const transactionId = event.data?.transaction_id;
-            if (transactionId) {
-                      fetch("/api/paddle/confirm", {
-                                  method: "POST",
-                                  headers: { "Content-Type": "application/json" },
-                                  body: JSON.stringify({ transactionId }),
-                      }).finally(() => {
-                                  // Full page navigation (not router.push) is intentional: it forces
-                                  // the server component on "/" to re-read the now-set Pro cookie.
-                                  // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-                                  window.location.assign("/?upgraded=1");
-                      });
-            } else {
-                      window.location.assign("/?upgraded=1");
-            }
-    }
+    if (event.name !== "checkout.completed") return;
+    const transactionId = event.data?.transaction_id;
+    const done = () => {
+      // Full page navigation (not router.push) is intentional: it makes the
+      // home page re-read the Pro cookie that /api/paddle/confirm just set.
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+      window.location.assign("/?upgraded=1");
+    };
+    if (!transactionId) return done();
+    fetch("/api/paddle/confirm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ transactionId }),
+    }).finally(done);
   }
 
   function handleCheckout(priceId: string) {
-    if (!window.Paddle) return;
+    if (!window.Paddle || !priceId) return;
     window.Paddle.Checkout.open({
       items: [{ priceId, quantity: 1 }],
       settings: { locale: "en" },
@@ -75,71 +74,93 @@ const transactionId = event.data?.transaction_id;
 
   return (
     <>
-      <Script
-        src="https://cdn.paddle.com/paddle/v2/paddle.js"
-        onLoad={initializePaddle}
-        strategy="afterInteractive"
-      />
+      <Script src="https://cdn.paddle.com/paddle/v2/paddle.js" onLoad={initializePaddle} strategy="afterInteractive" />
 
-      <div className="w-full max-w-2xl mx-auto px-6 py-16 flex flex-col gap-10">
-        <div className="text-center flex flex-col gap-2">
-          <h1 className="text-3xl font-semibold tracking-tight text-black">NativeApply Pro</h1>
-          <p className="text-sm text-neutral-500">
-            Unlimited rewrites for your cover letters, resume, and recruiter messages.
-          </p>
+      <div className="relative isolate w-full overflow-hidden">
+        <div aria-hidden="true" className="absolute inset-0 -z-10">
+          <div className="na-blob left-[-5rem] top-[-3rem] h-72 w-72 bg-violet-200" />
+          <div className="na-blob right-[-4rem] top-40 h-72 w-72 bg-sky-200" style={{ animationDelay: "-7s" }} />
+          <div className="na-blob left-1/3 top-[28rem] h-56 w-56 bg-rose-100" style={{ animationDelay: "-13s" }} />
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-6">
-          <div className="border-2 border-black rounded-2xl p-6 flex flex-col gap-4 relative">
-            <span className="absolute -top-3 left-6 bg-black text-white text-xs font-medium px-3 py-1 rounded-full">
-              Recommended — no subscription
+        <header className="mx-auto flex w-full max-w-3xl items-center px-6 pt-6">
+          <Link href="/" className="flex items-center gap-2 text-sm font-semibold text-neutral-900">
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br from-sky-500 via-violet-500 to-rose-500 text-xs font-bold text-white">
+              NA
             </span>
-            <div>
-              <p className="text-sm font-medium text-neutral-500">Lifetime</p>
-              <p className="text-3xl font-semibold text-black">
-                $49 <span className="text-base font-normal text-neutral-400">once</span>
-              </p>
-            </div>
-            <ul className="text-sm text-neutral-600 flex flex-col gap-1">
-              <li>Unlimited rewrites, forever</li>
-              <li>All content types</li>
-              <li>Pay once, no recurring charge</li>
-            </ul>
-            <button
-              onClick={() => handleCheckout(LIFETIME_PRICE_ID)}
-              disabled={!paddleReady}
-              className="mt-auto w-full py-3 rounded-full bg-black text-white text-sm font-medium disabled:opacity-40"
-            >
-              Get lifetime access
-            </button>
+            NativeApply
+          </Link>
+        </header>
+
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 pb-16 pt-12">
+          <div className="na-rise flex flex-col gap-2 text-center">
+            <h1 className="text-4xl font-semibold tracking-tight text-neutral-900">
+              NativeApply <span className="na-gradient-text">Pro</span>
+            </h1>
+            <p className="text-sm text-neutral-600">
+              Unlimited rewrites for your cover letters, resume, and recruiter messages.
+            </p>
           </div>
 
-          <div className="border border-neutral-200 rounded-2xl p-6 flex flex-col gap-4">
-            <div>
-              <p className="text-sm font-medium text-neutral-500">Monthly</p>
-              <p className="text-3xl font-semibold text-black">
-                $14 <span className="text-base font-normal text-neutral-400">/month</span>
-              </p>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <div className="na-rise relative flex flex-col gap-4 rounded-3xl border-2 border-violet-500 bg-white/90 p-6 shadow-xl shadow-violet-100 backdrop-blur">
+              <span className="absolute -top-3 left-6 rounded-full bg-gradient-to-r from-violet-500 to-rose-500 px-3 py-1 text-xs font-medium text-white">
+                Recommended — no subscription
+              </span>
+              <div>
+                <p className="text-sm font-medium text-violet-700">Lifetime</p>
+                <p className="text-4xl font-semibold text-neutral-900">
+                  $49 <span className="text-base font-normal text-neutral-500">once</span>
+                </p>
+              </div>
+              <ul className="flex flex-col gap-1.5 text-sm text-neutral-700">
+                <li>✓ Unlimited rewrites</li>
+                <li>✓ All 4 document types</li>
+                <li>✓ Pay once, no recurring charge</li>
+                <li>✓ Full refund within 14 days</li>
+              </ul>
+              <button
+                onClick={() => handleCheckout(LIFETIME_PRICE_ID)}
+                disabled={!paddleReady}
+                className="mt-auto w-full rounded-full bg-gradient-to-r from-sky-500 via-violet-500 to-rose-500 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200 hover:brightness-110 disabled:opacity-40"
+              >
+                Get lifetime access
+              </button>
             </div>
-            <ul className="text-sm text-neutral-600 flex flex-col gap-1">
-              <li>Unlimited rewrites</li>
-              <li>All content types</li>
-              <li>Cancel anytime</li>
-            </ul>
-            <button
-              onClick={() => handleCheckout(MONTHLY_PRICE_ID)}
-              disabled={!paddleReady}
-              className="mt-auto w-full py-3 rounded-full border border-black text-black text-sm font-medium disabled:opacity-40"
-            >
-              Subscribe monthly
-            </button>
+
+            <div className="na-rise flex flex-col gap-4 rounded-3xl border border-neutral-200 bg-white/90 p-6 backdrop-blur" style={{ animationDelay: "0.1s" }}>
+              <div>
+                <p className="text-sm font-medium text-sky-700">Monthly</p>
+                <p className="text-4xl font-semibold text-neutral-900">
+                  $14 <span className="text-base font-normal text-neutral-500">/month</span>
+                </p>
+              </div>
+              <ul className="flex flex-col gap-1.5 text-sm text-neutral-700">
+                <li>✓ Unlimited rewrites</li>
+                <li>✓ All 4 document types</li>
+                <li>✓ Cancel anytime, keep access to the end of the paid month</li>
+              </ul>
+              <button
+                onClick={() => handleCheckout(MONTHLY_PRICE_ID)}
+                disabled={!paddleReady}
+                className="mt-auto w-full rounded-full border border-neutral-900 bg-white py-3 text-sm font-medium text-neutral-900 hover:bg-neutral-900 hover:text-white disabled:opacity-40"
+              >
+                Subscribe monthly
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 text-center text-xs text-neutral-500">
+            <p>Lifetime: {LIFETIME_SHORT}</p>
+            <p>
+              Payment processed securely by Paddle.com, our Merchant of Record. Already paid on another device?{" "}
+              <Link href="/restore" className="underline hover:text-neutral-900">
+                Restore Pro
+              </Link>
+              .
+            </p>
           </div>
         </div>
-
-        <p className="text-center text-xs text-neutral-400">
-          No subscription required for the Lifetime plan — pay once and keep it forever. Payment processed
-          securely by Paddle.com, our Merchant of Record.
-        </p>
       </div>
     </>
   );

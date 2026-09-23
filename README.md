@@ -15,6 +15,7 @@ Paddle (Merchant of Record) with a webhook, deployed on Vercel.
 - `/native-sounding-resume`
 - `/recruiter-message-rewriter`
 - `/checkout` — Paddle checkout (Lifetime $49 promoted, Monthly $14)
+- `/restore` — turn Pro on in another browser with a Paddle transaction ID (`/restore?txn=txn_...`)
 - `/terms`, `/privacy`, `/refunds`
 
 ## Environment variables
@@ -47,7 +48,9 @@ npm run dev
    Variables.
 4. In Paddle, set the webhook endpoint to
    `https://<your-domain>/api/paddle/webhook` and subscribe it to the
-   `transaction.completed` event.
+   `transaction.completed`, `adjustment.created` and `adjustment.updated`
+   events. Monthly Pro expires at the end of each paid period and is
+   extended by every renewal, so `transaction.completed` must be delivered.
 5. Point the domain (e.g. `nativeapply.net`) at the Vercel project.
 
 ## What's not done yet

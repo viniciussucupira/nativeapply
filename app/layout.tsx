@@ -26,14 +26,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full antialiased">
-    <body className="min-h-full flex flex-col bg-white font-sans">
-      {children}
-    <Footer />
-    <Analytics />
-    </body>
+      <body className="flex min-h-full flex-col bg-white text-neutral-900">
+        <div className="flex-1">{children}</div>
+        <Footer />
+        <Analytics />
+      </body>
     </html>
-    );
+  );
 }

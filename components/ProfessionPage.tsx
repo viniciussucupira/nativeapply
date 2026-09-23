@@ -29,7 +29,7 @@ export default function ProfessionPage({
       />
 
       <div className="w-full max-w-2xl mx-auto px-6 pb-16 flex flex-col gap-8">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 rounded-3xl border border-neutral-200 bg-white p-6">
           <h2 className="text-lg font-semibold text-black">
             FAQ: {docLabelCapitalized} for {profession.label}
           </h2>
@@ -38,7 +38,7 @@ export default function ProfessionPage({
               <p className="text-sm font-medium text-black">
                 What makes your {docLabel} sound native for {profession.singular}?
               </p>
-              <p className="text-sm text-neutral-500">
+              <p className="text-sm text-neutral-600">
                 It uses the vocabulary and tone hiring managers expect in that field, avoids literal
                 translations from other languages, and keeps the structure short and direct — the way a
                 native English speaker working as {profession.singular} would write it.
@@ -46,17 +46,18 @@ export default function ProfessionPage({
             </div>
             <div>
               <p className="text-sm font-medium text-black">
-                Is this tool free for {profession.label.toLowerCase()}?
+                How much does it cost for {profession.label.toLowerCase()}?
               </p>
-              <p className="text-sm text-neutral-500">
-                Yes. You get 1 free rewrite a day. Upgrade to NativeApply Pro for unlimited rewrites.
+              <p className="text-sm text-neutral-600">
+                NativeApply Pro is $14/month or $49 once for Lifetime access, with unlimited rewrites. You can
+                try 1 rewrite a day first with just your email.
               </p>
             </div>
             <div>
               <p className="text-sm font-medium text-black">
                 Will it change the facts in my {docLabel}?
               </p>
-              <p className="text-sm text-neutral-500">
+              <p className="text-sm text-neutral-600">
                 No. It only fixes grammar, word choice, and phrasing — every fact, number, and achievement
                 you wrote is preserved exactly.
               </p>
@@ -73,7 +74,7 @@ export default function ProfessionPage({
               <Link
                 key={p.slug}
                 href={`/${urlPrefix}/${p.slug}`}
-                className="text-neutral-500 hover:text-black underline"
+                className="rounded-full border border-violet-200 bg-white px-3 py-1 text-violet-700 hover:bg-violet-50"
               >
                 {p.label}
               </Link>

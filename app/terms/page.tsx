@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { SUPPORT_EMAIL } from "@/lib/constants";
+import { LIFETIME_FULL } from "@/lib/lifetime-policy";
 
 export const metadata: Metadata = {
   title: "Terms of Service | NativeApply",
@@ -9,7 +11,7 @@ export default function TermsPage() {
   return (
     <div className="w-full max-w-2xl mx-auto px-6 py-16 flex flex-col gap-6 text-sm text-neutral-700 leading-6">
       <h1 className="text-2xl font-semibold text-black">Terms of Service</h1>
-      <p className="text-neutral-400">Last updated: September 2026</p>
+      <p className="text-neutral-500">Last updated: September 2026</p>
 
       <p>
         NativeApply is a product operated by Nimbus Labs (&quot;we&quot;, &quot;us&quot;). By using
@@ -20,7 +22,7 @@ export default function TermsPage() {
       <p>
         NativeApply rewrites text you submit — such as cover letters, resume bullet points, and messages
         to recruiters — using artificial intelligence, so it reads more naturally to a native English
-        speaker. Free accounts are limited to 1 rewrite per day. Paid plans remove this limit.
+        speaker. Without a paid plan, use is limited to 1 rewrite per day. NativeApply Pro ($14/month or $49 once for Lifetime access) removes this limit.
       </p>
 
       <h2 className="text-lg font-semibold text-black mt-4">2. Your content</h2>
@@ -47,11 +49,20 @@ export default function TermsPage() {
         for details on cancellations and refunds.
       </p>
 
-      <h2 className="text-lg font-semibold text-black mt-4">5. Changes</h2>
-      <p>We may update these Terms from time to time. Continued use of the Service means you accept the changes.</p>
+      <h2 className="text-lg font-semibold text-black mt-4">5. Lifetime plan</h2>
+      <p>{LIFETIME_FULL}</p>
 
-      <h2 className="text-lg font-semibold text-black mt-4">6. Contact</h2>
-      <p>Questions about these Terms can be sent to the support address listed on our homepage.</p>
+      <h2 className="text-lg font-semibold text-black mt-4">6. Changes</h2>
+      <p>We may update these Terms from time to time. Continued use of the Service means you accept the changes. Changes never reduce what you already paid for.</p>
+
+      <h2 className="text-lg font-semibold text-black mt-4">7. Contact</h2>
+      <p>
+        Questions about these Terms can be sent to{" "}
+        <a href={`mailto:${SUPPORT_EMAIL}`} className="underline">
+          {SUPPORT_EMAIL}
+        </a>
+        .
+      </p>
     </div>
   );
 }
