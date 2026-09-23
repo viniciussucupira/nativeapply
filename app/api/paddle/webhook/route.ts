@@ -1,72 +1,69 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { setPro } from "@/lib/redis";
-
-// Same verification + "fetch email by customer id" pattern used for Retone,
-// because Paddle's transaction.completed event includes customer_id but not
-// the customer's email — a second API call is required to resolve it.
+import { grantProForTransaction, revokeProForRefund, type PaddleTransaction } from "@/lib/paddle";
 
 function verifySignature(rawBody: string, signatureHeader: string | null, secret: string): boolean {
   if (!signatureHeader) return false;
-  const parts = Object.fromEntries(
-    signatureHeader.split(";").map((p) => {
-      const [k, v] = p.split("=");
-      return [k, v];
-    })
-    );
-  const ts = parts.ts;
-  const h1 = parts.h1;
+  const parts: Record<string, string> = {};
+  for (const part of signatureHeader.split(";")) {
+    const [k, v] = part.split("=");
+    if (k && v) parts[k.trim()] = v.trim();
+  }
+  const { ts, h1 } = parts;
   if (!ts || !h1) return false;
 
-const signedPayload = `${ts}:${rawBody}`;
-  const expected = crypto.createHmac("sha256", secret).update(signedPayload).digest("hex");
-  return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(h1));
-}
+  // Reject replays of old events (Paddle recommends a 5-second tolerance;
+  // 5 minutes leaves room for clock skew and retries).
+  const ageSeconds = Math.abs(Date.now() / 1000 - Number(ts));
+  if (!Number.isFinite(ageSeconds) || ageSeconds > 300) return false;
 
-async function fetchCustomerEmail(customerId: string): Promise<string | null> {
-  const apiKey = process.env.PADDLE_API_KEY;
-  if (!apiKey) return null;
-
-const paddleApiBase =
-  process.env.NEXT_PUBLIC_PADDLE_ENV === "sandbox"
-  ? "https://sandbox-api.paddle.com"
-  : "https://api.paddle.com";
-
-const res = await fetch(`${paddleApiBase}/customers/${customerId}`, {
-  headers: { Authorization: `Bearer ${apiKey}` },
-});
-  if (!res.ok) return null;
-  const data = await res.json();
-  return data?.data?.email ?? null;
+  const expected = crypto.createHmac("sha256", secret).update(`${ts}:${rawBody}`).digest("hex");
+  const a = Buffer.from(expected);
+  const b = Buffer.from(h1);
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
 export async function POST(req: NextRequest) {
   const secret = process.env.PADDLE_WEBHOOK_SECRET;
   const rawBody = await req.text();
 
-if (!secret) {
-  // SECURITY: fail closed. A missing secret used to skip signature
-  // verification entirely, letting anyone POST a fake "transaction
-  // completed" event and grant themselves Pro.
-  return NextResponse.json({ error: "server_misconfigured" }, { status: 500 });
-}
-  const signatureHeader = req.headers.get("paddle-signature");
-  const valid = verifySignature(rawBody, signatureHeader, secret);
-  if (!valid) {
+  if (!secret) {
+    // Fail closed: without a secret anyone could POST a fake purchase.
+    return NextResponse.json({ error: "server_misconfigured" }, { status: 500 });
+  }
+  if (!verifySignature(rawBody, req.headers.get("paddle-signature"), secret)) {
     return NextResponse.json({ error: "invalid_signature" }, { status: 401 });
   }
 
-const event = JSON.parse(rawBody);
-
-if (event.event_type === "transaction.completed") {
-  const customerId = event.data?.customer_id;
-  if (customerId) {
-    const email = await fetchCustomerEmail(customerId);
-    if (email) {
-      await setPro(email);
-    }
+  let event: { event_type?: string; data?: Record<string, unknown> };
+  try {
+    event = JSON.parse(rawBody);
+  } catch {
+    return NextResponse.json({ error: "invalid_body" }, { status: 400 });
   }
-}
 
-return NextResponse.json({ received: true });
+  try {
+    if (event.event_type === "transaction.completed" && event.data) {
+      // Purchases of other Nimbus Labs products are ignored inside.
+      await grantProForTransaction(event.data as unknown as PaddleTransaction);
+    }
+
+    if (
+      (event.event_type === "adjustment.created" || event.event_type === "adjustment.updated") &&
+      event.data
+    ) {
+      const adj = event.data as { action?: string; status?: string; type?: string; transaction_id?: string };
+      const fullRefund = adj.action === "refund" && adj.status === "approved" && adj.type === "full";
+      const chargeback = adj.action === "chargeback";
+      if ((fullRefund || chargeback) && adj.transaction_id) {
+        await revokeProForRefund(adj.transaction_id);
+      }
+    }
+  } catch (err) {
+    console.error("na:webhook: failed to process event", event.event_type, err);
+    // 500 makes Paddle retry the event later.
+    return NextResponse.json({ error: "processing_failed" }, { status: 500 });
+  }
+
+  return NextResponse.json({ received: true });
 }

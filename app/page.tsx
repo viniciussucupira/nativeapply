@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import Home from "@/components/Home";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const jsonLd = {
   "@context": "https://schema.org",
