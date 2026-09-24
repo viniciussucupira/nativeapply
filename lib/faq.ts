@@ -11,7 +11,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "Do I need to create an account?",
-    a: "No. Your free daily rewrite requires no email, password, or card. If you buy Pro, access is remembered in your browser. Use Restore Pro with your Paddle transaction ID to activate another browser, or contact support from your purchase email if you cannot find the receipt.",
+    a: "No. Your free daily rewrite requires no email, password, or card. If you buy Pro, access is remembered in your browser. To use another device, open Restore Pro access and enter the email you used to pay. We send a secure access link automatically; no password or purchase code is needed.",
   },
   {
     q: "How do I cancel my subscription?",
@@ -19,7 +19,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "What is Restore Pro? What if I forgot my password?",
-    a: "NativeApply has no password or separate login. Restore Pro reconnects a purchase you already made to this browser using the transaction ID from your Paddle receipt. It does not charge you, renew the plan, or cancel it. If you cannot find the ID, contact support from your purchase email; do not subscribe again just to recover access.",
+    a: "NativeApply has no password to reset. Restore Pro reconnects an existing purchase to this browser. Enter your purchase email, open the access link we send, and tap Access my Pro. The link expires in 15 minutes and works once. This does not charge you, renew the plan, or cancel it. Your receipt code and support remain available if you need more help.",
   },
   {
     q: "What does it cost?",

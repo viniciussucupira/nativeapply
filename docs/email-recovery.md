@@ -18,3 +18,11 @@ Every valid, permitted request receives the same access email regardless of purc
 ## Launch validation
 
 Run `npm run lint`, `npm test`, `npm run build`. Verify the mobile form and error/success screens. With configuration active, send a test link to an owner-controlled inbox, verify delivery in Resend, then check that an inbox without a paid purchase is denied. Use an existing paid test purchase to validate success without making a new charge. Never manually grant production Pro for a test. Verify replay rejection. Do not claim full delivery validation until a real email has arrived.
+
+## Validation on September 24, 2026
+
+- Resend verified DKIM, SPF and the return-path MX for `mail.nativeapply.net`; TLS is enforced and tracking is not configured.
+- Production has a domain-restricted sending key stored as a Vercel Secret, plus the configured sender.
+- 13 unit tests, lint and production build passed. Mobile layout checked at 390px.
+- Local end-to-end fixture verified request validation, same-origin protection, delivery adapter, signed Pro cookie, `/api/me` paid status, unpaid denial, replay rejection and request rate limiting. The fixture did not call real payment/email services.
+- A real production email was delivered by Resend and arrived in the owner's Gmail inbox. Its link denied access for an email without a recorded active purchase; replay returned an invalid/used-link response. Paid activation was tested with the local fixture, not a real paid production purchase. No new payment or artificial production entitlement was created.
