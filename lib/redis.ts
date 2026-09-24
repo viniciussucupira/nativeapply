@@ -133,30 +133,35 @@ export async function isPro(email: string): Promise<boolean> {
   return Boolean(value);
 }
 
-export async function grantLifetimePro(email: string, transactionId: string): Promise<void> {
+export async function grantLifetimePro(email: string, transactionId: string): Promise<boolean> {
   const client = getRedis();
   if (!client) throw new Error("Pro storage unavailable");
-  await client.set(proKey(email), `lifetime:${transactionId}`);
+  return Boolean(await client.eval(
+    "if redis.call('EXISTS', KEYS[2]) == 1 then return 0 end; redis.call('SET', KEYS[1], ARGV[1]); return 1",
+    [proKey(email), `na:refund:${transactionId}`], [`lifetime:${transactionId}`],
+  ));
 }
 
 export async function grantMonthlyPro(
   email: string,
   transactionId: string,
-  expiresAtSeconds: number
-): Promise<void> {
+  expiresAtSeconds: number,
+  subscriptionId = ""
+): Promise<boolean> {
   const client = getRedis();
   if (!client) throw new Error("Pro storage unavailable");
-  const current = await client.get<string>(proKey(email));
-  // Never downgrade a Lifetime customer to an expiring key.
-  if (typeof current === "string" && current.startsWith("lifetime:")) return;
-  await client.set(proKey(email), `monthly:${transactionId}`, { exat: expiresAtSeconds });
+  // Atomic: refunds cannot race a grant; delayed renewals cannot shorten access.
+  return Boolean(await client.eval(
+    "if redis.call('EXISTS', KEYS[2]) == 1 then return 0 end; local current = redis.call('GET', KEYS[1]); if current and string.sub(current, 1, 9) == 'lifetime:' then return 1 end; local ttl = redis.call('TTL', KEYS[1]); local now = redis.call('TIME'); if ttl > 0 and tonumber(now[1]) + ttl > tonumber(ARGV[2]) then return 1 end; redis.call('SET', KEYS[1], ARGV[1], 'EXAT', ARGV[2]); if ARGV[3] ~= '' then redis.call('SET', KEYS[3], ARGV[3]) end; return 1",
+    [proKey(email), `na:refund:${transactionId}`, `na:sub:${email.trim().toLowerCase()}`], [`monthly:${transactionId}`, expiresAtSeconds, subscriptionId],
+  ));
 }
 
 // Remembers which Paddle subscription a monthly customer has, so access can
 // be re-checked with Paddle even if a renewal webhook never arrives.
 export async function setSubscriptionId(email: string, subscriptionId: string): Promise<void> {
   const client = getRedis();
-  if (!client) return;
+  if (!client) throw new Error("Pro storage unavailable");
   await client.set(`na:sub:${email.trim().toLowerCase()}`, subscriptionId);
 }
 
@@ -174,30 +179,37 @@ export async function clearSubscriptionId(email: string): Promise<void> {
 }
 
 /** Revokes Pro only if it was granted by this exact transaction (refund/chargeback). */
-export async function revokeProForTransaction(email: string, transactionId: string): Promise<void> {
+export async function revokeProForTransaction(email: string, transactionId: string, subscriptionId = ""): Promise<void> {
   const client = getRedis();
-  if (!client) return;
-  const current = await client.get<string>(proKey(email));
-  if (typeof current === "string" && current.endsWith(`:${transactionId}`)) {
-    await client.del(proKey(email));
-  }
+  if (!client) throw new Error("Pro storage unavailable");
+  await client.eval(
+    "redis.call('SET', KEYS[2], '1'); local current = redis.call('GET', KEYS[1]); if current == ARGV[1] or current == ARGV[2] or current == ARGV[3] then redis.call('DEL', KEYS[1]) end; return 1",
+    [proKey(email), `na:refund:${transactionId}`], [`monthly:${transactionId}`, `lifetime:${transactionId}`, `monthly:${subscriptionId}`],
+  );
+}
+
+export async function revokeMonthlyForSubscription(email: string, subscriptionId: string): Promise<void> {
+  const client = recoveryClient();
+  await client.eval(
+    "local current = redis.call('GET', KEYS[1]); if redis.call('GET', KEYS[2]) == ARGV[1] and current and string.sub(current, 1, 8) == 'monthly:' then redis.call('DEL', KEYS[1]) end; return 1",
+    [proKey(email), `na:sub:${email.trim().toLowerCase()}`], [subscriptionId],
+  );
 }
 
 // ---------------------------------------------------------------------------
-// Leads and stats
+// Stats
 // ---------------------------------------------------------------------------
 
-export async function saveLeadEmail(email: string): Promise<boolean> {
-  const trimmed = email.trim().toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return false;
-  const client = getRedis();
-  if (!client) return true;
-  try {
-    await client.sadd("na:captured_emails", trimmed);
-  } catch (err) {
-    console.error("na:leads: failed to save email", err);
-  }
-  return true;
+export async function clearReversedRefund(transactionId: string): Promise<void> {
+  await recoveryClient().del(`na:refund:${transactionId}`);
+}
+
+/** A scheduled cancellation can shorten the cache, never extend another purchase. */
+export async function capMonthlyForSubscription(email: string, subscriptionId: string, expiresAt: number): Promise<void> {
+  await recoveryClient().eval(
+    "local current = redis.call('GET', KEYS[1]); if redis.call('GET', KEYS[2]) == ARGV[1] and current and string.sub(current, 1, 8) == 'monthly:' then local ttl = redis.call('TTL', KEYS[1]); local now = redis.call('TIME'); if ttl < 0 or tonumber(now[1]) + ttl > tonumber(ARGV[2]) then redis.call('EXPIREAT', KEYS[1], ARGV[2]) end end; return 1",
+    [proKey(email), `na:sub:${email.trim().toLowerCase()}`], [subscriptionId, expiresAt],
+  );
 }
 
 const TOTAL_REWRITES_KEY = "na:stats:totalRewrites";

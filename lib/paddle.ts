@@ -4,8 +4,11 @@ import {
   grantLifetimePro,
   grantMonthlyPro,
   revokeProForTransaction,
-  setSubscriptionId,
+  revokeMonthlyForSubscription,
+  clearReversedRefund,
+  capMonthlyForSubscription,
 } from "./redis";
+import { purchasePlan, purchaseRefunded, paidMonthlyExpiry, type Purchase, type PurchaseSubscription } from "./purchase-validation";
 
 // The Nimbus Labs Paddle account is shared by several products (Retone,
 // NativeApply, ...). Paddle sends every product's events to every webhook
@@ -16,17 +19,8 @@ const LIFETIME_PRICE_ID = process.env.NEXT_PUBLIC_PADDLE_LIFETIME_PRICE_ID ?? ""
 
 // Grace period after a monthly billing period ends, so a renewal that
 // arrives a little late never locks a paying customer out.
-const MONTHLY_GRACE_SECONDS = 3 * 24 * 60 * 60;
-const MONTHLY_FALLBACK_SECONDS = 31 * 24 * 60 * 60;
 
-export type PaddleTransaction = {
-  id: string;
-  status: string;
-  customer_id?: string | null;
-  subscription_id?: string | null;
-  billing_period?: { starts_at?: string; ends_at?: string } | null;
-  items?: { price?: { id?: string } | null; price_id?: string }[];
-};
+export type PaddleTransaction = Purchase;
 
 export type Plan = "monthly" | "lifetime";
 
@@ -55,49 +49,25 @@ async function paddleGet<T>(path: string): Promise<T | null> {
 }
 
 export function fetchTransaction(transactionId: string): Promise<PaddleTransaction | null> {
-  if (!/^txn_[a-z0-9]+$/i.test(transactionId)) return Promise.resolve(null);
-  return paddleGet<PaddleTransaction>(`/transactions/${transactionId}`);
+  if (!/^txn_[a-z0-9]{26}$/.test(transactionId)) return Promise.resolve(null);
+  return paddleGet<PaddleTransaction>(`/transactions/${transactionId}?include=adjustments`);
 }
 
 export async function fetchCustomerEmail(customerId: string): Promise<string | null> {
+  if (!/^ctm_[a-z0-9]{26}$/.test(customerId)) return null;
   const customer = await paddleGet<{ email?: string }>(`/customers/${customerId}`);
   return customer?.email?.trim().toLowerCase() ?? null;
 }
 
 /** Which NativeApply plan this transaction bought, or null if it's another product. */
 export function planForTransaction(tx: PaddleTransaction): Plan | null {
-  const priceIds = (tx.items ?? []).map((item) => item.price?.id ?? item.price_id ?? "");
-  if (LIFETIME_PRICE_ID && priceIds.includes(LIFETIME_PRICE_ID)) return "lifetime";
-  if (MONTHLY_PRICE_ID && priceIds.includes(MONTHLY_PRICE_ID)) return "monthly";
-  return null;
+  return purchasePlan(tx, MONTHLY_PRICE_ID, LIFETIME_PRICE_ID);
 }
 
-type PaddleSubscription = {
-  status?: string;
-  current_billing_period?: { ends_at?: string } | null;
-};
-
-function isActive(sub: PaddleSubscription | null): boolean {
-  return sub?.status === "active" || sub?.status === "past_due" || sub?.status === "trialing";
-}
-
-function toExpiry(endsAtIso: string | undefined): number {
-  const endsAt = endsAtIso ? Date.parse(endsAtIso) : NaN;
-  const base = Number.isFinite(endsAt)
-    ? Math.floor(endsAt / 1000)
-    : Math.floor(Date.now() / 1000) + MONTHLY_FALLBACK_SECONDS;
-  return base + MONTHLY_GRACE_SECONDS;
-}
-
-async function monthlyExpiry(tx: PaddleTransaction): Promise<number> {
-  // The subscription's current period is the source of truth (it already
-  // reflects later renewals); the transaction's own period is the fallback.
-  let endsAtIso = tx.billing_period?.ends_at;
-  if (tx.subscription_id) {
-    const sub = await paddleGet<PaddleSubscription>(`/subscriptions/${tx.subscription_id}`);
-    if (isActive(sub) && sub?.current_billing_period?.ends_at) endsAtIso = sub.current_billing_period.ends_at;
-  }
-  return toExpiry(endsAtIso);
+async function monthlyExpiry(tx: PaddleTransaction): Promise<number | null> {
+  if (!tx.subscription_id || !/^sub_[a-z0-9]{26}$/.test(tx.subscription_id)) return null;
+  const sub = await paddleGet<PurchaseSubscription>(`/subscriptions/${tx.subscription_id}`);
+  return paidMonthlyExpiry(tx, sub, MONTHLY_PRICE_ID);
 }
 
 /**
@@ -108,16 +78,21 @@ async function monthlyExpiry(tx: PaddleTransaction): Promise<number> {
 export async function refreshMonthlyPro(email: string): Promise<boolean> {
   const subscriptionId = await getSubscriptionId(email);
   if (!subscriptionId) return false;
-  const sub = await paddleGet<PaddleSubscription>(`/subscriptions/${subscriptionId}`);
-  if (!sub) return false;
-  if (!isActive(sub) || !sub.current_billing_period?.ends_at) {
+  const sub = await paddleGet<PurchaseSubscription>(`/subscriptions/${subscriptionId}`);
+  if (!sub) throw new Error("Subscription lookup unavailable");
+  if (!["active", "past_due", "trialing"].includes(sub.status || "")) {
     await clearSubscriptionId(email);
     return false;
   }
-  const expiresAt = toExpiry(sub.current_billing_period.ends_at);
-  if (expiresAt <= Math.floor(Date.now() / 1000)) return false;
-  await grantMonthlyPro(email, subscriptionId, expiresAt);
-  return true;
+  const transactions = await paddleGet<PaddleTransaction[]>(`/transactions?subscription_id=${subscriptionId}&status=completed&order_by=created_at[DESC]&per_page=10`);
+  if (!transactions) throw new Error("Purchase lookup unavailable");
+  for (const candidate of transactions) {
+    const tx = await fetchTransaction(candidate.id);
+    if (!tx || tx.subscription_id !== subscriptionId || !planForTransaction(tx) || purchaseRefunded(tx)) continue;
+    if (await fetchCustomerEmail(tx.customer_id || "") !== email) continue;
+    if (await grantProForTransaction(tx) === email) return true;
+  }
+  return false;
 }
 
 /**
@@ -128,18 +103,18 @@ export async function grantProForTransaction(tx: PaddleTransaction): Promise<str
   if (tx.status !== "completed" && tx.status !== "paid") return null;
   const plan = planForTransaction(tx);
   if (!plan || !tx.customer_id) return null;
+  if (purchaseRefunded(tx)) return null;
 
   const email = await fetchCustomerEmail(tx.customer_id);
   if (!email) return null;
 
   if (plan === "lifetime") {
-    await grantLifetimePro(email, tx.id);
+    if (!await grantLifetimePro(email, tx.id)) return null;
   } else {
     const expiresAt = await monthlyExpiry(tx);
     // An old renewal must not grant access that has already run out.
-    if (expiresAt <= Math.floor(Date.now() / 1000)) return null;
-    await grantMonthlyPro(email, tx.id, expiresAt);
-    if (tx.subscription_id) await setSubscriptionId(email, tx.subscription_id);
+    if (!expiresAt || expiresAt <= Math.floor(Date.now() / 1000)) return null;
+    if (!await grantMonthlyPro(email, tx.id, expiresAt, tx.subscription_id || "")) return null;
   }
   return email;
 }
@@ -147,7 +122,54 @@ export async function grantProForTransaction(tx: PaddleTransaction): Promise<str
 /** Removes Pro that was granted by a transaction that was fully refunded or charged back. */
 export async function revokeProForRefund(transactionId: string): Promise<void> {
   const tx = await fetchTransaction(transactionId);
-  if (!tx || !planForTransaction(tx) || !tx.customer_id) return;
+  if (!tx) throw new Error("Transaction lookup unavailable");
+  if (!planForTransaction(tx) || !tx.customer_id) return;
   const email = await fetchCustomerEmail(tx.customer_id);
-  if (email) await revokeProForTransaction(email, tx.id);
+  if (!email) throw new Error("Customer lookup unavailable");
+  if (purchaseRefunded(tx)) await revokeProForTransaction(email, tx.id, tx.subscription_id || "");
+  else if (tx.adjustments?.some(a => a.action === "chargeback" && a.status === "reversed")) {
+    await clearReversedRefund(tx.id);
+    await grantProForTransaction(tx);
+  }
+}
+
+export async function reconcileSubscription(subscriptionId: string): Promise<void> {
+  if (!/^sub_[a-z0-9]{26}$/.test(subscriptionId)) return;
+  const sub = await paddleGet<PurchaseSubscription>(`/subscriptions/${subscriptionId}`);
+  if (!sub) throw new Error("Subscription lookup unavailable");
+  if (!sub.customer_id || !sub.items?.some(item => (item.price?.id ?? item.price_id) === MONTHLY_PRICE_ID)) return;
+  const email = await fetchCustomerEmail(sub.customer_id);
+  if (!email) throw new Error("Customer lookup unavailable");
+  if (["canceled", "paused"].includes(sub.status || "")) await revokeMonthlyForSubscription(email, subscriptionId);
+  else if (["cancel", "pause"].includes(sub.scheduled_change?.action || "")) {
+    const end = Date.parse(sub.scheduled_change?.effective_at || "");
+    if (Number.isFinite(end)) await capMonthlyForSubscription(email, subscriptionId, Math.floor(end / 1000));
+  }
+}
+
+/** Email proof can recover a purchase even when both initial activation and webhook were missed. */
+export async function restoreProByEmail(email: string): Promise<boolean> {
+  if (await refreshMonthlyPro(email)) return true;
+  const customers = await paddleGet<{ id: string; email: string }[]>(`/customers?email=${encodeURIComponent(email)}&status=active,archived&per_page=100`);
+  if (!customers) throw new Error("Customer lookup unavailable");
+  for (const customer of customers) {
+    if (customer.email.trim().toLowerCase() !== email || !/^ctm_[a-z0-9]{26}$/.test(customer.id)) continue;
+    let after = "";
+    for (let page = 0; page < 10; page++) {
+      const transactions = await paddleGet<PaddleTransaction[]>(`/transactions?customer_id=${customer.id}&status=completed&order_by=id[DESC]&per_page=30${after ? `&after=${after}` : ""}`);
+      if (!transactions) throw new Error("Purchase lookup unavailable");
+      for (const candidate of transactions) {
+        const plan = planForTransaction(candidate);
+        if (!plan || candidate.customer_id !== customer.id) continue;
+        if (plan === "monthly" && Date.parse(candidate.billing_period?.ends_at || "") + 3 * 86400000 <= Date.now()) continue;
+        const tx = await fetchTransaction(candidate.id);
+        if (tx && await grantProForTransaction(tx) === email) return true;
+      }
+      if (transactions.length < 30) break;
+      const cursor = transactions.at(-1)?.id;
+      if (!cursor || cursor === after || page === 9) throw new Error("Purchase lookup incomplete");
+      after = cursor;
+    }
+  }
+  return false;
 }

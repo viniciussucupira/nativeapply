@@ -20,11 +20,7 @@ export async function getProStatus(): Promise<{ pro: boolean; email: string | nu
   if (!pro) {
     // Monthly access lapsed in Redis: confirm with Paddle before locking out
     // a customer whose renewal simply hasn't been recorded yet.
-    try {
-      pro = await refreshMonthlyPro(email);
-    } catch (err) {
-      console.error("na:pro: failed to refresh monthly subscription", err);
-    }
+    pro = await refreshMonthlyPro(email);
   }
   return { pro, email };
 }

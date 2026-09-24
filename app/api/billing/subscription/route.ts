@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { BILLING_COOKIE, readBillingSession, listBillingSubscriptions, cancelBillingSubscription } from "@/lib/billing";
 import { sessionSecret } from "@/lib/pro-cookie";
-import { allowRecoveryAttempt } from "@/lib/redis";
+import { allowRecoveryAttempt, revokeMonthlyForSubscription, capMonthlyForSubscription } from "@/lib/redis";
 import { RECOVERY_ORIGIN } from "@/lib/recovery";
 
 const reply = (body: object, status = 200) => NextResponse.json(body, { status, headers: { "Cache-Control": "no-store" } });
@@ -24,6 +24,14 @@ export async function POST(req: NextRequest) {
     if (body?.confirmed !== true || typeof body.subscriptionId !== "string" || !/^sub_[a-z0-9]{26}$/.test(body.subscriptionId)) return reply({ error: "invalid_request" }, 400);
     if (!await allowRecoveryAttempt("billing-cancel", email, 20)) return reply({ error: "too_many_requests" }, 429);
     const subscription = await cancelBillingSubscription(email, body.subscriptionId, process.env.NEXT_PUBLIC_PADDLE_PRICE_ID || "");
+    // Payment cancellation is confirmed; a cache outage must not claim it failed.
+    try {
+      if (subscription.status === "canceled") await revokeMonthlyForSubscription(email, subscription.id);
+      else if (subscription.cancellationScheduled && subscription.endsAt) {
+        const end = Date.parse(subscription.endsAt);
+        if (Number.isFinite(end)) await capMonthlyForSubscription(email, subscription.id, Math.floor(end / 1000));
+      }
+    } catch { console.error("na:billing: access cache reconciliation pending"); }
     return reply({ subscription });
   } catch { return reply({ error: "cancellation_not_confirmed" }, 503); }
 }

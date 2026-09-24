@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { grantProForTransaction, revokeProForRefund, type PaddleTransaction } from "@/lib/paddle";
+import { grantProForTransaction, revokeProForRefund, fetchTransaction, reconcileSubscription, planForTransaction, type PaddleTransaction } from "@/lib/paddle";
 
 function verifySignature(rawBody: string, signatureHeader: string | null, secret: string): boolean {
   if (!signatureHeader) return false;
@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
   let event: { event_type?: string; data?: Record<string, unknown> };
   try {
     event = JSON.parse(rawBody);
+    if (!event || typeof event !== "object" || typeof event.event_type !== "string" || !event.data || typeof event.data !== "object") throw new Error("Invalid event");
   } catch {
     return NextResponse.json({ error: "invalid_body" }, { status: 400 });
   }
@@ -45,7 +46,13 @@ export async function POST(req: NextRequest) {
   try {
     if (event.event_type === "transaction.completed" && event.data) {
       // Purchases of other Nimbus Labs products are ignored inside.
-      await grantProForTransaction(event.data as unknown as PaddleTransaction);
+      const incoming = event.data as unknown as PaddleTransaction;
+      if (planForTransaction(incoming)) {
+        // Read current adjustments so a delayed completed event cannot restore a refund.
+        const current = await fetchTransaction(incoming.id);
+        if (!current) throw new Error("Transaction unavailable");
+        await grantProForTransaction(current);
+      }
     }
 
     if (
@@ -53,11 +60,12 @@ export async function POST(req: NextRequest) {
       event.data
     ) {
       const adj = event.data as { action?: string; status?: string; type?: string; transaction_id?: string };
-      const fullRefund = adj.action === "refund" && adj.status === "approved" && adj.type === "full";
-      const chargeback = adj.action === "chargeback";
-      if ((fullRefund || chargeback) && adj.transaction_id) {
+      if (["refund", "chargeback", "chargeback_reverse"].includes(adj.action || "") && adj.transaction_id) {
         await revokeProForRefund(adj.transaction_id);
       }
+    }
+    if (event.event_type?.startsWith("subscription.") && typeof event.data?.id === "string") {
+      await reconcileSubscription(event.data.id);
     }
   } catch (err) {
     console.error("na:webhook: failed to process event", event.event_type, err);

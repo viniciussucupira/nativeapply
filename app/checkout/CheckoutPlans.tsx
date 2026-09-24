@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { FREE_PLAN, MONTHLY_PLAN, type Plan } from "@/lib/plans";
 import { Button, ButtonLink, Container, Eyebrow, Section } from "@/components/ui/Primitives";
 import { IconCheck, IconLock, IconClock, IconShield, IconReceipt } from "@/components/ui/Icons";
-import { useProStatus } from "@/components/ui/useProStatus";
+import { useProStatus, refreshProStatus } from "@/components/ui/useProStatus";
 
 type PaddleCheckoutEvent = {
   name: string;
@@ -80,7 +80,7 @@ function PlanColumn({
 }
 
 export default function CheckoutPlans() {
-  const { isPro, ready: accessReady } = useProStatus();
+  const { isPro, ready: accessReady, unavailable: accessUnavailable } = useProStatus();
   const [paddleReady, setPaddleReady] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
   const [paymentReceived, setPaymentReceived] = useState(false);
@@ -136,13 +136,18 @@ export default function CheckoutPlans() {
       window.location.assign("/?upgraded=1");
     };
     try {
-    const response = await fetch("/api/paddle/confirm", {
+    let response: Response | undefined;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (attempt) await new Promise(resolve => window.setTimeout(resolve, attempt * 1500));
+      response = await fetch("/api/paddle/confirm", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ transactionId }),
-      signal: AbortSignal.timeout(30000),
+      signal: AbortSignal.timeout(8000),
     });
-    if (!response.ok) throw new Error("Activation pending");
+      if (response.ok || ![409, 503].includes(response.status)) break;
+    }
+    if (!response?.ok) throw new Error("Activation pending");
     done();
     } catch {
       setCheckoutError("Your payment completed, but activation could not be confirmed. Use Restore Pro below to retry. Do not pay again.");
@@ -153,7 +158,7 @@ export default function CheckoutPlans() {
   }
 
   function handleCheckout(priceId: string) {
-    if (!window.Paddle || !priceId || paymentReceived || isPro || !accessReady) return;
+    if (!window.Paddle || !priceId || paymentReceived || isPro || !accessReady || accessUnavailable) return;
     setCheckoutError("");
     try {
     window.Paddle.Checkout.open({
@@ -195,14 +200,15 @@ export default function CheckoutPlans() {
               <Button
                 size="lg"
                 onClick={() => handleCheckout(MONTHLY_PRICE_ID)}
-                disabled={!paddleReady || paymentReceived || !accessReady}
+                disabled={!paddleReady || paymentReceived || !accessReady || accessUnavailable}
                 className="w-full"
               >
-                {!accessReady ? "Checking access…" : confirming ? "Activating Pro…" : paymentReceived ? "Payment completed" : paddleReady ? "Subscribe monthly" : checkoutError ? "Checkout unavailable" : "Loading checkout…"}
+                {!accessReady ? "Checking access…" : accessUnavailable ? "Access check unavailable" : confirming ? "Activating Pro…" : paymentReceived ? "Payment completed" : paddleReady ? "Subscribe monthly" : checkoutError ? "Checkout unavailable" : "Loading checkout…"}
               </Button>
               <p className="mt-3 text-xs leading-5 text-muted">Renews monthly until canceled. Any applicable taxes and the final total are shown in secure checkout.</p>
               <p className="mt-3 text-sm text-muted">Already subscribed? <Link href="/restore" className="font-semibold text-brand-700 underline underline-offset-4">Restore your access</Link> before buying again.</p>
               </>}
+              {accessUnavailable && <div role="alert" className="mt-4 text-sm leading-6 text-flag"><p>We could not check whether you already have Pro. Please retry before paying to avoid a duplicate purchase.</p><button type="button" onClick={refreshProStatus} className="min-h-11 font-semibold underline">Check my access again</button></div>}
               {checkoutError && (
                 <div role="alert" className="mt-4 text-sm leading-6 text-flag">
                   <p>{checkoutError}</p>

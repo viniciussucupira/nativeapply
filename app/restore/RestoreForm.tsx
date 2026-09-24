@@ -80,7 +80,7 @@ export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: b
         body: JSON.stringify({ transactionId: id.trim() }),
         signal: AbortSignal.timeout(30000),
       });
-      setServiceUnavailable(res.status >= 500);
+      setServiceUnavailable(res.status >= 500 || res.status === 429 || res.status === 409);
       if (res.ok) refreshProStatus();
       setStatus(res.ok ? "done" : "failed");
     } catch {
@@ -90,12 +90,14 @@ export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: b
   }
 
   useEffect(() => {
-    // Support sends restore links as /restore?txn=txn_...
+    // Prefill legacy links, then remove the bearer code from browser history.
     const fromLink = new URLSearchParams(window.location.search).get("txn");
     if (fromLink) {
       Promise.resolve().then(() => {
         setTransactionId(fromLink);
-        restore(fromLink);
+        const url = new URL(window.location.href);
+        url.searchParams.delete("txn");
+        window.history.replaceState(null, "", url.pathname + url.search + url.hash);
       });
     }
   }, []);

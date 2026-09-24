@@ -44,6 +44,9 @@ export async function POST(req: NextRequest) {
 
   const text = typeof body?.text === "string" ? body.text.trim() : "";
   const contextValue = body?.context;
+  if (contextValue !== undefined && !CONTEXT_TYPES.some(c => c.value === contextValue)) {
+    return reply({ error: "invalid_context", message: "Choose a writing type from the list." }, { status: 400 });
+  }
   const contextDef = CONTEXT_TYPES.find((c) => c.value === contextValue) ?? CONTEXT_TYPES[0];
   const variant = ENGLISH_VARIANTS.find((item) => item.value === body?.englishVariant) ?? ENGLISH_VARIANTS[0];
   if (body?.englishVariant !== undefined && !ENGLISH_VARIANTS.some((item) => item.value === body?.englishVariant)) {
