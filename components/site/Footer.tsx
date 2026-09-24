@@ -80,7 +80,7 @@ export default function Footer() {
           <div className="max-w-xs">
             <Logo size={34} />
             <p className="mt-4 text-[0.9375rem] leading-6 text-muted">
-              Clear, natural English for your next application in the US, Canada, or Europe.
+              Clear, natural English for your next job application.
             </p>
             <p className="mt-5 text-sm text-muted-soft">
               A{" "}

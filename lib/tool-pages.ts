@@ -40,7 +40,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     headingLead: "Your experience, expressed in",
     headingAccent: "clear, confident English",
     intro:
-      "The first paragraph decides whether the rest gets read. Paste your draft and get it back in the warm, confident register a hiring manager in the US, UK, Canada, or Europe recognises immediately.",
+      "Make your experience easy to understand. Paste your draft and review a rewrite with warm, confident wording for your next application.",
     ctaLabel: "Rewrite my cover letter",
     placeholder:
       "Dear Hiring Manager,\n\nI am writing for apply to the position of Product Designer that I saw announced in your website. I have 5 years of experience in design of mobile applications…",
@@ -122,7 +122,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     headingLead: "Resume bullets that sound",
     headingAccent: "clear, concise, and professional",
     intro:
-      "Make your contribution easier to understand. Paste your resume or CV bullets, choose American or British English, and review a more concise version before applying in the US, Canada, or Europe.",
+      "Make your contribution easier to understand. Paste your resume or CV bullets, choose American or British English, and review a more concise version before applying.",
     ctaLabel: "Rewrite my resume bullets",
     placeholder:
       "• Was responsible for the management of a team of 8 developers\n• Participated in the implementation of a new CRM that reduced the response time in 40%\n• Made the monthly reports for the direction…",

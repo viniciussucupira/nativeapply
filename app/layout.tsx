@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "NativeApply — Sound Native in Your Job Application",
   description:
-    "AI tool that rewrites your cover letter, resume bullets, and recruiter messages so they sound like a native English speaker wrote them. $14/month, with a free daily rewrite to try it first. Built for non-native professionals applying for jobs in the US, UK, Canada, and Europe.",
+    "Rewrite your cover letter, resume bullets, and recruiter messages in clear, natural English. Try one rewrite a day free. Pro is $14/month.",
   openGraph: {
     title: "NativeApply — Sound Native in Your Job Application",
     description:

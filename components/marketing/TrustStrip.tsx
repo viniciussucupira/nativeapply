@@ -5,7 +5,7 @@ const ITEMS = [
   { Icon: IconShield, text: "Drafts not stored by NativeApply", tone: "bg-jade-50 text-jade" },
   { Icon: IconFacts, text: "Built-in number comparison", tone: "bg-brand-50 text-brand" },
   { Icon: IconLock, text: "No email or card to try it", tone: "bg-violet-50 text-violet" },
-  { Icon: IconGlobe, text: "For US, Canadian and European job searches", tone: "bg-amber-50 text-amber" },
+  { Icon: IconGlobe, text: "Clear English for your job search", tone: "bg-amber-50 text-amber" },
 ];
 
 export default function TrustStrip() {
