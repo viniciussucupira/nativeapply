@@ -25,7 +25,7 @@ export function BillingVerify() {
       setStatus(res.status === 400 ? "invalid" : "error");
     } catch { setStatus("error"); }
   }
-  return <div className="mx-auto max-w-xl px-5 py-16"><h1 className="text-3xl font-semibold text-navy">Manage your subscription</h1><p className="mt-4 leading-7 text-muted">Confirm your email to view or cancel your NativeApply subscription. This step does not cancel anything or charge you.</p>
+  return <div className="mx-auto max-w-xl px-5 py-16"><h1 className="text-3xl font-semibold text-navy">Manage your subscription</h1><p className="mt-4 leading-7 text-muted">Confirm your email to manage your NativeApply subscription or request a refund. This step does not cancel anything, request a refund, or charge you.</p>
     {status === "loading" ? <p role="status">Preparing your link…</p> : status === "invalid" ? <p role="alert" className="mt-4">This link expired or was already used. Request a new billing link.</p> : <Button className="mt-6" disabled={status === "working"} onClick={verify}>{status === "working" ? "Verifying…" : "Manage my subscription"}</Button>}
     {status === "error" && <p role="alert" className="mt-4">We could not verify your email. Try again shortly, or request a new link.</p>}
     <ButtonLink href="/subscription#cancel" variant="secondary" className="mt-6">Request a new billing link</ButtonLink></div>;
@@ -36,7 +36,6 @@ export default function BillingManager() {
   const [confirm, setConfirm] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [refunded, setRefunded] = useState(false);
   async function load() {
     setState("loading"); setError("");
     try {
@@ -67,7 +66,7 @@ export default function BillingManager() {
       <h3 className="font-semibold text-navy">NativeApply Pro · Monthly</h3>
       {subscriptions.length > 1 && <p className="mt-1 text-xs text-muted">Subscription ending {sub.id.slice(-6)}</p>}
       {sub.status === "past_due" && <p className="mt-3 text-sm text-flag">Your latest payment is overdue. The billing-period date below does not confirm paid access. Use the payment link in your Paddle email or contact billing support.</p>}
-      {sub.cancellationScheduled || sub.status === "canceled" ? <div role="status"><p className="mt-3 font-semibold text-navy">{sub.cancellationScheduled ? "Cancellation confirmed — renewal is off" : "Subscription canceled"}</p><p className="mt-2">{!refunded && sub.cancellationScheduled && date(sub.paidAccessEndsAt) ? `Your current access continues until ${date(sub.paidAccessEndsAt)}, unless the payment is refunded. ` : ""}This subscription will not renew.</p></div> : <>
+      {sub.cancellationScheduled || sub.status === "canceled" ? <div role="status"><p className="mt-3 font-semibold text-navy">{sub.cancellationScheduled ? "Cancellation confirmed — renewal is off" : "Subscription canceled"}</p><p className="mt-2">{sub.cancellationScheduled && date(sub.paidAccessEndsAt) ? `The paid billing period ends ${date(sub.paidAccessEndsAt)}. Refunded payments do not provide access. ` : ""}This subscription will not renew.</p></div> : <>
         <p className="mt-3">Status: {sub.status.replace("_", " ")}.{date(sub.endsAt) ? ` Current period ends ${date(sub.endsAt)}.` : ""}</p>
         {confirm === sub.id ? <div className="mt-4"><p>{sub.status === "paused" ? "Cancel this paused subscription immediately?" : `Stop future renewals?${date(sub.paidAccessEndsAt) ? ` You keep your current access until ${date(sub.paidAccessEndsAt)}.` : " This does not settle an outstanding payment or grant additional paid access."}`} Cancellation does not issue a refund.</p><div className="mt-4 flex flex-wrap gap-3"><Button disabled={busy} onClick={() => cancel(sub.id)}>{busy ? "Confirming cancellation…" : "Confirm cancellation"}</Button><Button disabled={busy} onClick={() => setConfirm(null)}>Keep subscription</Button></div></div> : sub.canCancel ? <Button className="mt-4" disabled={busy} onClick={() => setConfirm(sub.id)}>Cancel subscription</Button> : <p className="mt-3">Contact billing support below to manage this subscription.</p>}
       </>}
@@ -76,7 +75,7 @@ export default function BillingManager() {
     {state === "ready" && subscriptions.length > 0 && <details><summary className="cursor-pointer py-3 font-semibold">Use another purchase email</summary><EmailRequest purpose="billing" /></details>}
     <section id="refund" className="scroll-mt-24 border-t border-line pt-6">
       <h3 className="mb-3 text-xl font-semibold text-navy">Request a refund</h3>
-      {state === "ready" ? <RefundManager onApproved={() => setRefunded(true)} onSubmitted={() => { void load(); }} /> : <p className="text-sm text-muted">Verify your purchase email above to check your first payment and request a refund here.</p>}
+      {state === "ready" ? <RefundManager onSessionExpired={() => { setState("verify"); setConfirm(null); setError("Your secure session expired. Verify your purchase email again to continue. No new refund request was submitted by this action."); }} onSubmitted={() => { void load(); }} /> : <p className="text-sm text-muted">Verify your purchase email above to check your first payment and request a refund here.</p>}
     </section>
   </div>;
 }

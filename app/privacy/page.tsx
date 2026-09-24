@@ -79,6 +79,8 @@ const sections: LegalSection[] = [
         access. We also receive transaction and subscription identifiers and status information to verify
         purchases, renewals, cancellations, and refunds. Monthly access records expire after the paid period
         plus a short processing grace period. Some purchase references do not have an automatic expiry.
+        Refund-request records include a transaction identifier and request time and have no automatic expiry;
+        we retain them to prevent duplicate refund submissions and resolve payment disputes.
         If you purchase Pro, we keep the resulting records as needed to provide access, resolve
         payment issues, and meet applicable recordkeeping obligations. Deletion requests are reviewed against those needs.
       </p>

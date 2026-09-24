@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Primitives";
 import { refreshProStatus } from "@/components/ui/useProStatus";
 import type { RefundView } from "@/lib/refunds";
@@ -11,17 +11,19 @@ function amount(view: RefundView) {
     return format.format(Number(view.amount) / 10 ** (format.resolvedOptions().maximumFractionDigits ?? 2));
   } catch { return "your first payment"; }
 }
-export default function RefundManager({ onApproved, onSubmitted }: { onApproved: () => void; onSubmitted: () => void }) {
+export default function RefundManager({ onSessionExpired, onSubmitted }: { onSessionExpired: () => void; onSubmitted: () => void }) {
   const [view, setView] = useState<RefundView | null>(null);
   const [loading, setLoading] = useState(true), [busy, setBusy] = useState(false);
   const [confirm, setConfirm] = useState(false), [error, setError] = useState("");
+  const submitting = useRef(false);
   async function load() {
-    setLoading(true); setError("");
+    setLoading(true); setError(""); setConfirm(false); setView(null);
     try {
       const response = await fetch("/api/billing/refund", { cache: "no-store", signal: AbortSignal.timeout(45000) });
+      if (response.status === 401) { onSessionExpired(); return; }
       if (!response.ok) throw Error();
       const data = await response.json(); setView(data.refund);
-      if (data.refund.state === "approved") { onApproved(); refreshProStatus(); }
+      if (data.refund.state === "approved") refreshProStatus();
     } catch { setError("We could not check your refund status. Refresh below, or request help directly from Paddle. You do not need to email NativeApply."); }
     finally { setLoading(false); }
   }
@@ -29,16 +31,18 @@ export default function RefundManager({ onApproved, onSubmitted }: { onApproved:
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { void Promise.resolve().then(load); }, []);
   async function submit() {
-    if (!view?.transactionId || busy) return;
+    if (!view?.transactionId || submitting.current) return;
+    submitting.current = true;
     setBusy(true); setError("");
     try {
       const response = await fetch("/api/billing/refund", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ transactionId: view.transactionId, confirmRefundAndCancellation: true }), signal: AbortSignal.timeout(60000) });
+      if (response.status === 401) { onSessionExpired(); return; }
       if (!response.ok) throw Error();
       const data = await response.json(); setView(data.refund); setConfirm(false);
-      if (data.refund.state === "approved") { onApproved(); refreshProStatus(); }
+      if (data.refund.state === "approved") refreshProStatus();
       onSubmitted();
-    } catch { setConfirm(false); setError("We could not confirm the refund request. Refresh the status before trying again. If it remains unclear, use Paddle payment help below. Do not start another purchase."); }
-    finally { setBusy(false); }
+    } catch { setConfirm(false); setView(null); setError("We could not confirm the refund request. Refresh the status before trying again. If it remains unclear, use Paddle payment help below. Do not start another purchase."); }
+    finally { submitting.current = false; setBusy(false); }
   }
   return <div className="space-y-3">
     <p className="text-sm leading-6 text-muted">Request your first-payment refund within 14 days, without sending us an email. We submit eligible requests directly to Paddle. Paddle may review the request before approving it.</p>
@@ -46,6 +50,7 @@ export default function RefundManager({ onApproved, onSubmitted }: { onApproved:
     {error && <p role="alert" className="text-flag">{error}</p>}
     {!loading && view && <>
       {view.transactionId && <p className="text-sm">First payment: <strong>{amount(view)}</strong>{view.paidAt ? ` · ${new Date(view.paidAt).toLocaleDateString("en-US", { timeZone: "UTC" })}` : ""}</p>}
+      {view.state === "eligible" && view.deadline && <p className="text-sm text-muted">Request by {new Date(view.deadline).toLocaleString("en-US", { timeZone: "UTC", dateStyle: "long", timeStyle: "short" })} UTC.</p>}
       {view.state === "eligible" && (confirm ? <div className="rounded-xl border border-line bg-white p-4">
         <p>Request a full refund of {amount(view)} and stop future renewals for this subscription? Once approved, the Pro access from this payment ends. The money returns to the original payment method; the timing depends on your payment provider.</p>
         <div className="mt-4 flex flex-wrap gap-3"><Button disabled={busy} onClick={submit}>{busy ? "Submitting request…" : "Confirm refund and stop renewal"}</Button><Button disabled={busy} variant="secondary" onClick={() => setConfirm(false)}>Keep my purchase</Button></div>
