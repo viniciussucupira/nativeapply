@@ -103,11 +103,14 @@ export async function incrementDailyUsage(browserId: string, reservation: string
 }
 
 /** Roll back only this failed request's reservation, including across midnight. */
-export async function refundDailyUsage(browserId: string, reservation: string, day: string): Promise<void> {
+export async function refundDailyUsage(browserId: string, reservation: string, day: string): Promise<boolean> {
   const client = getRedis();
-  if (!client) return;
-  try { await client.eval<[string], number>(REFUND_FREE_SCRIPT, [usageKey(browserId, day)], [reservation]); }
-  catch { console.error("na:free:refund-unavailable"); }
+  if (!client) return process.env.NODE_ENV !== "production";
+  try {
+    await client.eval<[string], number>(REFUND_FREE_SCRIPT, [usageKey(browserId, day)], [reservation]);
+    return true;
+  }
+  catch { console.error("na:free:refund-unavailable"); return false; }
 }
 
 // ---------------------------------------------------------------------------

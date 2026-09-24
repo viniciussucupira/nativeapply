@@ -142,9 +142,12 @@ Rules:
     // Do not log provider error objects: they may contain submitted text.
     console.error("rewrite failed", err instanceof Anthropic.APIError ? err.status : "generation_error");
     // The visitor didn't get a rewrite, so don't spend their free one.
-    if (!pro) await refundDailyUsage(browser.id, reservation, usageDay);
+    const allowanceRestored = pro || await refundDailyUsage(browser.id, reservation, usageDay);
     return reply(
-      { error: "server_error", message: "Something went wrong. Please try again." },
+      { error: "server_error", message: "We could not finish your rewrite. Your draft is still here. " +
+        (pro ? "Please try again shortly." : allowanceRestored
+          ? "This attempt did not use your free rewrite. Please try again shortly."
+          : "We could not restore your free allowance right now. Please contact support if your next attempt is blocked.") },
       { status: 500 }
     );
   }
