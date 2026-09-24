@@ -14,6 +14,14 @@ export const HOME_FAQ: FaqItem[] = [
     a: "No. Your free daily rewrite requires no email, password, or card. If you buy Pro, access is remembered in your browser. Use Restore Pro with your Paddle transaction ID to activate another browser, or contact support from your purchase email if you cannot find the receipt.",
   },
   {
+    q: "How do I cancel my subscription?",
+    a: "Open your Paddle receipt and follow its subscription-management link. Select NativeApply, complete the cancellation steps, and keep the confirmation. You keep access until the end of the paid period. The Access & billing page and the Cancel subscription link in our footer show these steps and support options. You do not need to restore Pro first.",
+  },
+  {
+    q: "What is Restore Pro? What if I forgot my password?",
+    a: "NativeApply has no password or separate login. Restore Pro reconnects a purchase you already made to this browser using the transaction ID from your Paddle receipt. It does not charge you, renew the plan, or cancel it. If you cannot find the ID, contact support from your purchase email; do not subscribe again just to recover access.",
+  },
+  {
     q: "What does it cost?",
     a: "NativeApply Pro is US$14 a month, with unlimited rewrites. Cancel using the link in your Paddle receipt and keep access until the end of your paid month. Try one free rewrite a day without an email or card. The free limit is shared by devices on the same network and resets at midnight UTC.",
   },

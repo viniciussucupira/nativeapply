@@ -6,6 +6,7 @@ import { SUPPORT_EMAIL } from "@/lib/constants";
 import { Button, ButtonLink, Container, Eyebrow, Section } from "@/components/ui/Primitives";
 import { IconAlert, IconCheck, IconLock, IconReceipt } from "@/components/ui/Icons";
 import { refreshProStatus } from "@/components/ui/useProStatus";
+import { parseRestoreInput } from "@/lib/restore-input";
 
 type Status = "idle" | "working" | "done" | "failed";
 
@@ -16,10 +17,10 @@ const STEPS = [
   },
   {
     title: "Copy the transaction ID",
-    body: "Near the bottom of the receipt, under the amount. It always starts with txn_ followed by a long code.",
+    body: "Look for the transaction ID in your receipt or purchase details. It starts with txn_. If you cannot find it, ask support below; you do not need to buy again.",
   },
   {
-    title: "Paste it below",
+    title: "Paste it into the form",
     body: "We check it against your purchase and switch Pro on in this browser. Nothing else is asked of you.",
   },
 ];
@@ -100,9 +101,9 @@ export default function RestoreForm() {
       setFieldError("Paste the transaction ID from your receipt.");
       return;
     }
-    const normalized = raw.startsWith("txn_") ? raw : `txn_${raw.replace(/^txn_?/, "")}`;
-    if (!/^txn_[a-z0-9]{26}$/i.test(normalized)) {
-      setFieldError("Copy the complete transaction ID: txn_ followed by 26 letters and numbers.");
+    const normalized = parseRestoreInput(raw);
+    if (!normalized) {
+      setFieldError("Paste one complete code starting with txn_, or your restore link. Cannot find it? Use the recovery help below.");
       return;
     }
     setTransactionId(normalized);
@@ -119,14 +120,16 @@ export default function RestoreForm() {
         <Container size="wide" className="py-14 sm:py-20">
           <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
             <div className="flex flex-col gap-5">
-              <Eyebrow>Restore Pro</Eyebrow>
+              <Eyebrow>Restore Pro access</Eyebrow>
               <h1 className="text-[2rem] font-semibold leading-[1.1] tracking-[-0.03em] text-navy sm:text-[2.5rem]">
-                Turn Pro back on, on <span className="na-accent-text">this browser</span>
+                Already paid? <span className="na-accent-text">Get your Pro access back.</span>
               </h1>
               <p className="max-w-xl text-[1.0625rem] leading-7 text-muted">
-                Your purchase is remembered in the browser you paid from. New laptop, new phone, or cleared cookies?
-                One transaction ID brings it back.
+                NativeApply has no login or password. Pro is remembered in the browser you paid from.
+                Use this page after switching devices or clearing cookies to reconnect your existing purchase, without another charge.
               </p>
+
+              <Link href="#receipt-help" className="inline-flex min-h-11 items-center font-semibold text-brand-700 underline underline-offset-4">No purchase code? Get recovery help</Link>
 
               {status === "done" ? (
                 <div className="mt-2 rounded-2xl border border-success/25 bg-success-50 p-6" role="status">
@@ -144,7 +147,7 @@ export default function RestoreForm() {
               ) : (
                 <form onSubmit={handleSubmit} className="mt-2 flex flex-col gap-3">
                   <label htmlFor="txn" className="text-sm font-semibold text-navy">
-                    Transaction ID from your Paddle receipt
+                    Purchase code or restore link
                   </label>
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <input
@@ -152,7 +155,7 @@ export default function RestoreForm() {
                       value={transactionId}
                       disabled={status === "working"}
                       onChange={(e) => { setTransactionId(e.target.value); setFieldError(""); if (status === "failed") setStatus("idle"); }}
-                      placeholder="txn_01hq8k3m…"
+                      placeholder="Paste your txn_ code or restore link"
                       autoComplete="off"
                       spellCheck={false}
                       aria-describedby={fieldError ? "txn-error txn-help" : "txn-help"}
@@ -160,12 +163,11 @@ export default function RestoreForm() {
                       className="h-12 w-full rounded-full border border-line-strong bg-white px-5 font-mono text-[0.9375rem] text-ink placeholder:font-sans placeholder:text-muted-soft focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15 sm:flex-1"
                     />
                     <Button type="submit" size="lg" disabled={status === "working"} className="sm:w-auto">
-                      {status === "working" ? "Checking…" : "Restore Pro"}
+                      {status === "working" ? "Checking…" : "Restore Pro access"}
                     </Button>
                   </div>
                   <p id="txn-help" className="text-[0.8125rem] text-muted">
-                    It always begins with <code className="rounded bg-ivory px-1 py-0.5 font-mono">txn_</code>. Paste
-                    the whole code, including that prefix.
+                    The purchase code is called a transaction ID and begins with <code className="rounded bg-ivory px-1 py-0.5 font-mono">txn_</code>. You can also paste a restore link sent by support.
                   </p>
 
                   {fieldError && (
@@ -200,6 +202,7 @@ export default function RestoreForm() {
                 Keep your transaction ID and restore link private: they unlock your subscription.
                 Restoring access does not charge you again or reveal your card details.
               </p>
+              <p className="text-sm leading-6 text-muted">This does not renew or cancel your subscription. To stop future payments, <Link href="/subscription#cancel" className="font-semibold text-brand-700 underline">see how to cancel</Link>.</p>
               {status !== "done" && (
                 <p className="text-sm leading-6 text-muted">
                   Cannot find your receipt?{" "}
@@ -231,21 +234,21 @@ export default function RestoreForm() {
         </Container>
       </Section>
 
-      <Section tone="ivory">
+      <Section tone="ivory" id="receipt-help" className="scroll-mt-24">
         <Container size="wide" className="py-12 sm:py-14">
           <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 text-center">
-            <h2 className="text-[1.0625rem] font-semibold text-navy">Cannot find the receipt?</h2>
+            <h2 className="text-[1.0625rem] font-semibold text-navy">Recover access without a purchase code</h2>
             <p className="text-[0.9375rem] leading-6 text-muted">
-              Write to us from the email address you paid with and we will send you a restore link directly. Have not
-              bought Pro yet? The{" "}
+              Email us from the address you used to pay. Our support team will verify the purchase and help restore access. This is a manual support request, not an automatic sign-in email. Do not buy again to recover a purchase. Have not bought Pro yet? The{" "}
               <Link href="/checkout" className="font-medium text-brand-700 underline underline-offset-4">
                 plans are here
               </Link>
               .
             </p>
             <ButtonLink href={mailto} variant="secondary" className="mt-2">
-              Email {SUPPORT_EMAIL}
+              Get help recovering my purchase
             </ButtonLink>
+            <p className="text-sm leading-6 text-muted">No email app? Write to {SUPPORT_EMAIL}. If you no longer have access to the purchase email, tell us so we can help verify ownership.</p>
           </div>
         </Container>
       </Section>

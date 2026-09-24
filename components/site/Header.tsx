@@ -11,7 +11,7 @@ const NAV = [
   { href: "/#how-it-works", label: "How it works" },
   { href: "/#examples", label: "Examples" },
   { href: "/#use-cases", label: "Use cases" },
-  { href: "/checkout", label: "Pricing" },
+  { href: "/checkout", label: "Pricing & subscribe" },
 ];
 
 export default function Header() {
@@ -53,7 +53,7 @@ export default function Header() {
         <div className="flex h-16 items-center justify-between gap-4 sm:h-[4.5rem]">
           <Logo size={32} />
 
-          <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
+          <nav aria-label="Main" className="hidden items-center gap-1 xl:flex">
             {NAV.map((item) => (
               <Link
                 key={item.href}
@@ -65,7 +65,8 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="hidden items-center gap-2.5 lg:flex">
+          <div className="hidden items-center gap-2.5 xl:flex">
+            <Link href="/subscription" className="rounded-full px-3 py-2 text-sm font-medium text-muted hover:text-navy">Access & billing</Link>
             {isPro ? (
               <span className="inline-flex items-center gap-1.5 rounded-full border border-success/25 bg-success-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-success">
                 <IconCheck className="h-3.5 w-3.5" />
@@ -73,12 +74,6 @@ export default function Header() {
               </span>
             ) : (
               <>
-                <Link
-                  href="/restore"
-                  className="rounded-full px-3.5 py-2 text-[0.9375rem] font-medium text-muted transition-colors hover:text-navy"
-                >
-                  Restore Pro
-                </Link>
                 <ButtonLink href="/#tool" variant="primary">
                   Rewrite my text
                 </ButtonLink>
@@ -91,7 +86,7 @@ export default function Header() {
             onClick={() => setOpen(true)}
             aria-expanded={open}
             aria-controls="na-mobile-menu"
-            className="grid h-11 w-11 place-items-center rounded-xl border border-line text-navy lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-xl border border-line text-navy xl:hidden"
           >
             <span className="sr-only">Open menu</span>
             <IconMenu className="h-5 w-5" />
@@ -102,7 +97,7 @@ export default function Header() {
       {open && (
         <div
           id="na-mobile-menu"
-          className="fixed inset-0 z-50 flex flex-col bg-white lg:hidden"
+          className="fixed inset-0 z-50 flex flex-col bg-white xl:hidden"
           style={{ paddingTop: "env(safe-area-inset-top)", paddingBottom: "env(safe-area-inset-bottom)" }}
         >
           <div className="flex h-16 items-center justify-between px-5">
@@ -129,11 +124,11 @@ export default function Header() {
               </Link>
             ))}
             <Link
-              href="/restore"
+              href="/subscription"
               onClick={() => setOpen(false)}
               className="flex min-h-[3.25rem] items-center rounded-xl px-3 text-lg font-medium text-navy hover:bg-brand-50"
             >
-              Restore Pro
+              Access & billing
             </Link>
           </nav>
 

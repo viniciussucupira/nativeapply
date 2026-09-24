@@ -13,7 +13,9 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
       { href: "/#how-it-works", label: "How it works" },
       { href: "/#examples", label: "Before and after" },
       { href: "/checkout", label: "Pricing" },
-      { href: "/restore", label: "Restore Pro" },
+      { href: "/restore", label: "Restore Pro access" },
+      { href: "/subscription", label: "Access & billing" },
+      { href: "/subscription#cancel", label: "Cancel subscription" },
     ],
   },
   {
