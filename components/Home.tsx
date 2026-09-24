@@ -225,7 +225,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="Try it on your own words"
             title="Paste your draft. Read the difference."
-            description="One rewrite a day is free, with just your email. Unlimited rewrites are $14 a month or $49 once."
+            description="One rewrite a day is free, with just your email. Unlimited rewrites are $14 a month, cancel anytime."
           />
           <div className="mt-9">
             <Rewriter />

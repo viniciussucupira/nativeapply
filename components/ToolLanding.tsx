@@ -73,7 +73,7 @@ export default function ToolLanding({ page }: { page: ToolPage }) {
               </ButtonLink>
             </div>
             <p className="text-[0.875rem] text-muted">
-              One free rewrite a day with just your email. Unlimited is $14/month or $49 once.
+              One free rewrite a day with just your email. Unlimited is $14/month, cancel anytime.
             </p>
           </div>
         </Container>
