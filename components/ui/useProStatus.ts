@@ -1,25 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createAccessCache } from "@/lib/access-cache";
 
-type ProStatus = { pro: boolean; needsRestore: boolean; unavailable?: boolean };
-let cached: Promise<ProStatus> | null = null;
+const changed = "nativeapply:access-changed";
+const cache = createAccessCache(async () => {
+  const response = await fetch("/api/me", { signal: AbortSignal.timeout(15000), cache: "no-store" });
+  if (!response.ok) throw new Error("Access unavailable");
+  const data = await response.json();
+  return { pro: data?.pro === true, needsRestore: data?.needsRestore === true, unavailable: data?.unavailable === true };
+});
+let lastForegroundRefresh = 0;
+let lastStorageValue: string | null = null;
 
 export function refreshProStatus() {
-  cached = null;
-  window.dispatchEvent(new Event("nativeapply:access-changed"));
+  cache.invalidate();
+  window.dispatchEvent(new Event(changed));
+  try { window.localStorage.setItem(changed, String(Date.now())); } catch { /* Storage can be disabled. */ }
 }
 
-/** One shared /api/me request per page load, reused by every component. */
-export function fetchProStatus(): Promise<ProStatus> {
-  if (!cached) {
-    cached = fetch("/api/me", { signal: AbortSignal.timeout(15000), cache: "no-store" })
-      .then((r) => { if (!r.ok) throw new Error("Access unavailable"); return r.json(); })
-      .then((data) => ({ pro: data?.pro === true, needsRestore: data?.needsRestore === true, unavailable: data?.unavailable === true }))
-      .catch(() => ({ pro: false, needsRestore: false, unavailable: true }));
-  }
-  return cached;
-}
+export const fetchProStatus = () => cache.get();
 
 export function useProStatus() {
   const [isPro, setIsPro] = useState(false);
@@ -29,18 +29,42 @@ export function useProStatus() {
 
   useEffect(() => {
     let cancelled = false;
-    const update = () => { fetchProStatus().then((value) => {
-      if (cancelled) return;
+    let version = 0;
+    const update = () => {
+      const requestVersion = ++version;
+      setReady(false);
+      fetchProStatus().then((value) => {
+      if (cancelled || requestVersion !== version) return;
       setIsPro(value.pro);
       setNeedsRestore(value.needsRestore);
       setUnavailable(Boolean(value.unavailable));
       setReady(true);
     }); };
+    const foreground = () => {
+      if (document.visibilityState !== "visible" || Date.now() - lastForegroundRefresh < 1000) return;
+      lastForegroundRefresh = Date.now();
+      cache.invalidate();
+      window.dispatchEvent(new Event(changed));
+    };
+    const storage = (event: StorageEvent) => {
+      if (event.key !== changed) return;
+      if (lastStorageValue !== event.newValue) {
+        lastStorageValue = event.newValue;
+        cache.invalidate();
+      }
+      update();
+    };
     update();
-    window.addEventListener("nativeapply:access-changed", update);
+    window.addEventListener(changed, update);
+    window.addEventListener("focus", foreground);
+    document.addEventListener("visibilitychange", foreground);
+    window.addEventListener("storage", storage);
     return () => {
       cancelled = true;
-      window.removeEventListener("nativeapply:access-changed", update);
+      window.removeEventListener(changed, update);
+      window.removeEventListener("focus", foreground);
+      document.removeEventListener("visibilitychange", foreground);
+      window.removeEventListener("storage", storage);
     };
   }, []);
 

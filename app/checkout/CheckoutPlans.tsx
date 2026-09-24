@@ -7,6 +7,7 @@ import { FREE_PLAN, MONTHLY_PLAN, type Plan } from "@/lib/plans";
 import { Button, ButtonLink, Container, Eyebrow, Section } from "@/components/ui/Primitives";
 import { IconCheck, IconLock, IconClock, IconShield, IconReceipt } from "@/components/ui/Icons";
 import { useProStatus, refreshProStatus } from "@/components/ui/useProStatus";
+import { activatePurchase } from "@/lib/payment-activation";
 
 type PaddleCheckoutEvent = {
   name: string;
@@ -136,18 +137,7 @@ export default function CheckoutPlans() {
       window.location.assign("/?upgraded=1");
     };
     try {
-    let response: Response | undefined;
-    for (let attempt = 0; attempt < 3; attempt++) {
-      if (attempt) await new Promise(resolve => window.setTimeout(resolve, attempt * 1500));
-      response = await fetch("/api/paddle/confirm", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ transactionId }),
-      signal: AbortSignal.timeout(8000),
-    });
-      if (response.ok || ![409, 503].includes(response.status)) break;
-    }
-    if (!response?.ok) throw new Error("Activation pending");
+    if (!await activatePurchase(transactionId)) throw new Error("Activation pending");
     done();
     } catch {
       setCheckoutError("Your payment completed, but activation could not be confirmed. Use Restore Pro below to retry. Do not pay again.");

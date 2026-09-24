@@ -184,13 +184,11 @@ export default function Rewriter({
           <Link href="/restore" className="font-semibold underline underline-offset-4">Restore Pro</Link>
         </div>
       )}
-      {justUpgraded && (
+      {justUpgraded && isPro && (
         <div className="mb-5 flex items-start gap-3 rounded-2xl border border-success/25 bg-success-50 p-4 text-[0.9375rem] text-navy">
           <IconCheck className="mt-0.5 h-5 w-5 shrink-0 text-success" />
           <p>
-            {isPro
-              ? "Payment received — Pro is active on this browser. Your rewrites are unlimited from now on."
-              : "Payment received. If Pro is not active yet, refresh this page in a minute."}
+            Pro is active in this browser. Your rewrites are unlimited.
           </p>
         </div>
       )}

@@ -1,27 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
+import { verifyPaddleSignature } from "@/lib/webhook-signature";
 import { grantProForTransaction, revokeProForRefund, fetchTransaction, reconcileSubscription, planForTransaction, type PaddleTransaction } from "@/lib/paddle";
-
-function verifySignature(rawBody: string, signatureHeader: string | null, secret: string): boolean {
-  if (!signatureHeader) return false;
-  const parts: Record<string, string> = {};
-  for (const part of signatureHeader.split(";")) {
-    const [k, v] = part.split("=");
-    if (k && v) parts[k.trim()] = v.trim();
-  }
-  const { ts, h1 } = parts;
-  if (!ts || !h1) return false;
-
-  // Reject replays of old events (Paddle recommends a 5-second tolerance;
-  // 5 minutes leaves room for clock skew and retries).
-  const ageSeconds = Math.abs(Date.now() / 1000 - Number(ts));
-  if (!Number.isFinite(ageSeconds) || ageSeconds > 300) return false;
-
-  const expected = crypto.createHmac("sha256", secret).update(`${ts}:${rawBody}`).digest("hex");
-  const a = Buffer.from(expected);
-  const b = Buffer.from(h1);
-  return a.length === b.length && crypto.timingSafeEqual(a, b);
-}
 
 export async function POST(req: NextRequest) {
   const secret = process.env.PADDLE_WEBHOOK_SECRET;
@@ -31,7 +10,7 @@ export async function POST(req: NextRequest) {
     // Fail closed: without a secret anyone could POST a fake purchase.
     return NextResponse.json({ error: "server_misconfigured" }, { status: 500 });
   }
-  if (!verifySignature(rawBody, req.headers.get("paddle-signature"), secret)) {
+  if (!verifyPaddleSignature(rawBody, req.headers.get("paddle-signature"), secret)) {
     return NextResponse.json({ error: "invalid_signature" }, { status: 401 });
   }
 

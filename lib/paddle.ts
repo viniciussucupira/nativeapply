@@ -17,9 +17,6 @@ import { purchasePlan, purchaseRefunded, paidMonthlyExpiry, type Purchase, type 
 const MONTHLY_PRICE_ID = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID ?? "";
 const LIFETIME_PRICE_ID = process.env.NEXT_PUBLIC_PADDLE_LIFETIME_PRICE_ID ?? "";
 
-// Grace period after a monthly billing period ends, so a renewal that
-// arrives a little late never locks a paying customer out.
-
 export type PaddleTransaction = Purchase;
 
 export type Plan = "monthly" | "lifetime";
@@ -67,7 +64,28 @@ export function planForTransaction(tx: PaddleTransaction): Plan | null {
 async function monthlyExpiry(tx: PaddleTransaction): Promise<number | null> {
   if (!tx.subscription_id || !/^sub_[a-z0-9]{26}$/.test(tx.subscription_id)) return null;
   const sub = await paddleGet<PurchaseSubscription>(`/subscriptions/${tx.subscription_id}`);
+  if (!sub) throw new Error("Subscription lookup unavailable");
   return paidMonthlyExpiry(tx, sub, MONTHLY_PRICE_ID);
+}
+
+/** Bounded pagination: never report "no purchase" from a truncated history. */
+async function* completedTransactions(filter: string) {
+  let after = "";
+  for (let page = 0; page < 10; page++) {
+    const batch = await paddleGet<PaddleTransaction[]>(`/transactions?${filter}&status=completed&order_by=id[DESC]&per_page=30${after ? `&after=${after}` : ""}`);
+    if (!Array.isArray(batch)) throw new Error("Purchase lookup unavailable");
+    for (const tx of batch) yield tx;
+    if (batch.length < 30) return;
+    const cursor = batch.at(-1)?.id;
+    if (!cursor || !/^txn_[a-z0-9]{26}$/.test(cursor) || cursor === after) throw new Error("Purchase lookup incomplete");
+    after = cursor;
+  }
+  throw new Error("Purchase lookup incomplete");
+}
+
+function mayHaveAccess(tx: PaddleTransaction) {
+  const plan = planForTransaction(tx);
+  return plan === "lifetime" || (plan === "monthly" && Date.parse(tx.billing_period?.ends_at || "") + 3 * 86400000 > Date.now());
 }
 
 /**
@@ -84,9 +102,8 @@ export async function refreshMonthlyPro(email: string): Promise<boolean> {
     await clearSubscriptionId(email);
     return false;
   }
-  const transactions = await paddleGet<PaddleTransaction[]>(`/transactions?subscription_id=${subscriptionId}&status=completed&order_by=created_at[DESC]&per_page=10`);
-  if (!transactions) throw new Error("Purchase lookup unavailable");
-  for (const candidate of transactions) {
+  for await (const candidate of completedTransactions(`subscription_id=${subscriptionId}`)) {
+    if (!mayHaveAccess(candidate)) continue;
     const tx = await fetchTransaction(candidate.id);
     if (!tx || tx.subscription_id !== subscriptionId || !planForTransaction(tx) || purchaseRefunded(tx)) continue;
     if (await fetchCustomerEmail(tx.customer_id || "") !== email) continue;
@@ -154,21 +171,10 @@ export async function restoreProByEmail(email: string): Promise<boolean> {
   if (!customers) throw new Error("Customer lookup unavailable");
   for (const customer of customers) {
     if (customer.email.trim().toLowerCase() !== email || !/^ctm_[a-z0-9]{26}$/.test(customer.id)) continue;
-    let after = "";
-    for (let page = 0; page < 10; page++) {
-      const transactions = await paddleGet<PaddleTransaction[]>(`/transactions?customer_id=${customer.id}&status=completed&order_by=id[DESC]&per_page=30${after ? `&after=${after}` : ""}`);
-      if (!transactions) throw new Error("Purchase lookup unavailable");
-      for (const candidate of transactions) {
-        const plan = planForTransaction(candidate);
-        if (!plan || candidate.customer_id !== customer.id) continue;
-        if (plan === "monthly" && Date.parse(candidate.billing_period?.ends_at || "") + 3 * 86400000 <= Date.now()) continue;
+    for await (const candidate of completedTransactions(`customer_id=${customer.id}`)) {
+        if (!mayHaveAccess(candidate) || candidate.customer_id !== customer.id) continue;
         const tx = await fetchTransaction(candidate.id);
         if (tx && await grantProForTransaction(tx) === email) return true;
-      }
-      if (transactions.length < 30) break;
-      const cursor = transactions.at(-1)?.id;
-      if (!cursor || cursor === after || page === 9) throw new Error("Purchase lookup incomplete");
-      after = cursor;
     }
   }
   return false;

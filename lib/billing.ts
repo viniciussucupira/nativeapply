@@ -31,7 +31,7 @@ type Subscription = {
   scheduled_change?: { action: string; effective_at?: string } | null;
   items?: { price?: { id?: string } }[];
 };
-export type BillingSummary = { id: string; status: string; endsAt: string | null; cancellationScheduled: boolean; canCancel: boolean };
+export type BillingSummary = { id: string; status: string; endsAt: string | null; paidAccessEndsAt: string | null; cancellationScheduled: boolean; canCancel: boolean };
 type PaddleResult<T> = { data: T; meta?: { pagination?: { has_more?: boolean } } };
 export type BillingTransport = <T>(path: string, body?: object) => Promise<PaddleResult<T>>;
 
@@ -40,7 +40,8 @@ export function isNativeSubscription(sub: Subscription, price: string): boolean 
 }
 export function billingSummary(sub: Subscription): BillingSummary {
   const scheduled = sub.scheduled_change?.action === "cancel";
-  return { id: sub.id, status: sub.status, endsAt: (scheduled ? sub.scheduled_change?.effective_at : sub.current_billing_period?.ends_at) || null,
+  const endsAt = (scheduled ? sub.scheduled_change?.effective_at : sub.current_billing_period?.ends_at) || null;
+  return { id: sub.id, status: sub.status, endsAt, paidAccessEndsAt: sub.status === "active" ? endsAt : null,
     cancellationScheduled: scheduled, canCancel: !scheduled && ["active", "trialing", "past_due", "paused"].includes(sub.status) };
 }
 
