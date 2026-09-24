@@ -38,8 +38,8 @@ export default function SubscriptionPage() {
           </article>
         </div>
         <section id="cancel" className="mt-10 scroll-mt-24 rounded-2xl border border-line bg-ivory p-6 sm:p-8">
-          <h2 className="text-2xl font-semibold text-navy">Cancel your subscription</h2>
-          <p className="mt-3 text-muted">Verify your email, then confirm cancellation below. No reason required.</p>
+          <h2 className="text-2xl font-semibold text-navy">Cancellation &amp; refunds</h2>
+          <p className="mt-3 text-muted">Verify your email to cancel renewal or request a first-payment refund below. Each action needs your confirmation.</p>
           <BillingManager />
           <p className="mt-5 text-sm leading-6 text-muted">Cancellation stops future renewals; your access continues until the end of the period already paid for. Closing this site or clearing cookies does not cancel a subscription. A refund is a separate request: see our <Link href="/refunds" className="font-semibold text-brand-700 underline">refund policy</Link>.</p>
           <details className="mt-6 border-t border-line pt-5"><summary className="cursor-pointer font-semibold text-navy">Other cancellation options &amp; support</summary>

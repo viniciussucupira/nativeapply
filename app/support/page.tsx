@@ -18,7 +18,7 @@ export default function SupportPage() {
         { title: "Access your Pro", text: "Use your purchase email to receive a secure access link. No password needed.", href: "/restore", label: "Recover Pro access" },
         { title: "Stop your subscription", text: "Verify your purchase email and confirm cancellation. This stops future renewals.", href: "/subscription#cancel", label: "Cancel subscription" },
         { title: "Payments and receipts", text: "Find help with billing, payment details and a subscription you already have.", href: "/subscription", label: "Access & billing" },
-        { title: "Request a refund", text: "Read the refund policy and find the steps to request a refund. Cancellation alone does not request one.", href: "/refunds", label: "Refund help" },
+        { title: "Request a refund", text: "Verify your purchase email and request an eligible first-payment refund directly. No support message needed.", href: "/subscription#refund", label: "Request a refund" },
       ].map(item => <section key={item.href} className="rounded-2xl border border-line bg-white p-5">
         <h2 className="text-lg font-semibold text-navy">{item.title}</h2>
         <p className="mt-2 text-sm leading-6 text-muted">{item.text}</p>

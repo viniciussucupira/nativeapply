@@ -26,7 +26,7 @@ export function EmailRequest({ purpose = "pro" }: { purpose?: "pro" | "billing" 
   }
   return <section className="rounded-2xl border border-brand-100 bg-brand-50 p-5">
     <h2 className="text-xl font-semibold text-navy">{billing ? "Confirm your purchase email" : "Access my Pro by email"}</h2>
-    <p className="mt-2 text-sm leading-6 text-muted">{billing ? "Enter the email you used to pay. We will email a secure link to view and cancel your subscription here. No password or Paddle login needed." : "Enter the email you used to pay. We will send a secure link. No password or purchase code needed."}</p>
+    <p className="mt-2 text-sm leading-6 text-muted">{billing ? "Enter the email you used to pay. We will email a secure link to manage your subscription, cancel renewal, or request a refund here. No password or Paddle login needed." : "Enter the email you used to pay. We will send a secure link. No password or purchase code needed."}</p>
     {status === "sent" ? <div role="status" className="mt-4">
       <p className="font-semibold text-navy">Check your inbox</p>
       <p className="mt-2 text-sm leading-6 text-muted">Your secure link is on its way to <strong>{email.trim()}</strong>. {billing ? "Open it to manage your subscription." : "Open it on the device where you want to use Pro."} The link works once and expires in 15 minutes.</p>

@@ -191,6 +191,12 @@ export async function revokeProForTransaction(email: string, transactionId: stri
   );
 }
 
+/** Durable refund intent, with no raw email or card data. Never expires into a duplicate POST. */
+export const refundIntentStore = {
+  async read(id: string) { return Boolean(await recoveryClient().get(`na:refund-request:${id}`)); },
+  async claim(id: string, requestedAt: string) { return await recoveryClient().set(`na:refund-request:${id}`, requestedAt, { nx: true }) === "OK"; },
+};
+
 export async function revokeMonthlyForSubscription(email: string, subscriptionId: string): Promise<void> {
   const client = recoveryClient();
   await client.eval(

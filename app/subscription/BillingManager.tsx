@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button, ButtonLink } from "@/components/ui/Primitives";
 import { EmailRequest } from "@/app/restore/EmailAccess";
 import type { BillingSummary } from "@/lib/billing";
+import RefundManager from "./RefundManager";
 
 function date(value: string | null) { return value && Number.isFinite(Date.parse(value)) ? new Date(value).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" }) : null; }
 export function BillingVerify() {
@@ -35,6 +36,7 @@ export default function BillingManager() {
   const [confirm, setConfirm] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [refunded, setRefunded] = useState(false);
   async function load() {
     setState("loading"); setError("");
     try {
@@ -65,12 +67,16 @@ export default function BillingManager() {
       <h3 className="font-semibold text-navy">NativeApply Pro · Monthly</h3>
       {subscriptions.length > 1 && <p className="mt-1 text-xs text-muted">Subscription ending {sub.id.slice(-6)}</p>}
       {sub.status === "past_due" && <p className="mt-3 text-sm text-flag">Your latest payment is overdue. The billing-period date below does not confirm paid access. Use the payment link in your Paddle email or contact billing support.</p>}
-      {sub.cancellationScheduled || sub.status === "canceled" ? <div role="status"><p className="mt-3 font-semibold text-navy">{sub.cancellationScheduled ? "Cancellation confirmed — renewal is off" : "Subscription canceled"}</p><p className="mt-2">{sub.cancellationScheduled && date(sub.paidAccessEndsAt) ? `Your current access continues until ${date(sub.paidAccessEndsAt)}. ` : ""}This subscription will not renew.</p></div> : <>
+      {sub.cancellationScheduled || sub.status === "canceled" ? <div role="status"><p className="mt-3 font-semibold text-navy">{sub.cancellationScheduled ? "Cancellation confirmed — renewal is off" : "Subscription canceled"}</p><p className="mt-2">{!refunded && sub.cancellationScheduled && date(sub.paidAccessEndsAt) ? `Your current access continues until ${date(sub.paidAccessEndsAt)}, unless the payment is refunded. ` : ""}This subscription will not renew.</p></div> : <>
         <p className="mt-3">Status: {sub.status.replace("_", " ")}.{date(sub.endsAt) ? ` Current period ends ${date(sub.endsAt)}.` : ""}</p>
         {confirm === sub.id ? <div className="mt-4"><p>{sub.status === "paused" ? "Cancel this paused subscription immediately?" : `Stop future renewals?${date(sub.paidAccessEndsAt) ? ` You keep your current access until ${date(sub.paidAccessEndsAt)}.` : " This does not settle an outstanding payment or grant additional paid access."}`} Cancellation does not issue a refund.</p><div className="mt-4 flex flex-wrap gap-3"><Button disabled={busy} onClick={() => cancel(sub.id)}>{busy ? "Confirming cancellation…" : "Confirm cancellation"}</Button><Button disabled={busy} onClick={() => setConfirm(null)}>Keep subscription</Button></div></div> : sub.canCancel ? <Button className="mt-4" disabled={busy} onClick={() => setConfirm(sub.id)}>Cancel subscription</Button> : <p className="mt-3">Contact billing support below to manage this subscription.</p>}
       </>}
     </article>)}
     {(state === "ready" || state === "error" || error) && <button type="button" disabled={busy} onClick={load} className="min-h-11 font-semibold text-brand-700 underline">Refresh subscription status</button>}
     {state === "ready" && subscriptions.length > 0 && <details><summary className="cursor-pointer py-3 font-semibold">Use another purchase email</summary><EmailRequest purpose="billing" /></details>}
+    <section id="refund" className="scroll-mt-24 border-t border-line pt-6">
+      <h3 className="mb-3 text-xl font-semibold text-navy">Request a refund</h3>
+      {state === "ready" ? <RefundManager onApproved={() => setRefunded(true)} onSubmitted={() => { void load(); }} /> : <p className="text-sm text-muted">Verify your purchase email above to check your first payment and request a refund here.</p>}
+    </section>
   </div>;
 }

@@ -21,8 +21,9 @@ const sections: LegalSection[] = [
         <p>
           You can cancel at any time; you keep access until the end of the billing period you already paid for,
           with no further renewals once cancellation is confirmed. The first-payment guarantee does not
-          automatically apply to renewal payments. If a renewal charge looks wrong, contact us within 14 days
-          and we&apos;ll review it with Paddle. This review window does not limit your statutory rights.
+          automatically apply to renewal payments. If a renewal charge looks wrong, request a review through
+          <a href="https://paddle.net/contact"> Paddle payment help</a> within 14 days. You do not need to email NativeApply.
+          This review window does not limit your statutory rights.
         </p>
       </>
     ),
@@ -52,14 +53,18 @@ const sections: LegalSection[] = [
     heading: "How to request a refund",
     body: (
       <>
-        <p>Email <a href={`mailto:${SUPPORT_EMAIL}?subject=NativeApply%20refund%20request`}>{SUPPORT_EMAIL}</a> from
-          your purchase email, with the payment date or receipt reference so we can locate the charge.
-          No explanation is needed for the first-payment guarantee. If you also want to cancel future renewals,
-          say so or cancel directly above.</p>
-        <p>Your request date determines whether you meet our 14-day guarantee, even if we respond later.
-          You can also request payment help or a refund directly through <a href="https://paddle.net">Paddle support</a>.</p>
-        <p>We will confirm the outcome by email. Paddle processes approved refunds; the time for the credit
-          to appear depends on the payment method and provider. Never send a password or full card number.</p>
+        <ol className="list-decimal space-y-2 pl-5">
+          <li>Open <a href="/subscription#refund">Request a refund</a> and verify your purchase email using the secure link we send automatically.</li>
+          <li>Review the first payment shown, choose Request first-payment refund, and confirm the refund and cancellation of future renewals.</li>
+          <li>We submit eligible requests directly to Paddle. Check the status on the same page. A request awaiting approval is not yet an approved refund.</li>
+        </ol>
+        <p>No support email or explanation is needed for an eligible first-payment request. Paddle may require
+          its own approval. Approved refunds return to the original payment method; the time for the credit
+          to appear depends on that provider. Access from the refunded payment ends.</p>
+        <p>Your request date determines whether you meet our 14-day guarantee, even if processing takes longer.
+          If the automated option is unavailable, a request is unconfirmed, or another charge needs review,
+          use <a href="https://paddle.net/contact">Paddle payment help</a> directly. Keep your request confirmation.
+          You do not need to email NativeApply. Never share a password or full card number.</p>
       </>
     ),
   },
