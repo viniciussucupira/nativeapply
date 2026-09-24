@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Container, Eyebrow, Section } from "@/components/ui/Primitives";
 import { IconChevronDown } from "@/components/ui/Icons";
+import { SUPPORT_EMAIL } from "@/lib/constants";
 
 export type LegalSection = {
   id: string;
@@ -40,6 +41,14 @@ export default function LegalLayout({
                 </a>
               ))}
             </nav>
+            <div className="mt-6 rounded-xl border border-line bg-white p-4 text-sm leading-6 text-ink">
+              <p className="font-semibold text-navy">Need help with your purchase or data?</p>
+              <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2">
+                <a className="inline-flex min-h-11 items-center text-brand-700 underline underline-offset-4" href="/subscription#cancel">Cancel subscription</a>
+                <a className="inline-flex min-h-11 items-center text-brand-700 underline underline-offset-4" href="/refunds#how">Request a refund</a>
+                <a className="inline-flex min-h-11 items-center text-brand-700 underline underline-offset-4" href={`mailto:${SUPPORT_EMAIL}`}>Contact support</a>
+              </div>
+            </div>
           </div>
         </Container>
       </Section>
@@ -88,11 +97,11 @@ export default function LegalLayout({
               </ol>
             </details>
 
-            <article className="max-w-[44rem]">
+            <article className="min-w-0 max-w-[44rem] [overflow-wrap:anywhere]">
               {sections.map((section) => (
                 <section key={section.id} id={section.id} className="scroll-mt-28 border-b border-line py-7 first:pt-0 last:border-0">
                   <h2 className="text-[1.25rem] font-semibold tracking-[-0.015em] text-navy">{section.heading}</h2>
-                  <div className="mt-3 flex flex-col gap-4 text-[1rem] leading-7 text-muted [&_a]:font-medium [&_a]:text-brand-700 [&_a]:underline [&_a]:underline-offset-4">
+                  <div className="mt-3 flex flex-col gap-4 text-[1rem] leading-7 text-ink [&_a]:font-medium [&_a]:text-brand-700 [&_a]:underline [&_a]:underline-offset-4">
                     {section.body}
                   </div>
                 </section>

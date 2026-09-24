@@ -43,7 +43,8 @@ const sections: LegalSection[] = [
           Pro access associated with the refunded payment.</p>
         <p>If you cannot access your email or the cancellation fails, contact <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
           You can also use the management link in your Paddle receipt or <a href="https://paddle.net">Paddle payment support</a>.
-          A support request is not a completed cancellation until you receive confirmation.</p>
+          Keep a copy of your request and contact us if confirmation does not arrive. A delay in our response
+          does not remove rights you have under applicable law.</p>
       </>
     ),
   },
@@ -69,6 +70,8 @@ const sections: LegalSection[] = [
           your purchase email, with the payment date or receipt reference so we can locate the charge.
           No explanation is needed for the first-payment guarantee. If you also want to cancel future renewals,
           say so or cancel directly above.</p>
+        <p>Your request date determines whether you meet our 14-day guarantee, even if we respond later.
+          You can also request payment help or a refund directly through <a href="https://paddle.net">Paddle support</a>.</p>
         <p>We will confirm the outcome by email. Paddle processes approved refunds; the time for the credit
           to appear depends on the payment method and provider. Never send a password or full card number.</p>
       </>

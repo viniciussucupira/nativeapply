@@ -24,6 +24,22 @@ const sections: LegalSection[] = [
     ),
   },
   {
+    id: "sharing",
+    heading: "Sharing your rewritten text",
+    body: (
+      <>
+        <p>Copy places the result on your device clipboard. Open email app passes the result to your
+          configured email application. WhatsApp opens a third-party page with your result included in the
+          link. Opening that link shares the text with WhatsApp even if you do not send a message.</p>
+        <p>These actions happen only when you choose them. NativeApply does not choose recipients or send
+          messages for you. Links containing text may remain in browser history. Your email provider and
+          WhatsApp process information under their own policies. For sensitive text, consider copying it
+          and pasting only the information you want to share. Links to our other products open separate
+          websites with their own privacy policies.</p>
+      </>
+    ),
+  },
+  {
     id: "email",
     heading: "2. Your email address",
     body: (

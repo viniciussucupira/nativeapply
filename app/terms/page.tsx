@@ -18,7 +18,8 @@ const sections: LegalSection[] = [
         NativeApply rewrites text you submit — such as cover letters, resume bullet points, and messages to
         recruiters — using artificial intelligence, so it reads more naturally to a native English speaker. Without a
         paid plan, use is limited to one rewrite per browser per day, resetting at midnight UTC. Failed generations
-        do not use this allowance. NativeApply Pro removes the daily limit. Each request supports up to 6,000 characters.
+        do not use this allowance. NativeApply Pro removes the daily limit. Each request supports up to 6,000 characters,
+        including spaces and line breaks. Some symbols, such as emoji, count as more than one character in the editor.
       </p>
     ),
   },
@@ -74,6 +75,10 @@ const sections: LegalSection[] = [
           abusive traffic. Pro has no daily rewrite allowance; service interruptions can still occur.
           If you cannot use a paid service, contact us so we can restore access or address the payment.</p>
         <p>Our <a href="/privacy">Privacy Policy</a> explains how text, access details, and usage data are processed.</p>
+        <p>Copy, email, and WhatsApp tools help you move a result to another application. NativeApply does
+          not send job applications or messages on your behalf. You choose the recipient and confirm sending
+          in the other application. Its availability and terms depend on that provider. Long results may
+          need to be copied and pasted instead of opened through a link.</p>
       </>
     ),
   },
