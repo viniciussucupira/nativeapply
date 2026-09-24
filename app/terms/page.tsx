@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import LegalLayout, { type LegalSection } from "@/components/legal/LegalLayout";
 import { SUPPORT_EMAIL } from "@/lib/constants";
-import { LIFETIME_FULL } from "@/lib/lifetime-policy";
 
 export const metadata: Metadata = {
   title: "Terms of Service | NativeApply",
@@ -51,9 +50,9 @@ const sections: LegalSection[] = [
     heading: "4. Payments",
     body: (
       <>
-        <p>New Pro subscriptions cost US$19 per month and renew automatically each month until cancelled.
-          Checkout shows the currency, applicable taxes, and total before you pay. Existing subscriptions remain
-          at their agreed price unless a change is communicated in advance, with consent where required by law.</p>
+        <p>NativeApply offers one paid plan: Pro at US$19 per month. If you subscribe, it renews automatically
+          each month until cancelled. Checkout shows the currency, applicable taxes, and total before you pay.
+          Any future price change will be communicated before it applies, with consent where required by law.</p>
         <p>Paddle is our Merchant of Record and authorised reseller. It handles payment processing, billing,
           taxes, and refunds. Purchases are also subject to the <a href="https://www.paddle.com/legal/buyer-terms">Paddle Buyer Terms</a>.</p>
         <p>You can <a href="/subscription#cancel">cancel on NativeApply</a> after verifying your purchase email.
@@ -83,21 +82,8 @@ const sections: LegalSection[] = [
     ),
   },
   {
-    id: "lifetime",
-    heading: "6. Lifetime plan (no longer sold)",
-    body: (
-      <>
-        <p>
-          The Lifetime plan is no longer offered to new customers. Everyone who bought it keeps it, on exactly the
-          terms it was sold under:
-        </p>
-        <p>{LIFETIME_FULL}</p>
-      </>
-    ),
-  },
-  {
     id: "changes",
-    heading: "7. Changes and your rights",
+    heading: "6. Changes and your rights",
     body: (
       <p>
         We may update these Terms and will show the revised date here. Material changes affecting paid access
@@ -109,7 +95,7 @@ const sections: LegalSection[] = [
   },
   {
     id: "contact",
-    heading: "8. Contact",
+    heading: "7. Contact",
     body: (
       <p>
         Questions about these Terms can be sent to <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.

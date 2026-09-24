@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import LegalLayout, { type LegalSection } from "@/components/legal/LegalLayout";
 import { SUPPORT_EMAIL } from "@/lib/constants";
-import { LIFETIME_FULL } from "@/lib/lifetime-policy";
 
 export const metadata: Metadata = {
   title: "Refund Policy | NativeApply",
@@ -16,7 +15,7 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>
-          Your first payment is fully refundable for 14 days. Ask within 14 days of that charge and you get the
+          If you subscribe to Pro, your first payment is fully refundable for 14 days. Ask within 14 days of that charge and you get the
           whole amount back, no questions asked and no reason needed.
         </p>
         <p>
@@ -45,19 +44,6 @@ const sections: LegalSection[] = [
           You can also use the management link in your Paddle receipt or <a href="https://paddle.net">Paddle payment support</a>.
           Keep a copy of your request and contact us if confirmation does not arrive. A delay in our response
           does not remove rights you have under applicable law.</p>
-      </>
-    ),
-  },
-  {
-    id: "lifetime",
-    heading: "Lifetime plan (no longer sold)",
-    body: (
-      <>
-        <p>
-          The Lifetime plan is no longer offered to new customers, and nothing changes for the people who bought it.
-          It was a one-time payment with a full refund if requested within 14 days of purchase, no questions asked.
-        </p>
-        <p>{LIFETIME_FULL}</p>
       </>
     ),
   },

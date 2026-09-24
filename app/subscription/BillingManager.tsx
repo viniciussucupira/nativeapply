@@ -60,7 +60,7 @@ export default function BillingManager() {
     {state === "loading" && <p role="status">Loading your subscription…</p>}
     {state === "verify" && <EmailRequest purpose="billing" />}
     {state === "error" && <p role="alert">We could not load your subscription right now. Try again or use the billing help below.</p>}
-    {state === "ready" && subscriptions.length === 0 && <><p>No recurring NativeApply subscription was found for this email. A lifetime purchase does not renew. If you expected a monthly plan, try the email used at checkout or contact support.</p><EmailRequest purpose="billing" /></>}
+    {state === "ready" && subscriptions.length === 0 && <><p>No NativeApply subscription was found for this email. If you subscribed to Pro, try the email used at checkout or contact support.</p><EmailRequest purpose="billing" /></>}
     {state === "ready" && subscriptions.map(sub => <article key={sub.id} className="rounded-xl border border-line bg-white p-5">
       <h3 className="font-semibold text-navy">NativeApply Pro · Monthly</h3>
       {subscriptions.length > 1 && <p className="mt-1 text-xs text-muted">Subscription ending {sub.id.slice(-6)}</p>}

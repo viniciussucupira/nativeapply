@@ -78,8 +78,8 @@ const sections: LegalSection[] = [
         never see or store your card details. Paddle shares your email address with us so we can activate your Pro
         access. We also receive transaction and subscription identifiers and status information to verify
         purchases, renewals, cancellations, and refunds. Monthly access records expire after the paid period
-        plus a short processing grace period. Lifetime access records and some purchase references do not
-        have an automatic expiry. We keep these records as needed to provide purchased access, resolve
+        plus a short processing grace period. Some purchase references do not have an automatic expiry.
+        If you purchase Pro, we keep the resulting records as needed to provide access, resolve
         payment issues, and meet applicable recordkeeping obligations. Deletion requests are reviewed against those needs.
       </p>
     ),
