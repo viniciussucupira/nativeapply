@@ -247,7 +247,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="Try it on your own words"
             title="Paste your draft. Read the difference."
-            description="One free rewrite a day. No email, password, or card. Unlimited rewrites are $14 a month, cancel anytime."
+            description="One free rewrite a day. No email, password, or card. Unlimited rewrites are $19 a month, cancel anytime."
           />
           <div className="mt-9">
             <Rewriter />
@@ -459,7 +459,7 @@ export default function Home() {
         <Container size="wide" className="py-16 sm:py-24">
           <SectionHeading
             eyebrow="Pricing"
-            title="Unlimited rewrites for $14 a month"
+            title="Unlimited rewrites for $19 a month"
             description="One paid plan, everything included. Try it free first, and cancel whenever your job search ends."
           />
           <div className="mx-auto mt-12 max-w-md">

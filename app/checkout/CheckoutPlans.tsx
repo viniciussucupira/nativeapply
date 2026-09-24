@@ -178,7 +178,7 @@ export default function CheckoutPlans() {
           <div className="na-rise mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
             <Eyebrow>Pricing</Eyebrow>
             <h1 className="text-[2rem] font-semibold leading-[1.1] tracking-[-0.03em] text-navy sm:text-[2.75rem]">
-              Unlimited rewrites for <span className="na-accent-text">$14 a month</span>
+              Unlimited rewrites for <span className="na-accent-text">$19 a month</span>
             </h1>
             <p className="text-[1.0625rem] leading-7 text-muted">
               One paid plan with everything in it. Try it free first, and cancel the moment your job search ends —
@@ -187,7 +187,7 @@ export default function CheckoutPlans() {
           </div>
 
           <div className="mx-auto mt-14 grid max-w-4xl items-stretch gap-8 md:grid-cols-2">
-            <PlanColumn plan={FREE_PLAN} footnote="One shared allowance per network, resetting at midnight UTC.">
+            <PlanColumn plan={FREE_PLAN} footnote="One allowance per browser, resetting at midnight UTC.">
               <ButtonLink href="/#tool" variant="secondary" size="lg" className="w-full">Try the free rewriter</ButtonLink>
             </PlanColumn>
             <PlanColumn plan={MONTHLY_PLAN} highlight footnote="Full refund within 14 days of your first payment.">

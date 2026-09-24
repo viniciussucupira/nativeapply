@@ -210,7 +210,7 @@ export function professionFaq(doc: DocType, p: Profession): FaqItem[] {
     },
     {
       q: `What does it cost for ${p.label.toLowerCase()}?`,
-      a: "NativeApply Pro is $14 a month, with unlimited rewrites and no lock-in. One free rewrite a day, with no email or card required, lets you see the result on your own text first.",
+      a: "NativeApply Pro is $19 a month, with unlimited rewrites and no lock-in. One free rewrite a day, with no email or card required, lets you see the result on your own text first.",
     },
     {
       q: `Can I use the same rewrite for every application?`,

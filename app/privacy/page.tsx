@@ -42,8 +42,11 @@ const sections: LegalSection[] = [
     heading: "3. Usage limits",
     body: (
       <p>
-        To enforce the daily limit, we keep a count of rewrites per IP address for 24 hours. It is then deleted
-        automatically.
+        Your free daily allowance is linked to a random browser identifier, not shared with everyone on your
+        internet connection. Daily allowance records expire within 48 hours. Hashed IP counters used separately
+        to prevent automated abuse expire after one hour. We also record token counts and estimated AI costs,
+        separated into free and paid usage. Daily totals and monthly pseudonymous paid-usage totals are kept
+        for up to 400 days. These records do not contain your drafts or rewritten text.
       </p>
     ),
   },
@@ -63,7 +66,8 @@ const sections: LegalSection[] = [
     heading: "5. Cookies, local storage, and analytics",
     body: (
       <p>
-        We set one secure, httpOnly cookie after a purchase to remember that your browser has Pro access.
+        We use secure, httpOnly cookies for your browser&apos;s free allowance and purchased Pro access, lasting
+        up to one year. A separate billing cookie lasts 15 minutes after you verify your email to manage a subscription.
         An older version saved a local flag after email entry; free rewrites no longer use that flag. We
         use Vercel Web Analytics to count page views; it doesn&apos;t use cookies and doesn&apos;t identify you. We
         don&apos;t use advertising cookies.

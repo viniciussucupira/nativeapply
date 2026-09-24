@@ -94,7 +94,7 @@ export default function ProfessionPage({
               </ButtonLink>
             </div>
             <p className="text-[0.875rem] text-muted">
-              One free rewrite a day. No email or card. Unlimited is $14/month, cancel anytime.
+              One free rewrite a day. No email or card. Unlimited is $19/month, cancel anytime.
             </p>
           </div>
         </Container>

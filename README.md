@@ -14,7 +14,7 @@ Paddle (Merchant of Record) with a webhook, deployed on Vercel.
 - `/cover-letter-for-non-native-speakers`
 - `/native-sounding-resume`
 - `/recruiter-message-rewriter`
-- `/checkout` — Paddle checkout (Monthly $14; the Lifetime plan is no longer sold)
+- `/checkout` — Paddle checkout (Monthly $19; the Lifetime plan is no longer sold)
 - `/restore` — turn Pro on in another browser with a Paddle transaction ID (`/restore?txn=txn_...`)
 - `/terms`, `/privacy`, `/refunds`
 
@@ -82,3 +82,18 @@ Validation: unit tests cover ownership/product isolation, session separation and
   owner (or with the owner watching, one step at a time).
 - No custom favicon binary was hand-picked; `app/opengraph-image.tsx`
   generates the social preview image dynamically, matching Retone's setup.
+
+
+## Pricing and AI-cost measurement (September 24, 2026)
+
+New monthly purchases use USD 19. Existing Paddle subscriptions retain their captured price; no subscription item updates are performed. The checkout price ID remains the same catalog entity.
+
+Every Anthropic response records actual token counts and estimated Sonnet 4.5 cost before checking output completeness. Metadata-only `na:ai-cost` events are in private Vercel logs. Redis stores daily free/Pro aggregates and monthly top Pro costs using keyed pseudonyms, expiring after 400 days. No prompts, outputs, email addresses or IP addresses are included in cost records.
+
+Run `npm run report:ai-cost -- YYYY-MM` in a trusted server environment with the existing Redis variables to get a private report. Never expose this command or Redis secrets through a public endpoint. Rates are in `lib/ai-cost.ts`; compare estimates with Anthropic invoices. Failures without returned token usage can be missing. These figures are AI cost, not net profit; include payment fees, refunds, taxes, hosting, advertising and support when evaluating margin. Collection starts at deployment, not retroactively.
+
+## Fair free allowance
+
+One free rewrite per browser per UTC day, identified by a signed HttpOnly cookie. Shared-IP users no longer spend one another's allowance. Redis atomically reserves the attempt; rejected attempts do not increment it, and failed generations release only their own reservation. A separate 60-attempt/hour hashed-network safeguard limits automation and uses a distinct message. Cookies are not accounts: another browser or cleared cookies can get a new allowance. No fingerprinting is used.
+
+Validation includes two independent browsers on one IP, repeated denials, provider failure then success, concurrent requests and cost totals with mocked provider/Redis services.

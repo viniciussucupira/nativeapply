@@ -1,5 +1,36 @@
 import { Redis } from "@upstash/redis";
 import { recoveryHash, type RecoveryStore } from "./recovery";
+import { createHmac } from "node:crypto";
+import { estimateRewriteCost, type TokenUsage, REWRITE_MODEL } from "./ai-cost";
+import { RESERVE_FREE_SCRIPT, REFUND_FREE_SCRIPT } from "./free-session";
+import { sessionSecret } from "./pro-cookie";
+
+/** Cost metadata only; never store customer drafts, outputs, email addresses or IPs. */
+export async function recordRewriteCost(usage: TokenUsage, pro: boolean, email: string | null) {
+  const totals = estimateRewriteCost(usage);
+  const day = new Date().toISOString().slice(0, 10), month = day.slice(0, 7);
+  const tier = pro ? "pro" : "free";
+  // Vercel logs provide a second private record if Redis is temporarily unavailable.
+  console.info("na:ai-cost", JSON.stringify({ day, tier, model: REWRITE_MODEL, ...totals }));
+  try {
+    const client = getRedis();
+    if (!client) throw new Error("Missing usage storage");
+    const key = `na:ai-cost:day:${day}:${tier}`;
+    const tx = client.multi();
+    for (const [field, value] of Object.entries({ requests: 1, ...totals })) tx.hincrby(key, field, value);
+    tx.expire(key, 400 * 86400);
+    if (pro && email) {
+      const account = createHmac("sha256", sessionSecret()).update(`nativeapply:cost:${month}:${email}`).digest("hex");
+      const top = `na:ai-cost:accounts:${month}`;
+      tx.zincrby(top, totals.costMicroUsd, account);
+      tx.expire(top, 400 * 86400);
+    }
+    await tx.exec();
+  } catch {
+    // A metrics outage must never charge the free quota without delivering the result.
+    console.error("na:ai-cost:storage-unavailable");
+  }
+}
 
 // Reuses the SAME Upstash Redis instance as Retone. Every key this product
 // touches is namespaced with "na:" so it never collides with other products.
@@ -58,43 +89,25 @@ export async function allowRecoveryAttempt(scope: string, identity: string, limi
 /** Returned by incrementDailyUsage when the count could not be read at all. */
 export const USAGE_UNVERIFIABLE = -1;
 
-function usageKey(ip: string): string {
-  return `na:usage:${ip}:${new Date().toISOString().slice(0, 10)}`;
+function usageKey(browserId: string, day: string): string {
+  return `na:free-browser:${browserId}:${day}`;
 }
 
-/**
- * Increments today's free-rewrite count for this IP and returns the new count.
- * Without Redis (local dev) it always returns 1 so testing is never blocked.
- */
-export async function incrementDailyUsage(ip: string): Promise<number> {
+/** Reserve one attempt atomically. Rejected requests never consume extra quota. */
+export async function incrementDailyUsage(browserId: string, reservation: string, day: string): Promise<number> {
   const client = getRedis();
-  if (!client) {
-    console.error("na:rate-limit: no Redis client (missing env vars)");
-    return process.env.NODE_ENV === "production" ? USAGE_UNVERIFIABLE : 1;
-  }
-  const key = usageKey(ip);
+  if (!client) return process.env.NODE_ENV === "production" ? USAGE_UNVERIFIABLE : 1;
   try {
-    const count = await client.incr(key);
-    if (count === 1) await client.expire(key, DAY_SECONDS);
-    return count;
-  } catch (err) {
-    console.error("na:rate-limit: counter unavailable", err instanceof Error ? err.name : "unknown");
-    // Fail closed, but distinguishably: -1 means "we could not check", which
-    // is our problem, not the visitor's. Telling them they have used up a
-    // rewrite they never got would be a lie, so the route says what happened.
-    return USAGE_UNVERIFIABLE;
-  }
+    return await client.eval<[string, number], number>(RESERVE_FREE_SCRIPT, [usageKey(browserId, day)], [reservation, DAY_SECONDS * 2]);
+  } catch { return USAGE_UNVERIFIABLE; }
 }
 
-/** Gives back a free rewrite that was counted but never delivered (AI error). */
-export async function refundDailyUsage(ip: string): Promise<void> {
+/** Roll back only this failed request's reservation, including across midnight. */
+export async function refundDailyUsage(browserId: string, reservation: string, day: string): Promise<void> {
   const client = getRedis();
   if (!client) return;
-  try {
-    await client.decr(usageKey(ip));
-  } catch (err) {
-    console.error("na:rate-limit: decr failed", err);
-  }
+  try { await client.eval<[string], number>(REFUND_FREE_SCRIPT, [usageKey(browserId, day)], [reservation]); }
+  catch { console.error("na:free:refund-unavailable"); }
 }
 
 // ---------------------------------------------------------------------------

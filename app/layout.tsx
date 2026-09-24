@@ -16,11 +16,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "NativeApply — Sound Native in Your Job Application",
   description:
-    "Rewrite your cover letter, resume bullets, and recruiter messages in clear, natural English. Try one rewrite a day free. Pro is $14/month.",
+    "Rewrite your cover letter, resume bullets, and recruiter messages in clear, natural English. Try one rewrite a day free. Pro is $19/month.",
   openGraph: {
     title: "NativeApply — Sound Native in Your Job Application",
     description:
-      "Polish your cover letter, resume, or LinkedIn message in American or British English. Try one rewrite a day free, no email or card. Pro is $14/month.",
+      "Polish your cover letter, resume, or LinkedIn message in American or British English. Try one rewrite a day free, no email or card. Pro is $19/month.",
     url: SITE_URL,
     siteName: "NativeApply",
     type: "website",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "NativeApply — Sound Native in Your Job Application",
     description:
-      "Polish your cover letter, resume, or LinkedIn message in American or British English. Try one rewrite a day free, no email or card. Pro is $14/month.",
+      "Polish your cover letter, resume, or LinkedIn message in American or British English. Try one rewrite a day free, no email or card. Pro is $19/month.",
   },
   verification: {
     google: "PPtQILt6oZAUpSMtxJiEetgcxi5jLKAXjkpSLPreuk0",

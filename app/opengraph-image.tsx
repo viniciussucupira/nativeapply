@@ -107,7 +107,7 @@ export default function Image() {
                 whiteSpace: "nowrap",
               }}
             >
-              $14 a month, cancel anytime
+              $19 a month, cancel anytime
             </div>
             <div style={{ fontSize: 23, color: "#667085", display: "flex" }}>nativeapply.net</div>
           </div>

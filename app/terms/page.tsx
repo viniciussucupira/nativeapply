@@ -17,7 +17,7 @@ const sections: LegalSection[] = [
       <p>
         NativeApply rewrites text you submit — such as cover letters, resume bullet points, and messages to
         recruiters — using artificial intelligence, so it reads more naturally to a native English speaker. Without a
-        paid plan, use is limited to 1 rewrite per day. NativeApply Pro ($14/month) removes this limit.
+        paid plan, use is limited to 1 rewrite per day. NativeApply Pro ($19/month) removes this limit.
       </p>
     ),
   },

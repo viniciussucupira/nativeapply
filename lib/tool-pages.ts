@@ -22,7 +22,7 @@ export type ToolPage = {
   related: { href: string; label: string }[];
 };
 
-const PRICE_LINE = "$14/month, with one free rewrite a day to try it first.";
+const PRICE_LINE = "$19/month, with one free rewrite a day to try it first.";
 
 export const TOOL_PAGES: Record<string, ToolPage> = {
   /* ------------------------------------------------------------------ */
@@ -35,7 +35,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       PRICE_LINE,
     ogTitle: "Cover Letter Rewriter for Non-Native English Speakers",
     ogDescription:
-      "Improve your cover letter's English, compare it with your original, and make final edits. One free rewrite a day; Pro is US$14/month.",
+      "Improve your cover letter's English, compare it with your original, and make final edits. One free rewrite a day; Pro is US$19/month.",
     eyebrow: "Cover letter rewriter",
     headingLead: "Your experience, expressed in",
     headingAccent: "clear, confident English",
@@ -117,7 +117,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       PRICE_LINE,
     ogTitle: "Make Your Resume Sound Native",
     ogDescription:
-      "Make resume bullets concise and natural, with a built-in number comparison. One free rewrite a day; Pro is US$14/month.",
+      "Make resume bullets concise and natural, with a built-in number comparison. One free rewrite a day; Pro is US$19/month.",
     eyebrow: "Resume rewriter",
     headingLead: "Resume bullets that sound",
     headingAccent: "clear, concise, and professional",
@@ -200,7 +200,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       PRICE_LINE,
     ogTitle: "CV English Rewriter",
     ogDescription:
-      "Paste your CV bullets and get them back clear, concise, and native-sounding for UK and EU applications. $14/month.",
+      "Paste your CV bullets and get them back clear, concise, and native-sounding for UK and EU applications. $19/month.",
     eyebrow: "CV rewriter",
     headingLead: "A CV that reads as",
     headingAccent: "understated and precise",
@@ -282,7 +282,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       PRICE_LINE,
     ogTitle: "ATS-Friendly Resume Bullet Points",
     ogDescription:
-      "Paste your bullets and get them back plain, direct, and easy for tracking software to parse. $14/month.",
+      "Paste your bullets and get them back plain, direct, and easy for tracking software to parse. $19/month.",
     eyebrow: "ATS bullet points",
     headingLead: "Bullets a tracking system can read and a",
     headingAccent: "human wants to read",
@@ -364,7 +364,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       "Rewrite your message to a recruiter so it sounds natural and confident instead of stiff or over-formal. " + PRICE_LINE,
     ogTitle: "Recruiter Message Rewriter",
     ogDescription:
-      "Paste your message to a recruiter and get it back short, warm, and natural. $14/month.",
+      "Paste your message to a recruiter and get it back short, warm, and natural. $19/month.",
     eyebrow: "Recruiter message rewriter",
     headingLead: "Message a recruiter like a",
     headingAccent: "colleague, not a form letter",
@@ -447,7 +447,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       PRICE_LINE,
     ogTitle: "LinkedIn Connection Message Rewriter",
     ogDescription:
-      "Paste your LinkedIn note and get it back short, natural, and easy to accept. $14/month.",
+      "Paste your LinkedIn note and get it back short, natural, and easy to accept. $19/month.",
     eyebrow: "LinkedIn message rewriter",
     headingLead: "A connection note that gets",
     headingAccent: "accepted, not ignored",
@@ -529,7 +529,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       "Rewrite your post-interview thank-you or follow-up email so it sounds polite, natural, and never pushy. " + PRICE_LINE,
     ogTitle: "Interview Follow-Up Email Rewriter",
     ogDescription:
-      "Paste your follow-up draft and get it back warm, brief, and correctly timed in tone. $14/month.",
+      "Paste your follow-up draft and get it back warm, brief, and correctly timed in tone. $19/month.",
     eyebrow: "Interview follow-up",
     headingLead: "Follow up warmly, without sounding",
     headingAccent: "impatient",
@@ -612,7 +612,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       PRICE_LINE,
     ogTitle: "Job Application Letter Rewriter",
     ogDescription:
-      "Paste the letter you are about to send and get it back natural and confident. $14/month.",
+      "Paste the letter you are about to send and get it back natural and confident. $19/month.",
     eyebrow: "Application letter rewriter",
     headingLead: "The letter you are about to send,",
     headingAccent: "in clearer English",
@@ -694,7 +694,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       PRICE_LINE,
     ogTitle: "Visa Sponsorship Cover Letter Rewriter",
     ogDescription:
-      "Applying for a role that sponsors visas? Paste your cover letter and get it back clear and professional. $14/month.",
+      "Applying for a role that sponsors visas? Paste your cover letter and get it back clear and professional. $19/month.",
     eyebrow: "Visa sponsorship cover letter",
     headingLead: "State your situation plainly, in",
     headingAccent: "confident English",

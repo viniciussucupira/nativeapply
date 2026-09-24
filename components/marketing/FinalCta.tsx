@@ -2,7 +2,7 @@ import { ButtonLink, Container } from "@/components/ui/Primitives";
 
 export default function FinalCta({
   title = "Send the version you would have written in your first language.",
-  body = "Paste your draft, read the rewrite, and decide for yourself. Unlimited rewrites are $14 a month, cancel anytime. One free rewrite a day to start.",
+  body = "Paste your draft, read the rewrite, and decide for yourself. Unlimited rewrites are $19 a month, cancel anytime. One free rewrite a day to start.",
   href = "/#tool",
   cta = "Rewrite my text",
 }: {

@@ -11,7 +11,7 @@ export type Plan = {
 export const MONTHLY_PLAN: Plan = {
   id: "monthly",
   name: "Monthly Pro",
-  price: "$14",
+  price: "$19",
   cadence: "USD per month",
   summary: "Unlimited rewrites while you are actively job hunting.",
   features: [

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test lib/*.test.mjs"
+    "test": "node --test lib/*.test.mjs",
+    "report:ai-cost": "node scripts/ai-cost-report.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.124.0",

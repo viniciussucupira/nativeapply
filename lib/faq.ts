@@ -23,7 +23,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "What does it cost?",
-    a: "NativeApply Pro is US$14 a month, with unlimited rewrites. Cancel on our Access & billing page and keep access until the end of your paid month. Try one free rewrite a day without an email or card. The free limit is shared by devices on the same network and resets at midnight UTC.",
+    a: "NativeApply Pro is US$19 a month, with unlimited rewrites. Cancel on our Access & billing page and keep access until the end of your paid month. Try one free rewrite a day without an email or card. Each browser has its own free allowance, resetting at midnight UTC. Failed rewrites do not use it.",
   },
   {
     q: "Which English does it write — American or British?",
