@@ -41,6 +41,7 @@ type Phase = "idle" | "loading" | "done" | "error";
 
 type Props = {
   initialContext?: ContextType;
+  initialEnglishVariant?: EnglishVariant;
   /** Locks the tool to one document type (used on single-purpose pages). */
   lockContext?: boolean;
   placeholder?: string;
@@ -49,6 +50,7 @@ type Props = {
 
 export default function Rewriter({
   initialContext = "cover-letter",
+  initialEnglishVariant = "en-US",
   lockContext = false,
   placeholder,
   className = "",
@@ -61,8 +63,10 @@ export default function Rewriter({
   const [limitReached, setLimitReached] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const [englishVariant, setEnglishVariant] = useState<EnglishVariant>("en-US");
+  const [englishVariant, setEnglishVariant] = useState<EnglishVariant>(initialEnglishVariant);
   const [submittedDraft, setSubmittedDraft] = useState("");
+  const [submittedContext, setSubmittedContext] = useState<ContextType>(initialContext);
+  const [submittedVariant, setSubmittedVariant] = useState<EnglishVariant>(initialEnglishVariant);
 
   const [justUpgraded, setJustUpgraded] = useState(false);
   const { isPro, needsRestore, unavailable } = useProStatus();
@@ -108,14 +112,13 @@ export default function Rewriter({
       setPhase("loading");
       setError("");
       setLimitReached(false);
-      setResult("");
       setCopied(false);
-      setSubmittedDraft(body);
       try {
         const res = await fetch("/api/rewrite", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: body, context: contextValue, englishVariant }),
+          signal: AbortSignal.timeout(60000),
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) {
@@ -128,9 +131,12 @@ export default function Rewriter({
           throw new Error("Missing rewrite");
         }
         setResult(data.rewritten);
+        setSubmittedDraft(body);
+        setSubmittedContext(contextValue);
+        setSubmittedVariant(englishVariant);
         setPhase("done");
       } catch {
-        setError("Could not reach the server. Check your connection and try again.");
+        setError("The request timed out or the connection was interrupted. Your draft is still here. Please try again shortly.");
         setPhase("error");
       }
     },
@@ -167,6 +173,8 @@ export default function Rewriter({
   const contextLabel = CONTEXT_TYPES.find((c) => c.value === context)?.label ?? "Message";
   const activePlaceholder = placeholder ?? PLACEHOLDERS[context];
   const numberReview = reviewNumbers(submittedDraft, result);
+  const resultOutdated = phase === "done" && (text !== submittedDraft || context !== submittedContext || englishVariant !== submittedVariant);
+  const resultContextLabel = CONTEXT_TYPES.find((c) => c.value === submittedContext)?.label ?? "Message";
 
   return (
     <div className={className}>
@@ -216,6 +224,16 @@ export default function Rewriter({
                   type="button"
                   role={lockContext ? undefined : "radio"}
                   aria-checked={lockContext ? undefined : selected}
+                  tabIndex={!lockContext && !selected ? -1 : 0}
+                  onKeyDown={(event) => {
+                    if (lockContext || !["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+                    event.preventDefault();
+                    const current = CONTEXT_TYPES.findIndex((entry) => entry.value === context);
+                    const next = event.key === "Home" ? 0 : event.key === "End" ? CONTEXT_TYPES.length - 1 : (current + (["ArrowRight", "ArrowDown"].includes(event.key) ? 1 : -1) + CONTEXT_TYPES.length) % CONTEXT_TYPES.length;
+                    setContext(CONTEXT_TYPES[next].value);
+                    const buttons = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="radio"]');
+                    buttons?.[next]?.focus();
+                  }}
                   disabled={lockContext || phase === "loading"}
                   onClick={() => setContext(item.value)}
                   className={
@@ -244,6 +262,8 @@ export default function Rewriter({
               {ENGLISH_VARIANTS.map((variant) => <option key={variant.value} value={variant.value}>{variant.label}</option>)}
             </select>
           </div>
+          <p className="mt-2 text-xs leading-5 text-muted">Choose the spelling your employer uses. Names, currencies, and dates are not converted.</p>
+          {lockContext && <p className="mt-2 text-sm text-muted">Working on a different document? <Link href="/#tool" className="font-medium text-brand-700 underline underline-offset-4">Open all four document types</Link></p>}
         </div>
 
         {/* ---------- editor ---------- */}
@@ -266,6 +286,12 @@ export default function Rewriter({
               value={text}
               disabled={phase === "loading"}
               onChange={(e) => setText(e.target.value)}
+              onKeyDown={(event) => {
+                if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+                  event.preventDefault();
+                  handleSubmit();
+                }
+              }}
               placeholder={activePlaceholder}
               rows={10}
               spellCheck={false}
@@ -307,7 +333,7 @@ export default function Rewriter({
                 {!isPro && (
                   <p className="text-[0.8125rem] leading-5 text-muted">
                     {FREE_LIMIT_PER_DAY === 1 ? "1 free rewrite a day" : `${FREE_LIMIT_PER_DAY} free rewrites a day`}.
-                    No email or card required.
+                    No email or card required. Shared by devices on your network; resets at midnight UTC.
                   </p>
                 )}
               </div>
@@ -347,6 +373,8 @@ export default function Rewriter({
 
               {phase === "done" && (
                 <div className="na-fade flex flex-1 flex-col">
+                  <p className="border-b border-line px-5 py-3 text-xs font-medium text-muted">{resultContextLabel} · {ENGLISH_VARIANTS.find((item) => item.value === submittedVariant)?.label}</p>
+                  {resultOutdated && <p role="status" className="border-b border-line bg-brand-50 px-5 py-3 text-sm text-navy">Your draft or settings changed. This result belongs to the previous version. Rewrite again to apply your changes.</p>}
                   <div className="border-b border-line px-5 py-4 text-sm">
                     <p className={numberReview.changed ? "font-semibold text-flag" : "font-semibold text-navy"}>
                       {numberReview.changed ? "Check the numbers before sending" : numberReview.hasNumbers ? "Numeric expressions match your draft" : "Ready for your review"}
@@ -359,17 +387,19 @@ export default function Rewriter({
                       <p className="mt-3 whitespace-pre-wrap rounded-lg bg-ivory p-3 leading-6 text-ink">{submittedDraft}</p>
                     </details>
                   </div>
-                  <p className="flex-1 whitespace-pre-wrap px-5 py-5 text-base leading-7 text-ink">{result}</p>
+                  <label htmlFor="na-result" className="px-5 pt-4 text-sm font-medium text-navy">Review and edit your result</label>
+                  <textarea id="na-result" value={result} onChange={(event) => { setResult(event.target.value); setCopied(false); setError(""); }} rows={10} spellCheck lang={submittedVariant} aria-describedby="na-result-help" className="m-3 min-h-56 flex-1 resize-y rounded-lg border border-line bg-white px-3 py-3 text-base leading-7 text-ink focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15" />
+                  <p id="na-result-help" className="px-5 pb-3 text-xs leading-5 text-muted">Make final adjustments here. Copy and sharing use this edited version. Editing does not use another rewrite.</p>
                   <div className="flex flex-wrap items-center gap-2 border-t border-line px-4 py-3">
-                    <Button type="button" onClick={handleCopy} variant={copied ? "secondary" : "primary"}>
+                    <Button type="button" onClick={handleCopy} disabled={!result.trim()} variant={copied ? "secondary" : "primary"}>
                       {copied ? <IconCheck className="h-4 w-4 text-success" /> : <IconCopy className="h-4 w-4" />}
                       {copied ? "Copied" : "Copy"}
                     </Button>
                     <a
-                      href={`mailto:?subject=${encodeURIComponent(contextLabel)}&body=${encodeURIComponent(result)}`}
+                      href={`mailto:?subject=${encodeURIComponent(resultContextLabel)}&body=${encodeURIComponent(result)}`}
                       className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-medium text-muted hover:text-navy"
                     >
-                      Email
+                      Open in email
                     </a>
                     <a
                       href={`https://wa.me/?text=${encodeURIComponent(result)}`}
@@ -391,7 +421,7 @@ export default function Rewriter({
                       last check stays with the person sending the letter. */}
                   <p className="border-t border-line px-4 py-3 text-[0.8125rem] leading-5 text-muted">
                     Your names, dates and numbers are meant to come back untouched — read the rewrite once before
-                    you send it. It is your application.
+                    you send it. Email and WhatsApp open another app with this text; nothing is sent automatically.
                   </p>
                   {error && <p role="alert" className="px-4 pb-3 text-sm text-flag">{error}</p>}
                 </div>
@@ -408,6 +438,7 @@ export default function Rewriter({
                     {limitReached ? <IconSparkle className="h-5 w-5" /> : <IconAlert className="h-5 w-5" />}
                   </span>
                   <p className="text-[0.9375rem] leading-6 text-navy">{error}</p>
+                  {result && <details className="rounded-xl border border-line p-3 text-sm"><summary className="cursor-pointer font-medium text-brand-700">Your previous result is still available</summary><p className="mt-3 whitespace-pre-wrap leading-6">{result}</p><Button type="button" onClick={handleCopy} variant="secondary" className="mt-3">{copied ? "Copied" : "Copy previous result"}</Button></details>}
                   {limitReached ? (
                     <div className="flex flex-col gap-2 sm:flex-row">
                       <ButtonLink href="/checkout">See Pro plans</ButtonLink>
@@ -459,7 +490,7 @@ export default function Rewriter({
               </li>
               <li className="flex items-start gap-2">
                 <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-success" />
-                Professional English without changing your meaning.
+                Review names, meaning, and your level of responsibility before sending.
               </li>
             </ul>
           </div>
@@ -474,14 +505,14 @@ export default function Rewriter({
               href="/checkout"
               className="text-[0.875rem] font-semibold text-brand-700 underline underline-offset-4 hover:text-brand"
             >
-              See the plans
+              See Pro pricing
             </Link>
           </div>
         )}
       </div>
 
       {/* Sticky action bar, only while the person is editing and the real button is off screen. */}
-      {hasText && !ctaVisible && phase !== "loading" && phase !== "done" && (
+      {hasText && !ctaVisible && !limitReached && phase !== "loading" && phase !== "done" && (
         <>
           <div aria-hidden="true" className="h-[5.25rem] lg:hidden" />
           <div

@@ -5,6 +5,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { SUPPORT_EMAIL } from "@/lib/constants";
 import { Button, ButtonLink, Container, Eyebrow, Section } from "@/components/ui/Primitives";
 import { IconAlert, IconCheck, IconLock, IconReceipt } from "@/components/ui/Icons";
+import { refreshProStatus } from "@/components/ui/useProStatus";
 
 type Status = "idle" | "working" | "done" | "failed";
 
@@ -72,6 +73,7 @@ export default function RestoreForm() {
         signal: AbortSignal.timeout(30000),
       });
       setServiceUnavailable(res.status >= 500);
+      if (res.ok) refreshProStatus();
       setStatus(res.ok ? "done" : "failed");
     } catch {
       setServiceUnavailable(true);
@@ -149,7 +151,7 @@ export default function RestoreForm() {
                       id="txn"
                       value={transactionId}
                       disabled={status === "working"}
-                      onChange={(e) => setTransactionId(e.target.value)}
+                      onChange={(e) => { setTransactionId(e.target.value); setFieldError(""); if (status === "failed") setStatus("idle"); }}
                       placeholder="txn_01hq8k3m…"
                       autoComplete="off"
                       spellCheck={false}

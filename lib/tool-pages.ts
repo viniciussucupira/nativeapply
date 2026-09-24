@@ -35,10 +35,10 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       PRICE_LINE,
     ogTitle: "Cover Letter Rewriter for Non-Native English Speakers",
     ogDescription:
-      "Paste your cover letter and get it back in natural professional English, with every fact untouched. $14/month.",
+      "Improve your cover letter's English, compare it with your original, and make final edits. One free rewrite a day; Pro is US$14/month.",
     eyebrow: "Cover letter rewriter",
-    headingLead: "A cover letter that opens doors, not",
-    headingAccent: "questions about your English",
+    headingLead: "Your experience, expressed in",
+    headingAccent: "clear, confident English",
     intro:
       "The first paragraph decides whether the rest gets read. Paste your draft and get it back in the warm, confident register a hiring manager in the US, UK, Canada, or Europe recognises immediately.",
     ctaLabel: "Rewrite my cover letter",
@@ -79,7 +79,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       before:
         "Dear Sir/Madam,\n\nI am writing [[cut:for apply]] to the position of Product Designer [[cut:that I saw announced in]] your website. I have 5 years of experience [[cut:in design of]] mobile applications and I [[cut:think that I could be a good addition for]] your team.",
       after:
-        "Dear Hiring Manager,\n\n[[add:I'm writing to apply for]] the Product Designer [[add:role listed on]] your website. I have five years of experience [[add:designing]] mobile applications, and [[add:I believe I would be a strong addition to]] your team.",
+        "Dear Hiring Manager,\n\n[[add:I'm writing to apply for]] the Product Designer [[add:role listed on]] your website. I have 5 years of experience [[add:designing]] mobile applications, and [[add:I believe I would be a strong addition to]] your team.",
       notes: ["More natural", "Confident tone", "Five years kept"],
     },
     faq: [
@@ -117,12 +117,12 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       PRICE_LINE,
     ogTitle: "Make Your Resume Sound Native",
     ogDescription:
-      "Paste your resume bullets and get them back concise, verb-first, and native-sounding. Numbers untouched. $14/month.",
+      "Make resume bullets concise and natural, with a built-in number comparison. One free rewrite a day; Pro is US$14/month.",
     eyebrow: "Resume rewriter",
     headingLead: "Resume bullets that sound",
-    headingAccent: "short, sharp, and American",
+    headingAccent: "clear, concise, and professional",
     intro:
-      "US resumes are terse in a way that feels almost rude in other languages. Paste your bullets and get them back in that register — starting with a verb, ending with a result, with every number exactly where you put it.",
+      "Make your contribution easier to understand. Paste your resume or CV bullets, choose American or British English, and review a more concise version before applying in the US, Canada, or Europe.",
     ctaLabel: "Rewrite my resume bullets",
     placeholder:
       "• Was responsible for the management of a team of 8 developers\n• Participated in the implementation of a new CRM that reduced the response time in 40%\n• Made the monthly reports for the direction…",
@@ -133,7 +133,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         title: "Filler removed, metrics kept",
-        body: "“Participated in”, “helped with”, and “was in charge of” disappear. The 40% and the team of 8 stay exactly as written.",
+        body: "Remove wordy phrasing while keeping your contribution accurate. Helping a team is different from leading it; check that the rewrite preserves that distinction and your metrics.",
       },
       {
         title: "Consistent tense and parallel structure",
@@ -162,7 +162,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       before:
         "• [[cut:Was responsible for the management of]] a team of 8 developers\n• [[cut:Participated in the implementation of]] a new CRM [[cut:that reduced the response time in]] 40%\n• [[cut:Made the monthly reports for the direction]]",
       after:
-        "• [[add:Managed]] a team of 8 developers\n• [[add:Implemented]] a new CRM [[add:and cut response time by]] 40%\n• [[add:Produced monthly reports for the executive team]]",
+        "• [[add:Managed]] a team of 8 developers\n• [[add:Contributed to implementing]] a new CRM [[add:that reduced response time by]] 40%\n• [[add:Produced monthly reports for management]]",
       notes: ["Verb first", "Half the words", "8 and 40% kept"],
     },
     faq: [
@@ -176,11 +176,11 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Is this different from the ATS page?",
-        a: "Same engine, different emphasis. Use the ATS-friendly page when you want plain wording a parsing system reads cleanly; use this one for the general polish of any resume.",
+        a: "Both pages use the same resume rewriting setting. The ATS page adds guidance about clear wording and formatting; it does not run an ATS scan, score your resume, or compare it with a job ad.",
       },
       {
         q: "Will it translate my job title?",
-        a: "No. Titles are facts and are left untouched. If your title needs a local equivalent, change it yourself before pasting.",
+        a: "The tool is instructed to preserve job titles. Review the result and only use a local equivalent if it accurately describes your role.",
       },
     ],
     related: [
@@ -224,7 +224,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         title: "Your metrics stay yours",
-        body: "15% stays 15%, three production lines stay three. Nothing is rounded, upgraded, or embellished.",
+        body: "The tool is instructed to keep 15% and 3 production lines as written. The number comparison flags differences so you can review them before sending.",
       },
     ],
     guidance: {
@@ -250,7 +250,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     faq: [
       {
         q: "Does it use British spelling?",
-        a: "It writes contemporary professional English and is not locked to one regional spelling. If you are applying in the UK, glance over the few words that differ — organise, programme, analyse — before you send.",
+        a: "British English is selected by default on this CV page. You can switch to American English above the editor. Choose the style your employer uses, then review the result; names, currencies, and dates are not converted.",
       },
       {
         q: "Should my CV be different for each country?",
@@ -287,14 +287,14 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     headingLead: "Bullets a tracking system can read and a",
     headingAccent: "human wants to read",
     intro:
-      "Applicant tracking systems do not reward clever phrasing; they reward plain words in a predictable shape. Paste your bullets and get them back short, verb-first, and measurable — the format that survives both the parser and the quick human skim after it.",
+      "Make your existing experience easier to read in plain English. This page uses our resume rewriter and adds formatting guidance. It does not scan an ATS, score your resume, or guarantee that an application passes a screening system.",
     ctaLabel: "Rewrite my bullets",
     placeholder:
       "• Had the responsibility of the optimisation of the processes of the logistic sector, obtaining a diminution of the costs\n• Acted in the elaboration of dashboards for the follow-up of the KPIs…",
     benefits: [
       {
         title: "Plain words a parser recognises",
-        body: "Ornate phrasing is replaced with the vocabulary job descriptions actually use, so the terms on your resume match the terms being searched for.",
+        body: "Simplify complicated phrasing while keeping the skills and tools you actually named. Check relevant terminology against the job description yourself.",
       },
       {
         title: "One idea per line",
@@ -452,14 +452,14 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     headingLead: "A connection note that gets",
     headingAccent: "accepted, not ignored",
     intro:
-      "LinkedIn gives you 300 characters and one chance. Paste your note and get it back natural, specific, and short enough to fit — the version that reads like a person rather than an outreach sequence.",
+      "Start a professional conversation with a short, personal note. Paste your draft, review the rewrite, and check it against the character limit shown in your LinkedIn composer before sending.",
     ctaLabel: "Rewrite my LinkedIn note",
     placeholder:
       "Hello, I would like to add you to my professional network because I am very interested in the area of your company and I think we could have a professional exchange very enriching…",
     benefits: [
       {
         title: "Short enough for a connection note",
-        body: "LinkedIn caps these notes at 300 characters. The rewrite drops the padding and the editor counts both versions for you, so you can see it fits before you send it.",
+        body: "Connection-note limits can differ from regular messages. The editor counts your draft and result so you can compare them with the limit LinkedIn shows for your account. Edit the result here if it needs shortening.",
       },
       {
         title: "Specific instead of generic",
@@ -476,7 +476,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     ],
     guidance: {
       title: "How to write the note itself",
-      intro: "300 characters is not much. Spend them like this.",
+      intro: "A brief introduction works best when every sentence has a purpose.",
       items: [
         "Say where you found them in six words or fewer.",
         "Give one honest, concrete reason for connecting.",
@@ -502,7 +502,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Does it count characters for me?",
-        a: "Yes — the editor counts your draft as you type and counts the rewrite when it comes back, so you can check both against LinkedIn's 300-character limit before sending.",
+        a: "Yes. Both versions have a character count. Check the limit shown in your LinkedIn composer, then shorten the editable result if needed. NativeApply does not automatically enforce LinkedIn's account-specific limit.",
       },
       {
         q: "Can I use it for InMail as well?",
@@ -510,7 +510,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Will it write the note from scratch for me?",
-        a: "No. It rewrites what you give it. A tool that invents the reason you admire someone is writing a lie with your name on it.",
+        a: "It rewrites your own draft. Include a real reason for reaching out and a clear request; the tool is instructed not to invent a personal connection or experience.",
       },
     ],
     related: [
@@ -631,8 +631,8 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
         body: "“I would like to present my candidature” and “I have worked during 7 years” are the two phrases that mark a letter as translated. Both go.",
       },
       {
-        title: "Keeps your seven years as seven years",
-        body: "Durations, employers, and responsibilities are untouched. The letter becomes easier to read, not bigger than your record.",
+        title: "Your experience remains the starting point",
+        body: "The rewrite is instructed to preserve durations, employers, and responsibilities. Compare the result with your original to make sure the wording stays accurate.",
       },
       {
         title: "Plain text, ready for the form field",
@@ -656,7 +656,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       before:
         "Dear Recruitment Team,\n\nI [[cut:would like to present my candidature for]] the position of Logistics Coordinator [[cut:published in]] your careers page. I have worked [[cut:during 7 years in the sector of transport]] and I [[cut:possess]] experience in route planning.",
       after:
-        "Dear Hiring Manager,\n\nI'm [[add:applying for]] the Logistics Coordinator [[add:role posted on]] your careers page. I have [[add:seven years of experience in transport]], [[add:including]] route planning.",
+        "Dear Hiring Manager,\n\nI'm [[add:applying for]] the Logistics Coordinator [[add:role posted on]] your careers page. I have [[add:7 years of experience in transport]], [[add:including]] route planning.",
       notes: ["Clearer structure", "Seven years kept", "Shorter"],
     },
     faq: [
@@ -753,7 +753,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Can it change how I describe my status?",
-        a: "It keeps your description as written. Your status is a legal fact, and a rewriting tool that softened or strengthened it would be doing you real harm.",
+        a: "It is instructed to preserve your description, but you must review the result carefully. NativeApply improves wording; it cannot verify your status or determine eligibility.",
       },
       {
         q: "Does this work for student and graduate visa routes too?",

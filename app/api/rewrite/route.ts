@@ -79,6 +79,7 @@ ${variant.instruction}
 Rules:
 - Fix grammar, word choice, and phrasing so it reads as if written by a native English-speaking professional.
 - Preserve the original meaning, facts, numbers, and achievements exactly. Never invent or exaggerate anything.
+- Preserve the level of responsibility: helped or contributed must not become led, owned, or solely achieved. Keep current and past employment status as written.
 - Copy names, dates, numeric expressions, currency symbols and percentages exactly as written. Keep 6 as 6, not six; do not convert currencies, units or date formats.
 - Do not make it overly formal or stiff — match natural, contemporary professional English.
 - Before finalizing, mentally proofread every sentence for subject-verb agreement (e.g., a singular subject like "experience" or "background" needs a singular verb: "experience that aligns," not "experience that align") and correct article usage.
