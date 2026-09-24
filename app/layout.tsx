@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "NativeApply — Sound Native in Your Job Application",
     description:
-      "Paste your cover letter, resume, or LinkedIn message. Get it back polished and natural. $14/month — try it free first with just your email, no password.",
+      "Polish your cover letter, resume, or LinkedIn message in American or British English. Try one rewrite a day free, no email or card. Pro is $14/month.",
     url: SITE_URL,
     siteName: "NativeApply",
     type: "website",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "NativeApply — Sound Native in Your Job Application",
     description:
-      "Paste your cover letter, resume, or LinkedIn message. Get it back polished and natural. $14/month — try it free first with just your email, no password.",
+      "Polish your cover letter, resume, or LinkedIn message in American or British English. Try one rewrite a day free, no email or card. Pro is $14/month.",
   },
   verification: {
     google: "PPtQILt6oZAUpSMtxJiEetgcxi5jLKAXjkpSLPreuk0",

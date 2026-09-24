@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { IconCheck, IconCopy, IconCoverLetter, IconFacts } from "@/components/ui/Icons";
 
 const AFTER_PLAIN =
-  "I'm writing to apply for the Financial Analyst position. I have six years of experience building financial reports, and I'd welcome the chance to bring that work to your team.";
+  "I'm writing to apply for the Financial Analyst position. I have 6 years of experience preparing reports, and I'd welcome the chance to bring that work to your team.";
 
 export default function HeroDemo() {
   const [revealed, setRevealed] = useState(false);
@@ -104,8 +104,8 @@ export default function HeroDemo() {
             </div>
             <p className="mt-2 text-[0.9375rem] leading-7 text-ink">
               <span className="na-mark-add">I&apos;m writing to apply for</span> the Financial Analyst position. I have{" "}
-              <span className="na-mark-add">six years</span> of experience{" "}
-              <span className="na-mark-add">building financial reports</span>, and I&apos;d welcome the chance to bring
+              6 years of experience{" "}
+              <span className="na-mark-add">preparing reports</span>, and I&apos;d welcome the chance to bring
               that work to your team.
             </p>
             <div className="mt-3.5 flex flex-wrap items-center gap-2">

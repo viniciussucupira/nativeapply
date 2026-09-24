@@ -40,6 +40,20 @@ npm install
 npm run dev
 ```
 
+## Rewrite experience and validation
+
+- One free rewrite per day, without an email gate. Production usage checks fail closed if Redis is unavailable.
+- American English is the default; British English is available in every editor.
+- Results include the submitted original and a comparison of digit-based expressions. This check is not verification of names, claims, or meaning.
+- Run `npm test` on Node 22.18+ or 24+, `npm run lint`, and `npm run build` before publishing.
+
+## Pro session security
+
+Pro cookies are signed and expire after one year; active entitlement is still checked with Redis/Paddle.
+Set an optional `PRO_SESSION_SECRET` or keep the existing `PADDLE_WEBHOOK_SECRET` configured as the signing-key fallback.
+Legacy unsigned cookies require one receipt-based restore; the editor explains that no new payment is needed.
+The restore flow still uses Paddle receipts or support assistance. Automated email login requires a separate verified email delivery integration and is not enabled.
+
 ## Deploy
 
 1. Push this repo to GitHub.

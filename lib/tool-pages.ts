@@ -55,7 +55,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         title: "Your experience, exactly as you wrote it",
-        body: "Years, employers, titles, and numbers come back identical. The tool never adds an achievement to make the letter stronger.",
+        body: "The tool is instructed to keep years, employers, titles, and numbers. Compare the rewrite with your original before sending.",
       },
       {
         title: "Ready to paste into the application form",
@@ -97,7 +97,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Does it keep the company name and role title?",
-        a: "Yes. Names, titles, dates, and numbers are never changed. Only the wording around them is.",
+        a: "The rewrite is instructed to keep names, titles, dates, and numbers. A numeric comparison flags differences; review names and meaning yourself before sending.",
       },
     ],
     related: [
@@ -262,7 +262,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Will it remove my qualifications or dates?",
-        a: "No. Dates, institutions, grades, and certifications are facts and are preserved exactly.",
+        a: "The rewrite is instructed to preserve dates, institutions, grades, and certifications. Compare the original and result to confirm they are correct.",
       },
     ],
     related: [
@@ -427,7 +427,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Will it keep the role title exactly?",
-        a: "Yes. Names, companies, titles, and dates are facts and are never changed.",
+        a: "The tool is instructed to keep names, companies, titles, and dates. Check them against your original before sending.",
       },
     ],
     related: [
@@ -670,7 +670,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Will it keep the name of the company?",
-        a: "Yes. Company names, role titles, and dates are facts and never change.",
+        a: "The tool is instructed to keep company names, role titles, and dates. Review them alongside your original before sending.",
       },
       {
         q: "How long should the letter be?",
@@ -714,7 +714,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         title: "Keeps your status exactly as you describe it",
-        body: "Your visa situation is a legal fact. The tool never rephrases it into something stronger, vaguer, or different from what you wrote.",
+        body: "The tool is instructed to preserve how you describe your visa situation. Check the wording carefully before sending; a rewrite does not verify your immigration status.",
       },
       {
         title: "Leads with your value, not your paperwork",

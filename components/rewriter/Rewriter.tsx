@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CONTEXT_TYPES, ContextType, FREE_LIMIT_PER_DAY } from "@/lib/constants";
+import { ENGLISH_VARIANTS, type EnglishVariant, reviewNumbers } from "@/lib/rewrite-review";
 import { Button, ButtonLink, Pill } from "@/components/ui/Primitives";
 import {
   IconAlert,
@@ -10,7 +11,6 @@ import {
   IconCopy,
   IconCoverLetter,
   IconFollowUpEmail,
-  IconLock,
   IconRecruiterMessage,
   IconResumeBullets,
   IconSparkle,
@@ -61,22 +61,26 @@ export default function Rewriter({
   const [limitReached, setLimitReached] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const [askEmail, setAskEmail] = useState(false);
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [savingEmail, setSavingEmail] = useState(false);
+  const [englishVariant, setEnglishVariant] = useState<EnglishVariant>("en-US");
+  const [submittedDraft, setSubmittedDraft] = useState("");
 
   const [justUpgraded, setJustUpgraded] = useState(false);
-  const { isPro } = useProStatus();
+  const { isPro, needsRestore, unavailable } = useProStatus();
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const emailRef = useRef<HTMLInputElement | null>(null);
   const resultRef = useRef<HTMLDivElement | null>(null);
   const ctaRef = useRef<HTMLDivElement | null>(null);
   const [ctaVisible, setCtaVisible] = useState(true);
 
   const tooLong = text.length > MAX_CHARS;
   const hasText = text.trim().length > 0;
+
+  useEffect(() => {
+    if ((phase === "done" || phase === "error") && window.matchMedia("(max-width: 1023px)").matches) {
+      resultRef.current?.focus({ preventScroll: true });
+      resultRef.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" });
+    }
+  }, [phase]);
 
   useEffect(() => {
     const id = window.setTimeout(() => {
@@ -105,11 +109,13 @@ export default function Rewriter({
       setError("");
       setLimitReached(false);
       setResult("");
+      setCopied(false);
+      setSubmittedDraft(body);
       try {
         const res = await fetch("/api/rewrite", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: body, context: contextValue }),
+          body: JSON.stringify({ text: body, context: contextValue, englishVariant }),
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) {
@@ -118,6 +124,9 @@ export default function Rewriter({
           setPhase("error");
           return;
         }
+        if (typeof data.rewritten !== "string" || !data.rewritten.trim()) {
+          throw new Error("Missing rewrite");
+        }
         setResult(data.rewritten);
         setPhase("done");
       } catch {
@@ -125,54 +134,12 @@ export default function Rewriter({
         setPhase("error");
       }
     },
-    []
+    [englishVariant]
   );
-
-  function hasUnlocked() {
-    try {
-      return window.localStorage.getItem("na_unlocked") === "true";
-    } catch {
-      return false;
-    }
-  }
 
   function handleSubmit() {
     if (!hasText || tooLong || phase === "loading") return;
-    if (!isPro && !hasUnlocked()) {
-      setAskEmail(true);
-      window.setTimeout(() => emailRef.current?.focus(), 60);
-      return;
-    }
     runRewrite(text, context);
-  }
-
-  async function handleEmailSubmit(event: FormEvent) {
-    event.preventDefault();
-    setEmailError("");
-    const trimmed = email.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
-      setEmailError("Please enter a valid email address.");
-      return;
-    }
-    setSavingEmail(true);
-    try {
-      await fetch("/api/capture-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed }),
-      });
-    } catch {
-      /* the gate never blocks on a network error */
-    } finally {
-      try {
-        window.localStorage.setItem("na_unlocked", "true");
-      } catch {
-        /* storage unavailable */
-      }
-      setSavingEmail(false);
-      setAskEmail(false);
-      if (text.trim()) runRewrite(text, context);
-    }
   }
 
   async function handleCopy() {
@@ -192,14 +159,23 @@ export default function Rewriter({
     setPhase("idle");
     setError("");
     setLimitReached(false);
+    setSubmittedDraft("");
+    setCopied(false);
     textareaRef.current?.focus();
   }
 
   const contextLabel = CONTEXT_TYPES.find((c) => c.value === context)?.label ?? "Message";
   const activePlaceholder = placeholder ?? PLACEHOLDERS[context];
+  const numberReview = reviewNumbers(submittedDraft, result);
 
   return (
     <div className={className}>
+      {(needsRestore || unavailable) && (
+        <div role="status" className="mb-5 rounded-2xl border border-brand-100 bg-brand-50 p-4 text-sm leading-6 text-navy">
+          {needsRestore ? "Please verify your previous Pro purchase once to refresh access in this browser. You do not need to pay again. " : "We could not check your Pro access right now. Please refresh before rewriting if you are a subscriber. "}
+          <Link href="/restore" className="font-semibold underline underline-offset-4">Restore Pro</Link>
+        </div>
+      )}
       {justUpgraded && (
         <div className="mb-5 flex items-start gap-3 rounded-2xl border border-success/25 bg-success-50 p-4 text-[0.9375rem] text-navy">
           <IconCheck className="mt-0.5 h-5 w-5 shrink-0 text-success" />
@@ -240,7 +216,7 @@ export default function Rewriter({
                   type="button"
                   role={lockContext ? undefined : "radio"}
                   aria-checked={lockContext ? undefined : selected}
-                  disabled={lockContext}
+                  disabled={lockContext || phase === "loading"}
                   onClick={() => setContext(item.value)}
                   className={
                     "flex min-h-[3.25rem] items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-[0.875rem] font-medium transition-colors duration-200 " +
@@ -255,6 +231,18 @@ export default function Rewriter({
                 </button>
               );
             })}
+          </div>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <label htmlFor="na-english" className="text-sm font-medium text-navy">English style</label>
+            <select
+              id="na-english"
+              value={englishVariant}
+              disabled={phase === "loading"}
+              onChange={(event) => setEnglishVariant(event.target.value as EnglishVariant)}
+              className="min-h-11 rounded-xl border border-line bg-white px-3 text-sm text-navy focus:outline-none focus:ring-4 focus:ring-brand/15"
+            >
+              {ENGLISH_VARIANTS.map((variant) => <option key={variant.value} value={variant.value}>{variant.label}</option>)}
+            </select>
           </div>
         </div>
 
@@ -276,6 +264,7 @@ export default function Rewriter({
               id="na-text"
               ref={textareaRef}
               value={text}
+              disabled={phase === "loading"}
               onChange={(e) => setText(e.target.value)}
               placeholder={activePlaceholder}
               rows={10}
@@ -288,10 +277,9 @@ export default function Rewriter({
             <p id="na-text-help" className="mt-2 text-[0.8125rem] text-muted">
               {tooLong
                 ? `That is ${(text.length - MAX_CHARS).toLocaleString("en-US")} characters over the limit. Rewrite it in two parts.`
-                : "Paste it exactly as you wrote it. Your names, dates, numbers and facts stay unchanged."}
+                : "Paste your own English draft. The rewrite is instructed to keep your names, dates, numbers, and facts."}
             </p>
 
-            {!askEmail ? (
               <div ref={ctaRef} className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Button
                   type="button"
@@ -319,57 +307,10 @@ export default function Rewriter({
                 {!isPro && (
                   <p className="text-[0.8125rem] leading-5 text-muted">
                     {FREE_LIMIT_PER_DAY === 1 ? "1 free rewrite a day" : `${FREE_LIMIT_PER_DAY} free rewrites a day`}.
-                    No password required.
+                    No email or card required.
                   </p>
                 )}
               </div>
-            ) : (
-              <form
-                onSubmit={handleEmailSubmit}
-                className="mt-4 rounded-2xl border border-brand-100 bg-brand-50 p-4"
-              >
-                <div className="flex items-start gap-2.5">
-                  <IconLock className="mt-0.5 h-[1.15rem] w-[1.15rem] shrink-0 text-brand-700" />
-                  <div className="flex-1">
-                    <label htmlFor="na-email" className="text-sm font-semibold text-navy">
-                      Enter your email to run your first rewrite
-                    </label>
-                    <p className="mt-1 text-[0.8125rem] leading-5 text-muted">
-                      No password, no credit card. We use it only to contact you about NativeApply.
-                    </p>
-                    <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-                      <input
-                        id="na-email"
-                        ref={emailRef}
-                        type="email"
-                        required
-                        autoComplete="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@example.com"
-                        aria-describedby={emailError ? "na-email-error" : undefined}
-                        aria-invalid={Boolean(emailError)}
-                        className="h-12 w-full rounded-full border border-line-strong bg-white px-4 text-base text-ink placeholder:text-muted-soft focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15 sm:flex-1"
-                      />
-                      <Button type="submit" disabled={savingEmail} className="sm:w-auto">
-                        {savingEmail ? "One moment…" : "Continue"}
-                      </Button>
-                    </div>
-                    {emailError && (
-                      <p id="na-email-error" role="alert" className="mt-2 text-[0.8125rem] font-medium text-flag">
-                        {emailError}
-                      </p>
-                    )}
-                    <p className="mt-3 text-[0.8125rem] text-muted">
-                      Already paid on another device?{" "}
-                      <Link href="/restore" className="font-medium text-brand-700 underline underline-offset-4">
-                        Restore Pro
-                      </Link>
-                    </p>
-                  </div>
-                </div>
-              </form>
-            )}
           </div>
 
           {/* ---------- result ---------- */}
@@ -385,9 +326,10 @@ export default function Rewriter({
 
             <div
               ref={resultRef}
+              tabIndex={-1}
               aria-live="polite"
               aria-atomic="false"
-              className="mt-3 flex flex-1 flex-col rounded-xl border border-line bg-white"
+              className="mt-3 flex flex-1 scroll-mt-24 flex-col rounded-xl border border-line bg-white focus:outline-none focus:ring-2 focus:ring-brand/30"
             >
               {phase === "loading" && (
                 <div className="relative flex-1 overflow-hidden rounded-xl p-5">
@@ -405,6 +347,18 @@ export default function Rewriter({
 
               {phase === "done" && (
                 <div className="na-fade flex flex-1 flex-col">
+                  <div className="border-b border-line px-5 py-4 text-sm">
+                    <p className={numberReview.changed ? "font-semibold text-flag" : "font-semibold text-navy"}>
+                      {numberReview.changed ? "Check the numbers before sending" : numberReview.hasNumbers ? "Numeric expressions match your draft" : "Ready for your review"}
+                    </p>
+                    <p className="mt-1 text-xs leading-5 text-muted">
+                      {numberReview.changed ? "A number was added, removed, or reformatted. Compare the original below." : "Check names, meaning, and achievements too. A number check cannot verify every fact."}
+                    </p>
+                    <details className="mt-3">
+                      <summary className="cursor-pointer font-medium text-brand-700">Compare with your original</summary>
+                      <p className="mt-3 whitespace-pre-wrap rounded-lg bg-ivory p-3 leading-6 text-ink">{submittedDraft}</p>
+                    </details>
+                  </div>
                   <p className="flex-1 whitespace-pre-wrap px-5 py-5 text-base leading-7 text-ink">{result}</p>
                   <div className="flex flex-wrap items-center gap-2 border-t border-line px-4 py-3">
                     <Button type="button" onClick={handleCopy} variant={copied ? "secondary" : "primary"}>
@@ -439,6 +393,7 @@ export default function Rewriter({
                     Your names, dates and numbers are meant to come back untouched — read the rewrite once before
                     you send it. It is your application.
                   </p>
+                  {error && <p role="alert" className="px-4 pb-3 text-sm text-flag">{error}</p>}
                 </div>
               )}
 
@@ -487,7 +442,7 @@ export default function Rewriter({
                   <p className="max-w-[22rem] text-[0.9375rem] leading-6 text-muted">
                     {hasText
                       ? "Press “Rewrite my text” and your polished version appears here."
-                      : "Paste your draft on the left. Your polished version appears here, ready to copy."}
+                      : "Paste your draft to get started. Your polished version appears here, ready to review and copy."}
                   </p>
                 </div>
               )}
@@ -500,7 +455,7 @@ export default function Rewriter({
               </li>
               <li className="flex items-start gap-2">
                 <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-success" />
-                Names, dates, numbers and facts remain unchanged.
+                Numeric expressions checked against your original.
               </li>
               <li className="flex items-start gap-2">
                 <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-success" />
@@ -526,7 +481,7 @@ export default function Rewriter({
       </div>
 
       {/* Sticky action bar, only while the person is editing and the real button is off screen. */}
-      {hasText && !ctaVisible && phase !== "loading" && !askEmail && (
+      {hasText && !ctaVisible && phase !== "loading" && phase !== "done" && (
         <>
           <div aria-hidden="true" className="h-[5.25rem] lg:hidden" />
           <div

@@ -62,7 +62,7 @@ function cap(text: string): string {
 export function professionIntro(doc: DocType, p: Profession): string {
   switch (doc.key) {
     case "cover-letter":
-      return `Paste the cover letter you wrote as ${p.singular} and get it back in natural professional English — the register a hiring manager reads without stopping. Your employers, dates, and numbers come back exactly as you wrote them.`;
+      return `Paste the cover letter you wrote as ${p.singular} and get it back in natural professional English. Compare the rewrite with your original and review your employers, dates, and numbers before sending.`;
     case "resume-bullet":
       return `Paste the bullet points from your ${p.label.toLowerCase().replace(/s$/, "")} experience and get them back short and verb-first, in the style US and European recruiters expect. Every metric you earned stays untouched.`;
     case "linkedin-message":
@@ -206,11 +206,11 @@ export function professionFaq(doc: DocType, p: Profession): FaqItem[] {
     },
     {
       q: `Will it change the facts in my ${doc.label}?`,
-      a: "No. Grammar, word choice, and phrasing are the only things that change. Every employer, date, number, certification, and achievement you wrote is preserved exactly, and nothing is invented to strengthen the document.",
+      a: "The tool is instructed to preserve employers, dates, numbers, certifications, and achievements. Numeric expressions are compared with your original, but no automatic check can verify every fact. Review both versions before sending.",
     },
     {
       q: `What does it cost for ${p.label.toLowerCase()}?`,
-      a: "NativeApply Pro is $14 a month, with unlimited rewrites and no lock-in. One free rewrite a day, with just your email, lets you see the result on your own text first.",
+      a: "NativeApply Pro is $14 a month, with unlimited rewrites and no lock-in. One free rewrite a day, with no email or card required, lets you see the result on your own text first.",
     },
     {
       q: `Can I use the same rewrite for every application?`,

@@ -1,12 +1,11 @@
 import { Container } from "@/components/ui/Primitives";
 import { IconFacts, IconLock, IconShield, IconGlobe } from "@/components/ui/Icons";
-import RewriteCount from "./RewriteCount";
 
 const ITEMS = [
-  { Icon: IconShield, text: "Your text is not stored", tone: "bg-jade-50 text-jade" },
-  { Icon: IconFacts, text: "Facts and numbers unchanged", tone: "bg-brand-50 text-brand" },
-  { Icon: IconLock, text: "No password, no card to try it", tone: "bg-violet-50 text-violet" },
-  { Icon: IconGlobe, text: "Written for US, UK and EU hiring", tone: "bg-amber-50 text-amber" },
+  { Icon: IconShield, text: "Drafts not stored by NativeApply", tone: "bg-jade-50 text-jade" },
+  { Icon: IconFacts, text: "Built-in number comparison", tone: "bg-brand-50 text-brand" },
+  { Icon: IconLock, text: "No email or card to try it", tone: "bg-violet-50 text-violet" },
+  { Icon: IconGlobe, text: "For US, Canadian and European job searches", tone: "bg-amber-50 text-amber" },
 ];
 
 export default function TrustStrip() {
@@ -23,7 +22,6 @@ export default function TrustStrip() {
             </li>
           ))}
         </ul>
-        <RewriteCount className="block border-t border-line py-3 text-center text-[0.8125rem] text-muted" />
       </Container>
     </div>
   );

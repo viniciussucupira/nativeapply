@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PRO_COOKIE_NAME, PRO_COOKIE_MAX_AGE_SECONDS } from "@/lib/pro-cookie";
+import { PRO_COOKIE_NAME, PRO_COOKIE_MAX_AGE_SECONDS, createProSession, sessionSecret } from "@/lib/pro-cookie";
 import { fetchTransaction, grantProForTransaction } from "@/lib/paddle";
 
 // Called right after Paddle's checkout.completed event, and by the /restore
@@ -17,6 +17,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "missing_transaction_id" }, { status: 400 });
   }
 
+  try {
+  const secret = sessionSecret();
   const tx = await fetchTransaction(transactionId.trim());
   if (!tx) {
     return NextResponse.json({ error: "transaction_not_found" }, { status: 400 });
@@ -28,7 +30,7 @@ export async function POST(req: NextRequest) {
   }
 
   const res = NextResponse.json({ ok: true });
-  res.cookies.set(PRO_COOKIE_NAME, email, {
+  res.cookies.set(PRO_COOKIE_NAME, createProSession(email, secret), {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
@@ -36,4 +38,7 @@ export async function POST(req: NextRequest) {
     path: "/",
   });
   return res;
+  } catch {
+    return NextResponse.json({ error: "restore_unavailable", message: "We could not check your purchase. Please try again shortly." }, { status: 503 });
+  }
 }

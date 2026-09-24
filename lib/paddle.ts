@@ -39,16 +39,16 @@ function apiBase(): string {
 async function paddleGet<T>(path: string): Promise<T | null> {
   const apiKey = process.env.PADDLE_API_KEY;
   if (!apiKey) {
-    console.error("na:paddle: PADDLE_API_KEY is missing");
-    return null;
+    throw new Error("Payment verification unavailable");
   }
   const res = await fetch(`${apiBase()}${path}`, {
     headers: { Authorization: `Bearer ${apiKey}` },
     cache: "no-store",
+    signal: AbortSignal.timeout(10000),
   });
   if (!res.ok) {
-    console.error(`na:paddle: GET ${path} failed with ${res.status}`);
-    return null;
+    if (res.status === 404) return null;
+    throw new Error(`Payment provider unavailable (${res.status})`);
   }
   const json = await res.json();
   return (json?.data ?? null) as T | null;
