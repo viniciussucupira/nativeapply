@@ -29,7 +29,11 @@ const sections: LegalSection[] = [
         Free rewrites do not require an email address. If you previously supplied one through our free-rewrite
         form, it remains separate from your drafts and usage counts and may be used to contact you about
         NativeApply. We never sell it or share it with advertisers. You can request deletion at the address below.
-        Paid access and support may require your email address.
+        Paid access and support may require your email address. When you request an access link, we use Resend
+        to deliver it to your email address. The link expires after 15 minutes and can be used once. We store
+        its hashed token and your email for up to 15 minutes, and hashed email/IP request counters for up to
+        one hour to prevent abuse. Resend processes delivery data under its own retention terms. Access-link
+        requests do not subscribe you to marketing emails.
       </p>
     ),
   },

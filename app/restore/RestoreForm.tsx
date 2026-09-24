@@ -7,6 +7,7 @@ import { Button, ButtonLink, Container, Eyebrow, Section } from "@/components/ui
 import { IconAlert, IconCheck, IconLock, IconReceipt } from "@/components/ui/Icons";
 import { refreshProStatus } from "@/components/ui/useProStatus";
 import { parseRestoreInput } from "@/lib/restore-input";
+import { EmailRequest } from "./EmailAccess";
 
 type Status = "idle" | "working" | "done" | "failed";
 
@@ -23,6 +24,12 @@ const STEPS = [
     title: "Paste it into the form",
     body: "We check it against your purchase and switch Pro on in this browser. Nothing else is asked of you.",
   },
+];
+
+const EMAIL_STEPS = [
+  { title: "Enter your purchase email", body: "Use the same email you entered at checkout. No password or receipt code is needed." },
+  { title: "Open your access email", body: "Check your inbox and spam folder. The link expires in 15 minutes and works once." },
+  { title: "Tap Access my Pro", body: "Open the link on the device you want to use. We verify your active purchase and reconnect Pro without another charge." },
 ];
 
 function ReceiptIllustration() {
@@ -57,7 +64,7 @@ function ReceiptIllustration() {
   );
 }
 
-export default function RestoreForm() {
+export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: boolean }) {
   const [transactionId, setTransactionId] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [fieldError, setFieldError] = useState("");
@@ -129,7 +136,8 @@ export default function RestoreForm() {
                 Use this page after switching devices or clearing cookies to reconnect your existing purchase, without another charge.
               </p>
 
-              <Link href="#receipt-help" className="inline-flex min-h-11 items-center font-semibold text-brand-700 underline underline-offset-4">No purchase code? Get recovery help</Link>
+              {emailEnabled && status !== "done" && <EmailRequest />}
+              <Link href="#receipt-help" className="inline-flex min-h-11 items-center font-semibold text-brand-700 underline underline-offset-4">{emailEnabled ? "Need more help?" : "No purchase code? Get recovery help"}</Link>
 
               {status === "done" ? (
                 <div className="mt-2 rounded-2xl border border-success/25 bg-success-50 p-6" role="status">
@@ -147,7 +155,7 @@ export default function RestoreForm() {
               ) : (
                 <form onSubmit={handleSubmit} className="mt-2 flex flex-col gap-3">
                   <label htmlFor="txn" className="text-sm font-semibold text-navy">
-                    Purchase code or restore link
+                    {emailEnabled ? "Or use a purchase code or restore link" : "Purchase code or restore link"}
                   </label>
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <input
@@ -203,7 +211,7 @@ export default function RestoreForm() {
                 Restoring access does not charge you again or reveal your card details.
               </p>
               <p className="text-sm leading-6 text-muted">This does not renew or cancel your subscription. To stop future payments, <Link href="/subscription#cancel" className="font-semibold text-brand-700 underline">see how to cancel</Link>.</p>
-              {status !== "done" && (
+              {status !== "done" && !emailEnabled && (
                 <p className="text-sm leading-6 text-muted">
                   Cannot find your receipt?{" "}
                   <a href={mailto} className="font-semibold text-brand-700 underline underline-offset-4">
@@ -216,7 +224,7 @@ export default function RestoreForm() {
 
             <div className="flex flex-col gap-5">
               <ol className="flex flex-col gap-4">
-                {STEPS.map((step, index) => (
+                {(emailEnabled ? EMAIL_STEPS : STEPS).map((step, index) => (
                   <li key={step.title} className="flex gap-4 rounded-2xl border border-line bg-white p-5">
                     <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-50 text-[0.8125rem] font-semibold text-brand-700">
                       {index + 1}
@@ -228,7 +236,7 @@ export default function RestoreForm() {
                   </li>
                 ))}
               </ol>
-              <ReceiptIllustration />
+              {!emailEnabled && <ReceiptIllustration />}
             </div>
           </div>
         </Container>
@@ -237,7 +245,7 @@ export default function RestoreForm() {
       <Section tone="ivory" id="receipt-help" className="scroll-mt-24">
         <Container size="wide" className="py-12 sm:py-14">
           <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 text-center">
-            <h2 className="text-[1.0625rem] font-semibold text-navy">Recover access without a purchase code</h2>
+            <h2 className="text-[1.0625rem] font-semibold text-navy">{emailEnabled ? "Still need help accessing Pro?" : "Recover access without a purchase code"}</h2>
             <p className="text-[0.9375rem] leading-6 text-muted">
               Email us from the address you used to pay. Our support team will verify the purchase and help restore access. This is a manual support request, not an automatic sign-in email. Do not buy again to recover a purchase. Have not bought Pro yet? The{" "}
               <Link href="/checkout" className="font-medium text-brand-700 underline underline-offset-4">

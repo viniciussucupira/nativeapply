@@ -27,7 +27,7 @@ export default function SubscriptionPage() {
           </article>
           <article className="flex flex-col rounded-2xl border border-line p-5">
             <h2 className="text-lg font-semibold text-navy">Already paid?</h2>
-            <p className="mt-2 flex-1 text-sm leading-6 text-muted">New device or cleared cookies? Restore Pro access using your receipt. It reconnects your existing purchase; it does not charge you again.</p>
+            <p className="mt-2 flex-1 text-sm leading-6 text-muted">New device or cleared cookies? Open the Pro access page to reconnect your existing purchase. You will not be charged again.</p>
             <ButtonLink href="/restore" variant="secondary" className="mt-5">Restore Pro access</ButtonLink>
           </article>
           <article className="flex flex-col rounded-2xl border border-line p-5">

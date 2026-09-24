@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import RestoreForm from "./RestoreForm";
+import { recoveryEmailReady } from "@/lib/recovery-email";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Restore Pro | NativeApply",
@@ -8,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function RestorePage() {
-  return <RestoreForm />;
+  return <RestoreForm emailEnabled={recoveryEmailReady()} />;
 }

@@ -1,0 +1,20 @@
+# Pro access emails
+
+## Production configuration
+
+- Resend domain: `mail.nativeapply.net` (DNS hosted on Vercel).
+- `RESEND_API_KEY`: a sending-only key restricted to that domain, stored only in Vercel's sensitive production environment variables.
+- `RECOVERY_EMAIL_FROM`: `NativeApply <access@mail.nativeapply.net>`.
+- Uses existing Redis credentials and the existing Pro session signing secret.
+- Redeploy after adding environment variables. The email form remains hidden until both email variables exist.
+- Disable open/click tracking for this domain. Access tokens are URL fragments and must not be rewritten or tracked.
+
+## Flow and safeguards
+
+`/restore` requests an email; `/restore/email#token=...` displays an explicit confirmation. POST verification checks existing paid entitlement, then atomically consumes the token and sets the signed Pro cookie. GET never consumes a token, protecting against email link scanners. Only token hashes are stored, with a 15-minute expiry. No bearer token or email is logged by the handlers. Tokens are removed from the address bar before verification. Rate limits: 3 emails/address/hour, 10/IP/hour, 100 total/hour; 30 verification attempts/IP/hour. Redis errors fail closed. Delivery failures invalidate that token. Temporary entitlement errors allow retry until expiration.
+
+Every valid, permitted request receives the same access email regardless of purchase status. Subscription status is disclosed only after proving control of that inbox. A purchase recorded by the Paddle checkout/webhook is required; inactive customers are never granted Pro. Missing purchase records retain the receipt-code and support fallback.
+
+## Launch validation
+
+Run `npm run lint`, `npm test`, `npm run build`. Verify the mobile form and error/success screens. With configuration active, send a test link to an owner-controlled inbox, verify delivery in Resend, then check that an inbox without a paid purchase is denied. Use an existing paid test purchase to validate success without making a new charge. Never manually grant production Pro for a test. Verify replay rejection. Do not claim full delivery validation until a real email has arrived.

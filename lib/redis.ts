@@ -1,4 +1,5 @@
 import { Redis } from "@upstash/redis";
+import { recoveryHash, type RecoveryStore } from "./recovery";
 
 // Reuses the SAME Upstash Redis instance as Retone. Every key this product
 // touches is namespaced with "na:" so it never collides with other products.
@@ -23,6 +24,28 @@ function getRedis(): Redis | null {
 }
 
 const DAY_SECONDS = 60 * 60 * 24;
+
+function recoveryClient(): Redis {
+  const client = getRedis();
+  if (!client) throw new Error("Recovery storage unavailable");
+  return client;
+}
+
+export const recoveryStore: RecoveryStore = {
+  async put(hash, email, ttl) { await recoveryClient().set(`na:recovery:token:${hash}`, email, { ex: ttl }); },
+  async read(hash) { return await recoveryClient().get<string>(`na:recovery:token:${hash}`); },
+  async consume(hash) { return await recoveryClient().getdel<string>(`na:recovery:token:${hash}`); },
+  async remove(hash) { await recoveryClient().del(`na:recovery:token:${hash}`); },
+};
+
+/** Atomic counter + expiry; no raw email/IP in rate-limit keys. Fail closed. */
+export async function allowRecoveryAttempt(scope: string, identity: string, limit: number, seconds = 3600): Promise<boolean> {
+  const count = await recoveryClient().eval<[number], number>(
+    "local n = redis.call('INCR', KEYS[1]); if n == 1 then redis.call('EXPIRE', KEYS[1], ARGV[1]) end; return n",
+    [`na:recovery:limit:${scope}:${recoveryHash(identity)}`], [seconds],
+  );
+  return count <= limit;
+}
 
 /** Returned by incrementDailyUsage when the count could not be read at all. */
 export const USAGE_UNVERIFIABLE = -1;
