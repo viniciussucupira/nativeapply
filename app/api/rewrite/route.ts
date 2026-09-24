@@ -3,7 +3,7 @@ import { freeBrowserSession, FREE_COOKIE } from "@/lib/free-session";
 import { sessionSecret } from "@/lib/pro-cookie";
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { CONTEXT_TYPES, FREE_LIMIT_MESSAGE, FREE_LIMIT_PER_DAY } from "@/lib/constants";
+import { CONTEXT_TYPES, FREE_LIMIT_MESSAGE, FREE_LIMIT_PER_DAY, MAX_INPUT_CHARS } from "@/lib/constants";
 import {
   USAGE_UNVERIFIABLE,
   incrementDailyUsage,
@@ -42,7 +42,8 @@ export async function POST(req: NextRequest) {
     return reply({ error: "invalid_body", message: "Malformed request." }, { status: 400 });
   }
 
-  const text = typeof body?.text === "string" ? body.text.trim() : "";
+    const input = typeof body?.text === "string" ? body.text : "";
+    const text = input.trim();
   const contextValue = body?.context;
   if (contextValue !== undefined && !CONTEXT_TYPES.some(c => c.value === contextValue)) {
     return reply({ error: "invalid_context", message: "Choose a writing type from the list." }, { status: 400 });
@@ -56,9 +57,9 @@ export async function POST(req: NextRequest) {
   if (!text) {
     return reply({ error: "empty_text", message: "Paste some text first." }, { status: 400 });
   }
-  if (text.length > 6000) {
+    if (input.length > MAX_INPUT_CHARS) {
     return reply(
-      { error: "too_long", message: "Please paste under 6000 characters at a time." },
+        { error: "too_long", message: "Please paste up to 6,000 characters at a time, including spaces and line breaks." },
       { status: 400 }
     );
   }

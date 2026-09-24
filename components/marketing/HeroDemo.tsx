@@ -9,6 +9,7 @@ const AFTER_PLAIN =
 export default function HeroDemo() {
   const [revealed, setRevealed] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState(false);
   const timer = useRef<number | null>(null);
 
   useEffect(() => {
@@ -20,12 +21,13 @@ export default function HeroDemo() {
   }, []);
 
   async function copy() {
+    setCopyError(false);
     try {
       await navigator.clipboard.writeText(AFTER_PLAIN);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
-      /* clipboard unavailable — the sample is selectable on the page */
+      setCopyError(true);
     }
   }
 
@@ -124,6 +126,7 @@ export default function HeroDemo() {
                 Professional tone
               </span>
             </div>
+            {copyError && <p role="alert" className="mt-3 text-xs text-flag">Your browser blocked copying. Select the example above and copy it manually.</p>}
           </div>
         </div>
       </div>

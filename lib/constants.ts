@@ -3,6 +3,7 @@ export const APP_NAME = "NativeApply";
 export const SUPPORT_EMAIL = "support@nimbuslabsai.com";
 
 export const FREE_LIMIT_PER_DAY = 1;
+export const MAX_INPUT_CHARS = 6000;
 
 export const FREE_LIMIT_MESSAGE =
     "Today's free rewrite in this browser has been used. Try again after midnight UTC, or get Pro for unlimited rewrites.";

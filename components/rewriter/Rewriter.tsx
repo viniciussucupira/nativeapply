@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CONTEXT_TYPES, ContextType, FREE_LIMIT_PER_DAY } from "@/lib/constants";
+import { CONTEXT_TYPES, ContextType, FREE_LIMIT_PER_DAY, MAX_INPUT_CHARS } from "@/lib/constants";
 import { ENGLISH_VARIANTS, type EnglishVariant, reviewNumbers } from "@/lib/rewrite-review";
 import { Button, ButtonLink, Pill } from "@/components/ui/Primitives";
 import {
@@ -16,8 +16,9 @@ import {
   IconSparkle,
 } from "@/components/ui/Icons";
 import { useProStatus } from "@/components/ui/useProStatus";
+import { textSharing } from "@/lib/text-sharing";
 
-const MAX_CHARS = 6000;
+const MAX_CHARS = MAX_INPUT_CHARS;
 
 const CONTEXT_ICONS: Record<ContextType, typeof IconCoverLetter> = {
   "cover-letter": IconCoverLetter,
@@ -72,6 +73,8 @@ export default function Rewriter({
   const { isPro, needsRestore, unavailable } = useProStatus();
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const editedResultRef = useRef<HTMLTextAreaElement | null>(null);
+  const copyVersion = useRef(0);
   const resultRef = useRef<HTMLDivElement | null>(null);
   const ctaRef = useRef<HTMLDivElement | null>(null);
   const [ctaVisible, setCtaVisible] = useState(true);
@@ -109,6 +112,7 @@ export default function Rewriter({
 
   const runRewrite = useCallback(
     async (body: string, contextValue: ContextType) => {
+      copyVersion.current++;
       setPhase("loading");
       setError("");
       setLimitReached(false);
@@ -149,17 +153,25 @@ export default function Rewriter({
   }
 
   async function handleCopy() {
-    if (!result) return;
+    if (!result.trim()) return;
+    const version = ++copyVersion.current;
+    setError("");
     try {
       await navigator.clipboard.writeText(result);
+      if (version !== copyVersion.current) return;
       setCopied(true);
-      window.setTimeout(() => setCopied(false), 2200);
+      window.setTimeout(() => { if (version === copyVersion.current) setCopied(false); }, 2200);
     } catch {
-      setError("Could not copy automatically. Select the text and copy it manually.");
+      if (version !== copyVersion.current) return;
+      setCopied(false);
+      editedResultRef.current?.focus();
+      editedResultRef.current?.select();
+      setError("Your browser blocked automatic copying. Select the result, then use Copy from your device’s menu or press Ctrl+C / Command+C.");
     }
   }
 
   function handleReset() {
+    copyVersion.current++;
     setText("");
     setResult("");
     setPhase("idle");
@@ -175,6 +187,7 @@ export default function Rewriter({
   const numberReview = reviewNumbers(submittedDraft, result);
   const resultOutdated = phase === "done" && (text !== submittedDraft || context !== submittedContext || englishVariant !== submittedVariant);
   const resultContextLabel = CONTEXT_TYPES.find((c) => c.value === submittedContext)?.label ?? "Message";
+  const sharing = textSharing(result, resultContextLabel);
 
   return (
     <div className={className}>
@@ -386,27 +399,27 @@ export default function Rewriter({
                     </details>
                   </div>
                   <label htmlFor="na-result" className="px-5 pt-4 text-sm font-medium text-navy">Review and edit your result</label>
-                  <textarea id="na-result" value={result} onChange={(event) => { setResult(event.target.value); setCopied(false); setError(""); }} rows={10} spellCheck lang={submittedVariant} aria-describedby="na-result-help" className="m-3 min-h-56 flex-1 resize-y rounded-lg border border-line bg-white px-3 py-3 text-base leading-7 text-ink focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15" />
+                  <textarea ref={editedResultRef} id="na-result" value={result} onChange={(event) => { copyVersion.current++; setResult(event.target.value); setCopied(false); setError(""); }} rows={10} spellCheck lang={submittedVariant} aria-describedby="na-result-help" className="m-3 min-h-56 flex-1 resize-y rounded-lg border border-line bg-white px-3 py-3 text-base leading-7 text-ink focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15" />
                   <p id="na-result-help" className="px-5 pb-3 text-xs leading-5 text-muted">Make final adjustments here. Copy and sharing use this edited version. Editing does not use another rewrite.</p>
                   <div className="flex flex-wrap items-center gap-2 border-t border-line px-4 py-3">
                     <Button type="button" onClick={handleCopy} disabled={!result.trim()} variant={copied ? "secondary" : "primary"}>
                       {copied ? <IconCheck className="h-4 w-4 text-success" /> : <IconCopy className="h-4 w-4" />}
                       {copied ? "Copied" : "Copy"}
                     </Button>
-                    <a
-                      href={`mailto:?subject=${encodeURIComponent(resultContextLabel)}&body=${encodeURIComponent(result)}`}
+                    {sharing.email ? <a
+                      href={sharing.email}
                       className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-medium text-muted hover:text-navy"
                     >
-                      Open in email
-                    </a>
-                    <a
-                      href={`https://wa.me/?text=${encodeURIComponent(result)}`}
+                      Open email app
+                    </a> : <button type="button" disabled className="inline-flex min-h-11 items-center rounded-full px-3 text-sm text-muted-soft">Open email app</button>}
+                    {sharing.whatsapp ? <a
+                      href={sharing.whatsapp}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-medium text-muted hover:text-navy"
                     >
                       WhatsApp
-                    </a>
+                    </a> : <button type="button" disabled className="inline-flex min-h-11 items-center rounded-full px-3 text-sm text-muted-soft">WhatsApp</button>}
                     <button
                       type="button"
                       onClick={handleReset}
@@ -415,12 +428,14 @@ export default function Rewriter({
                       Start another text
                     </button>
                   </div>
+                  {sharing.tooLong && <p role="status" className="border-t border-line bg-brand-50 px-4 py-3 text-sm text-navy">This text is too long for a reliable app link. Copy the full result above and paste it into your email or WhatsApp. Nothing has been shortened or sent.</p>}
                   {/* An instruction to the model is not a guarantee, so the
                       last check stays with the person sending the letter. */}
                   <p className="border-t border-line px-4 py-3 text-[0.8125rem] leading-5 text-muted">
                     Your names, dates and numbers are meant to come back untouched — read the rewrite once before
-                    you send it. Email and WhatsApp open another app with this text; nothing is sent automatically.
+                    you send it. Email and WhatsApp open a draft; you choose the recipient and send it yourself.
                   </p>
+                  <p className="px-4 pb-3 text-xs leading-5 text-muted">Email uses your device’s default mail app, not a connected Gmail account. Gmail, Outlook, Apple Mail, Yahoo Mail, and other providers can be used through a configured mail app or by copying and pasting. If nothing opens, copy the result and paste it into your preferred email service.</p>
                   {error && <p role="alert" className="px-4 pb-3 text-sm text-flag">{error}</p>}
                 </div>
               )}
@@ -436,7 +451,7 @@ export default function Rewriter({
                     {limitReached ? <IconSparkle className="h-5 w-5" /> : <IconAlert className="h-5 w-5" />}
                   </span>
                   <p className="text-[0.9375rem] leading-6 text-navy">{error}</p>
-                  {result && <details className="rounded-xl border border-line p-3 text-sm"><summary className="cursor-pointer font-medium text-brand-700">Your previous result is still available</summary><p className="mt-3 whitespace-pre-wrap leading-6">{result}</p><Button type="button" onClick={handleCopy} variant="secondary" className="mt-3">{copied ? "Copied" : "Copy previous result"}</Button></details>}
+                  {result && <details className="rounded-xl border border-line p-3 text-sm"><summary className="cursor-pointer font-medium text-brand-700">Your previous result is still available</summary><textarea ref={editedResultRef} readOnly aria-label="Previous result" value={result} rows={8} className="mt-3 w-full rounded-lg border border-line p-3 text-base leading-6" /><Button type="button" onClick={handleCopy} variant="secondary" className="mt-3">{copied ? "Copied" : "Copy previous result"}</Button></details>}
                   {limitReached ? (
                     <div className="flex flex-col gap-2 sm:flex-row">
                       <ButtonLink href="/checkout">See Pro plans</ButtonLink>
