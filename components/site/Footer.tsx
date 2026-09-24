@@ -10,19 +10,21 @@ const PRODUCT: FooterLink[] = [
   { href: "/#examples", label: "Before & after" },
   { href: "/checkout", label: "Pricing" },
 ];
-const TOOLS: FooterLink[] = [
+const DOCUMENTS: FooterLink[] = [
   { href: "/cover-letter-for-non-native-speakers", label: "Cover letters" },
   { href: "/native-sounding-resume", label: "Resume bullets" },
   { href: "/cv-english-rewriter", label: "CV writing" },
   { href: "/ats-friendly-resume-bullet-points", label: "ATS-friendly bullets" },
   { href: "/visa-sponsorship-cover-letter", label: "Visa sponsorship" },
+  { href: "/job-application-letter-rewriter", label: "Application letters" },
+];
+const MESSAGES: FooterLink[] = [
   { href: "/recruiter-message-rewriter", label: "Recruiter messages" },
   { href: "/linkedin-connection-message-rewriter", label: "LinkedIn messages" },
   { href: "/interview-follow-up-email-generator", label: "Interview follow-ups" },
-  { href: "/job-application-letter-rewriter", label: "Application letters" },
 ];
 const HELP: FooterLink[] = [
-  { href: "/restore", label: "Restore Pro access" },
+  { href: "/restore", label: "Recover Pro access" },
   { href: "/subscription", label: "Access & billing" },
   { href: "/subscription#cancel", label: "Cancel subscription" },
   { href: `mailto:${SUPPORT_EMAIL}`, label: "Contact support" },
@@ -33,23 +35,23 @@ const LEGAL: FooterLink[] = [
   { href: "/refunds", label: "Refund Policy" },
 ];
 function FooterAnchor({ link }: { link: FooterLink }) {
-  const className = "inline-flex min-h-11 items-center rounded-sm py-2 text-sm leading-5 text-muted transition-colors hover:text-brand-700 hover:underline hover:underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4";
+  const className = "inline-flex min-h-11 items-center rounded-sm py-2 text-sm leading-5 text-muted transition-colors hover:text-brand-700 hover:underline hover:underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 lg:min-h-9 lg:py-1.5";
   if (link.external || link.href.startsWith("mailto:")) return <a href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined} className={className}>{link.label}</a>;
   return <Link href={link.href} className={className}>{link.label}</Link>;
 }
 function LinkList({ links }: { links: FooterLink[] }) {
   return <ul>{links.map(link => <li key={link.href}><FooterAnchor link={link} /></li>)}</ul>;
 }
-const headingClass = "mb-3 text-xs font-semibold uppercase tracking-[0.13em] text-navy";
+const headingClass = "mb-3 text-xs font-semibold leading-5 text-navy";
 
 export default function Footer() {
   return <footer className="border-t border-line bg-ivory">
-    <Container size="wide" className="pt-10 sm:pt-12">
-      <div className="grid gap-x-8 gap-y-9 pb-9 sm:grid-cols-2 lg:grid-cols-[1.1fr_.8fr_1.8fr_1fr] lg:gap-x-7 lg:pb-11">
+    <Container size="wide" className="pt-8 sm:pt-9">
+      <div className="grid items-start gap-x-8 gap-y-7 pb-6 sm:grid-cols-2 lg:grid-cols-[1.1fr_.75fr_2fr_1fr] lg:gap-x-7">
         <div className="sm:col-span-2 lg:col-span-1">
           <Logo size={36} />
           <p className="mt-4 max-w-64 text-sm leading-6 text-muted">Clear, natural English.<br />More confidence in your next application.</p>
-          <div className="mt-5 border-l-2 border-brand-100 pl-3 text-xs leading-6 text-muted">
+          <div className="mt-4 border-l-2 border-brand-100 pl-3 text-xs leading-6 text-muted">
             <p>A <a href="https://www.nimbuslabsai.com" target="_blank" rel="noopener noreferrer" className="font-medium text-navy underline decoration-line-strong underline-offset-4 hover:text-brand-700">Nimbus Labs</a> product.</p>
             <a href="https://www.retoneai.net" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm underline decoration-line-strong underline-offset-4 hover:text-brand-700 focus-visible:outline-2 focus-visible:outline-brand">Also by us: Retone <span aria-hidden="true" className="ml-1">↗</span></a>
           </div>
@@ -59,18 +61,23 @@ export default function Footer() {
           <LinkList links={PRODUCT} />
         </nav>
         <nav aria-label="Writing tools" className="order-last sm:col-span-2 lg:order-none lg:col-span-1">
-          <h2 className={headingClass}>Writing tools</h2>
           <div className="grid grid-cols-2 gap-x-5 lg:gap-x-4">
-            <LinkList links={TOOLS.slice(0, 5)} />
-            <LinkList links={TOOLS.slice(5)} />
+            <div>
+              <h2 className={headingClass}>Resumes &amp; letters</h2>
+              <LinkList links={DOCUMENTS} />
+            </div>
+            <div>
+              <h2 className={headingClass}>Messages &amp; follow-ups</h2>
+              <LinkList links={MESSAGES} />
+            </div>
           </div>
         </nav>
-        <nav aria-label="Access and support" className="rounded-2xl border border-brand-100 bg-white p-5 sm:-mt-5 lg:p-4">
+        <nav aria-label="Access and support" className="rounded-2xl border border-brand-100 bg-white p-5 lg:-mt-4 lg:p-4">
           <h2 className={headingClass}>Access & help</h2>
           <LinkList links={HELP} />
         </nav>
       </div>
-      <div className="border-t border-line py-5">
+      <div className="border-t border-line py-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs leading-6 text-muted">© {new Date().getFullYear()} NativeApply. All rights reserved.</p>
           <nav aria-label="Legal"><ul className="flex flex-wrap gap-x-5">{LEGAL.map(link => <li key={link.href}><FooterAnchor link={link} /></li>)}</ul></nav>
