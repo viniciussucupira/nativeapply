@@ -20,7 +20,7 @@ export const MONTHLY_PLAN: Plan = {
     "American or British English",
     "Compare numeric expressions with your draft",
     "Cancel anytime — access runs to the end of the paid month",
-    "Switch it on in another browser with your Paddle receipt",
+    "Access Pro on another browser with a secure email link",
   ],
 };
 

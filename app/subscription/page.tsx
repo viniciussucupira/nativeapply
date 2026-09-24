@@ -1,3 +1,4 @@
+import BillingManager from "./BillingManager";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ButtonLink, Container, Eyebrow, Section } from "@/components/ui/Primitives";
@@ -32,27 +33,24 @@ export default function SubscriptionPage() {
           </article>
           <article className="flex flex-col rounded-2xl border border-line p-5">
             <h2 className="text-lg font-semibold text-navy">Want to cancel?</h2>
-            <p className="mt-2 flex-1 text-sm leading-6 text-muted">Cancel renewal through Paddle. You can cancel even if Pro is not active in this browser. No need to restore access first.</p>
-            <ButtonLink href="#cancel" variant="secondary" className="mt-5">How to cancel</ButtonLink>
+            <p className="mt-2 flex-1 text-sm leading-6 text-muted">Cancel right here. Confirm your purchase email, view your subscription, and stop renewal. No Paddle login or support message required.</p>
+            <ButtonLink href="#cancel" variant="secondary" className="mt-5">Cancel subscription</ButtonLink>
           </article>
         </div>
         <section id="cancel" className="mt-10 scroll-mt-24 rounded-2xl border border-line bg-ivory p-6 sm:p-8">
           <h2 className="text-2xl font-semibold text-navy">Cancel your subscription</h2>
-          <ol className="mt-5 list-decimal space-y-3 pl-5 text-base leading-7 text-ink">
-            <li>Open the NativeApply payment receipt in the email account you used at checkout. Search for “Paddle” or “NativeApply”.</li>
-            <li>Follow the receipt&apos;s subscription-management link to the secure Paddle customer portal.</li>
-            <li>Select your NativeApply subscription, choose cancellation, and complete the confirmation steps. Keep the confirmation for your records.</li>
-          </ol>
+          <p className="mt-3 text-muted">Verify your email, then confirm cancellation below. No reason required.</p>
+          <BillingManager />
           <p className="mt-5 text-sm leading-6 text-muted">Cancellation stops future renewals; your access continues until the end of the period already paid for. Closing this site or clearing cookies does not cancel a subscription. A refund is a separate request: see our <Link href="/refunds" className="font-semibold text-brand-700 underline">refund policy</Link>.</p>
-          <div className="mt-6 border-t border-line pt-5">
-            <h3 className="font-semibold text-navy">Cannot find the receipt or management link?</h3>
+          <details className="mt-6 border-t border-line pt-5"><summary className="cursor-pointer font-semibold text-navy">Other cancellation options &amp; support</summary>
+            <h3 className="font-semibold text-navy">Need another way to cancel?</h3>
             <p className="mt-2 text-sm leading-6 text-muted">Paddle buyer support can help locate your purchase and cancel it. You can also email us from the address you used to pay. A support request is not a completed cancellation until you receive confirmation.</p>
             <div className="mt-4 flex flex-wrap gap-3">
               <ButtonLink href="https://paddle.net/contact" external variant="secondary">Open Paddle billing help</ButtonLink>
               <ButtonLink href={cancelHelp} variant="secondary">Email cancellation request</ButtonLink>
             </div>
             <p className="mt-3 text-sm text-muted">No email app? Write to <a href={`mailto:${SUPPORT_EMAIL}`} className="font-medium text-brand-700 underline">{SUPPORT_EMAIL}</a>. Do not send your password or full card number.</p>
-          </div>
+          </details>
         </section>
         <section className="mt-8 max-w-3xl">
           <h2 className="text-xl font-semibold text-navy">Forgot your password?</h2>

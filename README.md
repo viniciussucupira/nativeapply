@@ -52,7 +52,15 @@ npm run dev
 Pro cookies are signed and expire after one year; active entitlement is still checked with Redis/Paddle.
 Set an optional `PRO_SESSION_SECRET` or keep the existing `PADDLE_WEBHOOK_SECRET` configured as the signing-key fallback.
 Legacy unsigned cookies require one receipt-based restore; the editor explains that no new payment is needed.
-The restore flow still uses Paddle receipts or support assistance. Automated email login requires a separate verified email delivery integration and is not enabled.
+Automated one-time email recovery uses Resend and a verified sender; receipt recovery remains a fallback.
+
+## On-site subscription cancellation
+
+The Access & billing page verifies the purchase email using a separate one-time billing link. A signed, HttpOnly billing session lasts 15 minutes. Pro cookies and receipt codes cannot authorize cancellation. The server verifies the customer email and NativeApply price for each request, cancels at the next billing period, and reads back Paddle status before confirming. Paused subscriptions cancel immediately.
+
+Requires existing RESEND_API_KEY, RECOVERY_EMAIL_FROM, Redis, signing secret, NEXT_PUBLIC_PADDLE_PRICE_ID, and PADDLE_API_KEY with customer.read and subscription.write. An optional PADDLE_BILLING_API_KEY can isolate billing permissions. Never expose API keys to the client.
+
+Validation: unit tests cover ownership/product isolation, session separation and expiry, provider failures, ambiguous timeout reconciliation and repeated cancellation. Local endpoint and browser tests cover billing email verification, purpose isolation, CSRF, explicit confirmation, period-end cancellation and confirmation UI using mock services only. No real customer subscription is canceled for testing.
 
 ## Deploy
 

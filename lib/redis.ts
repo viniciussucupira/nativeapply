@@ -38,6 +38,14 @@ export const recoveryStore: RecoveryStore = {
   async remove(hash) { await recoveryClient().del(`na:recovery:token:${hash}`); },
 };
 
+// Billing proof is separate from Pro restoration: receipt codes never grant billing rights.
+export const billingRecoveryStore: RecoveryStore = {
+  async put(hash, email, ttl) { await recoveryClient().set(`na:billing:token:${hash}`, email, { ex: ttl }); },
+  async read(hash) { return await recoveryClient().get<string>(`na:billing:token:${hash}`); },
+  async consume(hash) { return await recoveryClient().getdel<string>(`na:billing:token:${hash}`); },
+  async remove(hash) { await recoveryClient().del(`na:billing:token:${hash}`); },
+};
+
 /** Atomic counter + expiry; no raw email/IP in rate-limit keys. Fail closed. */
 export async function allowRecoveryAttempt(scope: string, identity: string, limit: number, seconds = 3600): Promise<boolean> {
   const count = await recoveryClient().eval<[number], number>(

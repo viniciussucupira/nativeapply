@@ -24,13 +24,13 @@ export type RecoveryStore = {
   remove: (hash: string) => Promise<void>;
 };
 
-export async function issueRecovery(email: string, store: RecoveryStore, send: (email: string, url: string) => Promise<void>) {
+export async function issueRecovery(email: string, store: RecoveryStore, send: (email: string, url: string) => Promise<void>, purpose: "pro" | "billing" = "pro") {
   const token = randomBytes(32).toString("hex");
   const hash = recoveryHash(token);
   await store.put(hash, email, RECOVERY_TTL);
   try {
     // Fragment keeps the bearer token out of HTTP request URLs and referrers.
-    await send(email, `${RECOVERY_ORIGIN}/restore/email#token=${token}`);
+    await send(email, `${RECOVERY_ORIGIN}${purpose === "billing" ? "/subscription/verify" : "/restore/email"}#token=${token}`);
   } catch {
     await store.remove(hash);
     throw new Error("Recovery delivery unavailable");

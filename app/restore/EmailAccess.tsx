@@ -1,11 +1,12 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Button, ButtonLink } from "@/components/ui/Primitives";
 import { refreshProStatus } from "@/components/ui/useProStatus";
 
-export function EmailRequest() {
+export function EmailRequest({ purpose = "pro" }: { purpose?: "pro" | "billing" }) {
+  const billing = purpose === "billing";
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
@@ -14,27 +15,27 @@ export function EmailRequest() {
     setStatus("working");
     setMessage("");
     try {
-      const response = await fetch("/api/recovery/request", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }), signal: AbortSignal.timeout(20000) });
+      const response = await fetch("/api/recovery/request", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, purpose }), signal: AbortSignal.timeout(20000) });
       if (!response.ok) {
         setStatus("error");
-        setMessage(response.status === 429 ? "Too many requests. Please wait an hour before trying again, or use your purchase code below." : "We could not send the email right now. Try again shortly or use your purchase code below.");
+        setMessage(response.status === 429 ? "Too many requests. Please wait an hour before trying again, or contact billing support." : "We could not send the email right now. Try again shortly or contact billing support.");
         return;
       }
       setStatus("sent");
     } catch { setStatus("error"); setMessage("We could not confirm delivery. Check your inbox before trying again."); }
   }
   return <section className="rounded-2xl border border-brand-100 bg-brand-50 p-5">
-    <h2 className="text-xl font-semibold text-navy">Access my Pro by email</h2>
-    <p className="mt-2 text-sm leading-6 text-muted">Enter the email you used to pay. We will send a secure link. No password or purchase code needed.</p>
+    <h2 className="text-xl font-semibold text-navy">{billing ? "Confirm your purchase email" : "Access my Pro by email"}</h2>
+    <p className="mt-2 text-sm leading-6 text-muted">{billing ? "Enter the email you used to pay. We will email a secure link to view and cancel your subscription here. No password or Paddle login needed." : "Enter the email you used to pay. We will send a secure link. No password or purchase code needed."}</p>
     {status === "sent" ? <div role="status" className="mt-4">
       <p className="font-semibold text-navy">Check your inbox</p>
-      <p className="mt-2 text-sm leading-6 text-muted">Your access email is on its way to <strong>{email.trim()}</strong>. Open it on the device where you want to use Pro. The link works once and expires in 15 minutes.</p>
-      <p className="mt-2 text-sm leading-6 text-muted">Allow a few minutes and check spam. We will verify your purchase when you open the link.</p>
+      <p className="mt-2 text-sm leading-6 text-muted">Your secure link is on its way to <strong>{email.trim()}</strong>. {billing ? "Open it to manage your subscription." : "Open it on the device where you want to use Pro."} The link works once and expires in 15 minutes.</p>
+      <p className="mt-2 text-sm leading-6 text-muted">Allow a few minutes and check spam. {billing ? "Nothing is canceled until you confirm on the website." : "We will verify your purchase when you open the link."}</p>
       <button type="button" className="mt-3 min-h-11 font-semibold text-brand-700 underline" onClick={() => setStatus("idle")}>Use another email or send again</button>
     </div> : <form onSubmit={submit} className="mt-4 flex flex-col gap-3">
       <label htmlFor="purchase-email" className="text-sm font-semibold text-navy">Email used at checkout</label>
       <input id="purchase-email" type="email" autoComplete="email" required maxLength={254} value={email} disabled={status === "working"} onChange={(e) => setEmail(e.target.value)} className="h-12 w-full rounded-xl border border-line-strong bg-white px-4 text-ink focus:outline-none focus:ring-4 focus:ring-brand/15" />
-      <Button type="submit" disabled={status === "working"}>{status === "working" ? "Sending…" : "Email me an access link"}</Button>
+      <Button type="submit" disabled={status === "working"}>{status === "working" ? "Sending…" : billing ? "Email me a billing link" : "Email me an access link"}</Button>
       {message && <p role="alert" className="text-sm text-flag">{message}</p>}
     </form>}
   </section>;
@@ -42,8 +43,11 @@ export function EmailRequest() {
 
 export function EmailVerify() {
   const [token, setToken] = useState("");
+  const captured = useRef(false);
   const [status, setStatus] = useState("loading");
   useEffect(() => {
+    if (captured.current) return;
+    captured.current = true;
     const value = new URLSearchParams(window.location.hash.slice(1)).get("token") || "";
     window.history.replaceState(null, "", window.location.pathname);
     // Explicit confirmation avoids email scanners consuming one-time links.

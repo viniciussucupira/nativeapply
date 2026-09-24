@@ -238,7 +238,7 @@ export default function CheckoutPlans() {
               <h2 className="text-[1.0625rem] font-semibold text-navy">What you are paying for</h2>
               <p className="mt-2.5 text-[0.9375rem] leading-6 text-muted">
                 Unlimited rewrites while the subscription is active, all four document types, and no lock-in: you
-                cancel from your Paddle receipt and keep access until the end of the month you paid for.
+                cancel on the NativeApply Access & billing page and keep access until the end of the month you paid for.
               </p>
               <p className="mt-3 text-[0.9375rem] leading-6 text-muted">
                 The full wording is in the{" "}

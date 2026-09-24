@@ -15,7 +15,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "How do I cancel my subscription?",
-    a: "Open your Paddle receipt and follow its subscription-management link. Select NativeApply, complete the cancellation steps, and keep the confirmation. You keep access until the end of the paid period. The Access & billing page and the Cancel subscription link in our footer show these steps and support options. You do not need to restore Pro first.",
+    a: "Choose Cancel subscription in our footer or open Access & billing. Enter your purchase email and open the secure billing link. View your plan, select Cancel subscription, then Confirm cancellation. You stay on NativeApply, with no password or reason required. Renewal stops and your already-paid period is kept. Wait for the cancellation confirmation on screen.",
   },
   {
     q: "What is Restore Pro? What if I forgot my password?",
@@ -23,7 +23,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "What does it cost?",
-    a: "NativeApply Pro is US$14 a month, with unlimited rewrites. Cancel using the link in your Paddle receipt and keep access until the end of your paid month. Try one free rewrite a day without an email or card. The free limit is shared by devices on the same network and resets at midnight UTC.",
+    a: "NativeApply Pro is US$14 a month, with unlimited rewrites. Cancel on our Access & billing page and keep access until the end of your paid month. Try one free rewrite a day without an email or card. The free limit is shared by devices on the same network and resets at midnight UTC.",
   },
   {
     q: "Which English does it write — American or British?",
