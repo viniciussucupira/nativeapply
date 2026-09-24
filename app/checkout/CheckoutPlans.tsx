@@ -259,8 +259,8 @@ export default function CheckoutPlans() {
                 Already paid on another device?
               </h2>
               <p className="mt-2.5 text-[0.9375rem] leading-6 text-muted">
-                Pro is remembered in the browser you paid from. To switch it on somewhere else, use the transaction
-                ID from your Paddle receipt — no password or new payment needed.
+                Pro is remembered in the browser you paid from. To switch it on somewhere else, request a secure
+                link using your purchase email — no password or new payment needed.
               </p>
               <ButtonLink href="/restore" variant="secondary" className="mt-5">
                 Restore Pro
