@@ -2,6 +2,7 @@ import Link from "next/link";
 import Logo from "@/components/ui/Logo";
 import { Container } from "@/components/ui/Primitives";
 import { SUPPORT_EMAIL } from "@/lib/constants";
+import MoreFromUs from "@/components/MoreFromUs";
 
 type FooterLink = { href: string; label: string; external?: boolean };
 const PRODUCT: FooterLink[] = [
@@ -52,8 +53,7 @@ export default function Footer() {
           <Logo size={36} />
           <p className="mt-4 max-w-64 text-sm leading-6 text-muted">Clear, natural English.<br />More confidence in your next application.</p>
           <div className="mt-4 border-l-2 border-brand-100 pl-3 text-xs leading-6 text-muted">
-            <p>A <a href="https://www.nimbuslabsai.com" target="_blank" rel="noopener noreferrer" className="font-medium text-navy underline decoration-line-strong underline-offset-4 hover:text-brand-700">Nimbus Labs</a> product.</p>
-            <a href="https://www.retoneai.net" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm underline decoration-line-strong underline-offset-4 hover:text-brand-700 focus-visible:outline-2 focus-visible:outline-brand">Also by us: Retone <span aria-hidden="true" className="ml-1">↗</span></a>
+            <p>A <a href="https://nimbuslabsai.com/products" className="font-medium text-navy underline decoration-line-strong underline-offset-4 hover:text-brand-700">Nimbus Labs</a> product.</p>
           </div>
         </div>
         <nav aria-label="Product">
@@ -77,6 +77,7 @@ export default function Footer() {
           <LinkList links={HELP} />
         </nav>
       </div>
+      <div className="text-muted"><MoreFromUs /></div>
       <div className="border-t border-line py-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs leading-6 text-muted">© {new Date().getFullYear()} NativeApply. All rights reserved.</p>
