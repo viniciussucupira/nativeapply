@@ -36,5 +36,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/terms`, lastModified: now, priority: 0.3 },
     { url: `${SITE_URL}/privacy`, lastModified: now, priority: 0.3 },
     { url: `${SITE_URL}/refunds`, lastModified: now, priority: 0.3 },
+    { url: `${SITE_URL}/support`, lastModified: now, priority: 0.3 },
   ];
 }

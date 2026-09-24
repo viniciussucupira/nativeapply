@@ -18,7 +18,7 @@ export function EmailRequest({ purpose = "pro" }: { purpose?: "pro" | "billing" 
       const response = await fetch("/api/recovery/request", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, purpose }), signal: AbortSignal.timeout(20000) });
       if (!response.ok) {
         setStatus("error");
-        setMessage(response.status === 429 ? "Too many requests. Please wait an hour before trying again, or contact billing support." : "We could not send the email right now. Try again shortly or contact billing support.");
+        setMessage(response.status === 400 ? "Enter a valid email address, including the full domain, such as name@example.com." : response.status === 429 ? "Too many requests. Please wait an hour before trying again, or contact support." : "We could not send the email right now. Try again shortly or contact support.");
         return;
       }
       setStatus("sent");
@@ -36,7 +36,7 @@ export function EmailRequest({ purpose = "pro" }: { purpose?: "pro" | "billing" 
       <label htmlFor="purchase-email" className="text-sm font-semibold text-navy">Email used at checkout</label>
       <input id="purchase-email" type="email" autoComplete="email" required maxLength={254} value={email} disabled={status === "working"} onChange={(e) => setEmail(e.target.value)} className="h-12 w-full rounded-xl border border-line-strong bg-white px-4 text-ink focus:outline-none focus:ring-4 focus:ring-brand/15" />
       <Button type="submit" disabled={status === "working"}>{status === "working" ? "Sending…" : billing ? "Email me a billing link" : "Email me an access link"}</Button>
-      {message && <p role="alert" className="text-sm text-flag">{message}</p>}
+      {message && <div role="alert" className="text-sm text-flag"><p>{message}</p><Link href="/support" className="inline-flex min-h-11 items-center font-semibold underline">Get help</Link></div>}
     </form>}
   </section>;
 }

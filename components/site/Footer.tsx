@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/ui/Logo";
 import { Container } from "@/components/ui/Primitives";
-import { SUPPORT_EMAIL } from "@/lib/constants";
 import MoreFromUs from "@/components/MoreFromUs";
 
 type FooterLink = { href: string; label: string; external?: boolean };
@@ -28,7 +27,7 @@ const HELP: FooterLink[] = [
   { href: "/restore", label: "Recover Pro access" },
   { href: "/subscription", label: "Access & billing" },
   { href: "/subscription#cancel", label: "Cancel subscription" },
-  { href: `mailto:${SUPPORT_EMAIL}`, label: "Contact support" },
+  { href: "/support", label: "Contact support" },
 ];
 const LEGAL: FooterLink[] = [
   { href: "/terms", label: "Terms of Service" },

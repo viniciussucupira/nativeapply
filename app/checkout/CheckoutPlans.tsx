@@ -88,6 +88,8 @@ export default function CheckoutPlans() {
   const [confirming, setConfirming] = useState(false);
   const [restoreId, setRestoreId] = useState("");
   const confirmationInFlight = useRef(false);
+  const checkoutInFlight = useRef(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   useEffect(() => {
     if (paddleReady) return;
@@ -119,6 +121,12 @@ export default function CheckoutPlans() {
   }
 
   async function eventCallback(event: PaddleCheckoutEvent) {
+    if (event.name === "checkout.closed" || event.name === "checkout.error") {
+      checkoutInFlight.current = false;
+      setCheckoutOpen(false);
+      if (event.name === "checkout.error") setCheckoutError("Secure checkout could not open. Please try again shortly or contact support.");
+      return;
+    }
     if (event.name !== "checkout.completed" || confirmationInFlight.current) return;
     setPaymentReceived(true);
     setCheckoutError("");
@@ -148,7 +156,9 @@ export default function CheckoutPlans() {
   }
 
   function handleCheckout(priceId: string) {
-    if (!window.Paddle || !priceId || paymentReceived || isPro || !accessReady || accessUnavailable) return;
+    if (!window.Paddle || !priceId || checkoutInFlight.current || paymentReceived || isPro || !accessReady || accessUnavailable) return;
+    checkoutInFlight.current = true;
+    setCheckoutOpen(true);
     setCheckoutError("");
     try {
     window.Paddle.Checkout.open({
@@ -156,6 +166,8 @@ export default function CheckoutPlans() {
       settings: { locale: "en" },
     });
     } catch {
+      checkoutInFlight.current = false;
+      setCheckoutOpen(false);
       setCheckoutError("Secure checkout could not open. Refresh the page and try again.");
     }
   }
@@ -190,10 +202,10 @@ export default function CheckoutPlans() {
               <Button
                 size="lg"
                 onClick={() => handleCheckout(MONTHLY_PRICE_ID)}
-                disabled={!paddleReady || paymentReceived || !accessReady || accessUnavailable}
+                disabled={!paddleReady || checkoutOpen || paymentReceived || !accessReady || accessUnavailable}
                 className="w-full"
               >
-                {!accessReady ? "Checking access…" : accessUnavailable ? "Access check unavailable" : confirming ? "Activating Pro…" : paymentReceived ? "Payment completed" : paddleReady ? "Subscribe monthly" : checkoutError ? "Checkout unavailable" : "Loading checkout…"}
+                {!accessReady ? "Checking access…" : accessUnavailable ? "Access check unavailable" : confirming ? "Activating Pro…" : paymentReceived ? "Payment completed" : checkoutOpen ? "Checkout open…" : paddleReady ? "Subscribe monthly" : checkoutError ? "Checkout unavailable" : "Loading checkout…"}
               </Button>
               <p className="mt-3 text-xs leading-5 text-muted">Renews monthly until canceled. Any applicable taxes and the final total are shown in secure checkout.</p>
               <p className="mt-3 text-sm text-muted">Already subscribed? <Link href="/restore" className="font-semibold text-brand-700 underline underline-offset-4">Restore your access</Link> before buying again.</p>
@@ -202,6 +214,7 @@ export default function CheckoutPlans() {
               {checkoutError && (
                 <div role="alert" className="mt-4 text-sm leading-6 text-flag">
                   <p>{checkoutError}</p>
+                  <Link href="/support" className="mt-2 inline-flex min-h-11 items-center font-semibold underline">Get help</Link>
                   {paymentReceived && <Link href={restoreId ? `/restore?txn=${encodeURIComponent(restoreId)}` : "/restore"} className="mt-2 inline-flex min-h-11 items-center font-semibold underline">Restore Pro</Link>}
                 </div>
               )}
