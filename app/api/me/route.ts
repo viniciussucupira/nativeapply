@@ -7,9 +7,9 @@ export const dynamic = "force-dynamic";
 // without ever exposing the email stored in the httpOnly cookie.
 export async function GET() {
   try {
-    const { pro } = await getProStatus();
-    return NextResponse.json({ pro });
+    const { pro, needsRestore = false } = await getProStatus();
+    return NextResponse.json({ pro, needsRestore }, { headers: { "Cache-Control": "private, no-store" } });
   } catch {
-    return NextResponse.json({ pro: false });
+    return NextResponse.json({ pro: false, unavailable: true }, { status: 503, headers: { "Cache-Control": "private, no-store" } });
   }
 }

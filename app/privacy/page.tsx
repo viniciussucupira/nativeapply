@@ -15,7 +15,9 @@ const sections: LegalSection[] = [
     body: (
       <p>
         The text you paste into NativeApply is sent to our AI provider (Anthropic) solely to generate a rewritten
-        version. We don&apos;t store it on our servers, and it is not used to train any AI model.
+        version. We do not save drafts or rewrites in NativeApply databases or application logs.
+        Anthropic processes the text under its own API data-retention terms; our no-storage policy does not
+        mean the provider has zero retention. The result stays in the open page so you can review and copy it.
       </p>
     ),
   },
@@ -24,10 +26,10 @@ const sections: LegalSection[] = [
     heading: "2. Your email address",
     body: (
       <p>
-        Before your first free rewrite, the tool asks for your email address and we store it, so we can reach you
-        about NativeApply itself — for example, an important change to the service. The unlock is then a flag saved
-        in your own browser, so your email is not attached to the text you rewrite or to the usage count described
-        below. We never sell it or share it with advertisers. To have it deleted, email us at the address below.
+        Free rewrites do not require an email address. If you previously supplied one through our free-rewrite
+        form, it remains separate from your drafts and usage counts and may be used to contact you about
+        NativeApply. We never sell it or share it with advertisers. You can request deletion at the address below.
+        Paid access and support may require your email address.
       </p>
     ),
   },
@@ -57,8 +59,8 @@ const sections: LegalSection[] = [
     heading: "5. Cookies, local storage, and analytics",
     body: (
       <p>
-        We set one secure, httpOnly cookie after a purchase to remember that your browser has Pro access. We also
-        save a small flag in your browser&apos;s local storage so you don&apos;t have to enter your email again. We
+        We set one secure, httpOnly cookie after a purchase to remember that your browser has Pro access.
+        An older version saved a local flag after email entry; free rewrites no longer use that flag. We
         use Vercel Web Analytics to count page views; it doesn&apos;t use cookies and doesn&apos;t identify you. We
         don&apos;t use advertising cookies.
       </p>

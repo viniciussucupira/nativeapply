@@ -27,7 +27,7 @@ export const EXAMPLES: Example[] = [
     before:
       "Dear Sir/Madam,\n\nI am writing [[cut:for apply]] to the [[cut:job of]] Marketing Analyst [[cut:that I saw in]] your website. I have 4 years of experience [[cut:in make]] campaigns and I [[cut:am very interest for]] work in your company.",
     after:
-      "Dear Hiring Manager,\n\n[[add:I'm writing to apply for]] the Marketing Analyst [[add:role listed on]] your website. I have four years of experience [[add:running]] campaigns, and [[add:I'd welcome the chance to bring that work to]] your company.",
+      "Dear Hiring Manager,\n\n[[add:I'm writing to apply for]] the Marketing Analyst [[add:role listed on]] your website. I have 4 years of experience [[add:running]] campaigns, and [[add:I'd welcome the chance to bring that work to]] your company.",
     notes: ["More natural", "Professional tone"],
   },
   {

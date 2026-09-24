@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FREE_PLAN, MONTHLY_PLAN, type Plan } from "@/lib/plans";
 import { Button, ButtonLink, Container, Eyebrow, Section } from "@/components/ui/Primitives";
 import { IconCheck, IconLock, IconClock, IconShield, IconReceipt } from "@/components/ui/Icons";
@@ -80,8 +80,24 @@ function PlanColumn({
 
 export default function CheckoutPlans() {
   const [paddleReady, setPaddleReady] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
+  const [paymentReceived, setPaymentReceived] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const [restoreId, setRestoreId] = useState("");
+  const confirmationInFlight = useRef(false);
+
+  useEffect(() => {
+    if (paddleReady) return;
+    const timer = window.setTimeout(() => setCheckoutError("Checkout is taking longer than expected. Refresh this page or try again later."), 15000);
+    return () => window.clearTimeout(timer);
+  }, [paddleReady]);
 
   function initializePaddle() {
+    if (!process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN || !MONTHLY_PRICE_ID) {
+      setCheckoutError("Checkout is temporarily unavailable. You can still use the free rewrite.");
+      return;
+    }
+    try {
     if (window.Paddle) {
       const env = process.env.NEXT_PUBLIC_PADDLE_ENV;
       if (env === "sandbox") {
@@ -92,37 +108,64 @@ export default function CheckoutPlans() {
         eventCallback: eventCallback,
       });
       setPaddleReady(true);
+      setCheckoutError("");
+    }
+    } catch {
+      setCheckoutError("We could not load secure checkout. Refresh the page to try again.");
     }
   }
 
-  function eventCallback(event: PaddleCheckoutEvent) {
-    if (event.name !== "checkout.completed") return;
+  async function eventCallback(event: PaddleCheckoutEvent) {
+    if (event.name !== "checkout.completed" || confirmationInFlight.current) return;
+    setPaymentReceived(true);
+    setCheckoutError("");
     const transactionId = event.data?.transaction_id;
+    if (!transactionId) {
+      setCheckoutError("Payment completed, but we could not activate this browser. Use Restore Pro with your receipt. Do not pay again.");
+      return;
+    }
+    setRestoreId(transactionId);
+    confirmationInFlight.current = true;
+    setConfirming(true);
     const done = () => {
       // Full page navigation (not router.push) is intentional: it makes the
       // home page re-read the Pro cookie that /api/paddle/confirm just set.
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.assign("/?upgraded=1");
     };
-    if (!transactionId) return done();
-    fetch("/api/paddle/confirm", {
+    try {
+    const response = await fetch("/api/paddle/confirm", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ transactionId }),
-    }).finally(done);
+      signal: AbortSignal.timeout(30000),
+    });
+    if (!response.ok) throw new Error("Activation pending");
+    done();
+    } catch {
+      setCheckoutError("Your payment completed, but activation could not be confirmed. Use Restore Pro below to retry. Do not pay again.");
+    } finally {
+      confirmationInFlight.current = false;
+      setConfirming(false);
+    }
   }
 
   function handleCheckout(priceId: string) {
-    if (!window.Paddle || !priceId) return;
+    if (!window.Paddle || !priceId || paymentReceived) return;
+    setCheckoutError("");
+    try {
     window.Paddle.Checkout.open({
       items: [{ priceId, quantity: 1 }],
       settings: { locale: "en" },
     });
+    } catch {
+      setCheckoutError("Secure checkout could not open. Refresh the page and try again.");
+    }
   }
 
   return (
     <>
-      <Script src="https://cdn.paddle.com/paddle/v2/paddle.js" onLoad={initializePaddle} strategy="afterInteractive" />
+      <Script src="https://cdn.paddle.com/paddle/v2/paddle.js" onReady={initializePaddle} onError={() => setCheckoutError("Secure checkout could not load. Check your connection and refresh the page.")} strategy="afterInteractive" />
 
       <Section tone="white" className="relative overflow-hidden">
         <div className="na-aurora" aria-hidden="true">
@@ -146,18 +189,24 @@ export default function CheckoutPlans() {
               <Button
                 size="lg"
                 onClick={() => handleCheckout(MONTHLY_PRICE_ID)}
-                disabled={!paddleReady}
+                disabled={!paddleReady || paymentReceived}
                 className="w-full"
               >
-                {paddleReady ? "Subscribe monthly" : "Loading checkout…"}
+                {confirming ? "Activating Pro…" : paymentReceived ? "Payment completed" : paddleReady ? "Subscribe monthly" : checkoutError ? "Checkout unavailable" : "Loading checkout…"}
               </Button>
+              {checkoutError && (
+                <div role="alert" className="mt-4 text-sm leading-6 text-flag">
+                  <p>{checkoutError}</p>
+                  {paymentReceived && <Link href={restoreId ? `/restore?txn=${encodeURIComponent(restoreId)}` : "/restore"} className="mt-2 inline-flex min-h-11 items-center font-semibold underline">Restore Pro</Link>}
+                </div>
+              )}
             </PlanColumn>
           </div>
 
           <div className="mx-auto mt-6 flex max-w-md flex-col items-center gap-2 rounded-2xl border border-line bg-ivory p-5 text-center">
             <p className="text-[0.9375rem] font-semibold text-navy">Not ready to subscribe?</p>
             <p className="text-[0.9375rem] leading-6 text-muted">
-              {FREE_PLAN.features[0]}, with just your email — {FREE_PLAN.summary.toLowerCase()}
+              {FREE_PLAN.features[0]}, with no email or card — {FREE_PLAN.summary.toLowerCase()}
             </p>
             <ButtonLink href="/#tool" variant="secondary" className="mt-1">
               Start with one rewrite

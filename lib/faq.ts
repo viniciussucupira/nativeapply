@@ -3,23 +3,23 @@ import type { FaqItem } from "@/components/marketing/Faq";
 export const HOME_FAQ: FaqItem[] = [
   {
     q: "Will it change the facts, numbers, or names in my text?",
-    a: "No. NativeApply only changes grammar, word choice, and phrasing. Every name, date, figure, and achievement you wrote comes back exactly as you wrote it — and it never adds a claim you did not make. Read the result before you send it; you are the last check.",
+    a: "NativeApply is instructed to improve the English without adding claims or changing your facts. It also compares digit-based expressions with your original and flags differences. That check cannot verify every name, achievement, or meaning, so review the original and rewrite before sending.",
   },
   {
     q: "Is my text stored anywhere?",
-    a: "Your draft is not written to any NativeApply database or log. It is sent to our AI provider, Anthropic, for the single purpose of producing the rewrite, and under their API terms it is not used to train any AI model.",
+    a: "We do not save drafts or rewrites in NativeApply databases or application logs. Anthropic processes the text under its own data-retention terms. Usage counts and payment records are stored separately; see our Privacy Policy for details.",
   },
   {
     q: "Do I need to create an account?",
-    a: "No password and no account. You enter your email once, before your first free rewrite, so we can reach you about NativeApply itself. If you buy Pro, access is remembered in your browser and can be switched on elsewhere with your Paddle transaction ID.",
+    a: "No. Your free daily rewrite requires no email, password, or card. If you buy Pro, access is remembered in your browser. Use Restore Pro with your Paddle transaction ID to activate another browser, or contact support from your purchase email if you cannot find the receipt.",
   },
   {
     q: "What does it cost?",
-    a: "NativeApply Pro is $14 a month, with unlimited rewrites. You cancel from the receipt Paddle emails you — one link, no email to us needed — and you keep access to the end of the month you already paid for. You can run one free rewrite a day first, with just your email, to see the result on your own text before paying anything.",
+    a: "NativeApply Pro is US$14 a month, with unlimited rewrites. Cancel using the link in your Paddle receipt and keep access until the end of your paid month. Try one free rewrite a day without an email or card. The free limit is shared by devices on the same network and resets at midnight UTC.",
   },
   {
     q: "Which English does it write — American or British?",
-    a: "Contemporary professional English that reads naturally to recruiters in the US, UK, Canada, and Europe. It is not locked to one regional spelling, so if you are applying in the UK, glance over the handful of words that differ before sending.",
+    a: "Choose American English or British English above the editor. NativeApply uses that spelling and phrasing while keeping names, currency amounts, and dates as written. American English is selected by default.",
   },
   {
     q: "Will a recruiter be able to tell I used a tool?",

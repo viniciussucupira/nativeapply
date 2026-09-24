@@ -39,7 +39,7 @@ export async function incrementDailyUsage(ip: string): Promise<number> {
   const client = getRedis();
   if (!client) {
     console.error("na:rate-limit: no Redis client (missing env vars)");
-    return 1;
+    return process.env.NODE_ENV === "production" ? USAGE_UNVERIFIABLE : 1;
   }
   const key = usageKey(ip);
   try {
@@ -47,7 +47,7 @@ export async function incrementDailyUsage(ip: string): Promise<number> {
     if (count === 1) await client.expire(key, DAY_SECONDS);
     return count;
   } catch (err) {
-    console.error(`na:rate-limit: incr failed for key=${key}`, err);
+    console.error("na:rate-limit: counter unavailable", err instanceof Error ? err.name : "unknown");
     // Fail closed, but distinguishably: -1 means "we could not check", which
     // is our problem, not the visitor's. Telling them they have used up a
     // rewrite they never got would be a lie, so the route says what happened.
@@ -84,14 +84,14 @@ function proKey(email: string): string {
 
 export async function isPro(email: string): Promise<boolean> {
   const client = getRedis();
-  if (!client) return false;
+  if (!client) throw new Error("Pro storage unavailable");
   const value = await client.get(proKey(email));
   return Boolean(value);
 }
 
 export async function grantLifetimePro(email: string, transactionId: string): Promise<void> {
   const client = getRedis();
-  if (!client) return;
+  if (!client) throw new Error("Pro storage unavailable");
   await client.set(proKey(email), `lifetime:${transactionId}`);
 }
 
@@ -101,7 +101,7 @@ export async function grantMonthlyPro(
   expiresAtSeconds: number
 ): Promise<void> {
   const client = getRedis();
-  if (!client) return;
+  if (!client) throw new Error("Pro storage unavailable");
   const current = await client.get<string>(proKey(email));
   // Never downgrade a Lifetime customer to an expiring key.
   if (typeof current === "string" && current.startsWith("lifetime:")) return;

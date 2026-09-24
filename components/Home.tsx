@@ -4,7 +4,6 @@ import HeroDemo from "@/components/marketing/HeroDemo";
 import AnnotatedLetter from "@/components/marketing/AnnotatedLetter";
 import TrustStrip from "@/components/marketing/TrustStrip";
 import BeforeAfterTabs from "@/components/marketing/BeforeAfterTabs";
-import DeviceShowcase from "@/components/marketing/DeviceShowcase";
 import FinalCta from "@/components/marketing/FinalCta";
 import Faq from "@/components/marketing/Faq";
 import Reveal from "@/components/ui/Reveal";
@@ -81,7 +80,7 @@ const STEPS = [
   {
     n: "02",
     title: "Rewrite",
-    body: "Grammar, word choice, and tone are corrected to the register a native professional uses. Your facts stay untouched.",
+    body: "Choose American or British English. Get grammar, phrasing, and tone tailored to your document.",
     badge: "bg-violet-50 text-violet",
     rule: "from-violet to-violet-100",
   },
@@ -97,14 +96,14 @@ const STEPS = [
 const PRIVACY_POINTS = [
   {
     Icon: IconShield,
-    title: "Nothing is kept",
-    body: "Your draft is not written to any NativeApply database or log. Close the tab and there is nothing of it on our side.",
+    title: "Drafts are not stored by us",
+    body: "We do not save your draft or rewrite in a NativeApply database or application log. Usage counts and payment records are separate.",
     tint: "bg-jade-50 text-jade",
   },
   {
     Icon: IconLock,
     title: "Sent only to produce the rewrite",
-    body: "Your text goes to our AI provider, Anthropic, for the single purpose of rewriting it — and to nobody else.",
+    body: "Anthropic processes your text to produce the rewrite. Its own data-retention terms apply; not storing text at NativeApply does not mean zero retention by the provider.",
     tint: "bg-brand-50 text-brand",
   },
   {
@@ -205,8 +204,8 @@ export default function Home() {
                 <span className="na-accent-text">native English</span>.
               </h1>
               <p className="max-w-xl text-[1.0625rem] leading-7 text-muted sm:text-lg">
-                NativeApply rewrites your cover letters, resume bullets, and recruiter messages into the English a
-                hiring manager in the US, UK, Canada, or Europe expects — without changing a single fact you wrote.
+                Turn your cover letters, resume bullets, and recruiter messages into clear, natural English.
+                Choose American or British English, then compare the result with your original.
               </p>
 
               <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
@@ -220,10 +219,10 @@ export default function Home() {
 
               <ul className="flex flex-wrap gap-x-5 gap-y-2 text-[0.875rem] text-muted">
                 {[
-                  "No password required",
+                  "No email or card required",
                   "1 free rewrite every day",
-                  "Your text is not stored",
-                  "Your facts and numbers stay unchanged",
+                  "Drafts not stored by NativeApply",
+                  "Built-in number comparison",
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-1.5">
                     <IconCheck className="h-4 w-4 shrink-0 text-success" />
@@ -248,7 +247,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="Try it on your own words"
             title="Paste your draft. Read the difference."
-            description="One rewrite a day is free, with just your email. Unlimited rewrites are $14 a month, cancel anytime."
+            description="One free rewrite a day. No email, password, or card. Unlimited rewrites are $14 a month, cancel anytime."
           />
           <div className="mt-9">
             <Rewriter />
@@ -271,14 +270,12 @@ export default function Home() {
                   You know what you want to say. This makes it sound that way.
                 </h2>
                 <p className="text-[1.0625rem] leading-7 text-muted">
-                  A strong application can still land badly for reasons that have nothing to do with the experience
-                  behind it — a preposition out of place, a phrase translated word for word, a tone that reads
-                  stiffer than you meant it.
+                  You bring the experience. NativeApply helps you explain it with natural phrasing and the right
+                  tone for each kind of application.
                 </p>
                 <p className="text-[1.0625rem] leading-7 text-muted">
-                  NativeApply fixes exactly that layer and nothing else. It does not write your application for you,
-                  invent achievements, or inflate what you did. It takes your meaning and puts it in the English a
-                  native professional would have used.
+                  Start with your own draft, choose an English style, and review the result alongside your original.
+                  Numeric expressions are compared automatically; you make the final check of names and meaning.
                 </p>
                 <ul className="mt-1 flex flex-col gap-3">
                   {[
@@ -338,7 +335,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="Before and after"
             title="Before and after, four kinds of document"
-            description="Worked examples, one per document type. Marked words show what the rewrite changes; names, dates and numbers are identical on both sides."
+            description="See how grammar, phrasing, and tone change across four documents. The examples keep the original names and numeric values."
           />
           <div className="mt-10">
             <BeforeAfterTabs />
@@ -388,9 +385,9 @@ export default function Home() {
             <SectionHeading
               align="left"
               onDark
-              eyebrow="What never changes"
+              eyebrow="Built for careful review"
               title="Your name, your dates, your numbers."
-              description="A rewriting tool that quietly edits a figure on your resume is worse than no tool at all. NativeApply changes how a sentence reads, never what it claims."
+              description="The rewrite is instructed to preserve your facts. A built-in comparison flags added, missing, or reformatted numeric expressions so you can check them before sending."
             />
             <div className="flex flex-col gap-4">
               <div className="rounded-2xl border border-white/12 bg-white/[0.06] p-5">
@@ -457,42 +454,6 @@ export default function Home() {
         </Container>
       </Section>
 
-      {/* ---------------- devices ---------------- */}
-      <Section tone="ivory" className="relative overflow-hidden">
-        <div className="na-aurora" aria-hidden="true">
-          <span className="na-orb-amber" />
-        </div>
-        <Container size="wide" className="relative py-16 sm:py-24">
-          <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-            <div className="flex flex-col gap-5">
-              <Eyebrow>Anywhere you apply</Eyebrow>
-              <h2 className="text-[1.75rem] font-semibold leading-[1.18] tracking-[-0.022em] text-navy sm:text-[2.125rem]">
-                On the laptop at home, on the phone on the way to the interview.
-              </h2>
-              <p className="text-[1.0625rem] leading-7 text-muted">
-                The same editor, the same result, no app to install. Rewrite a recruiter message while you wait for
-                the train and send it from the phone you are holding.
-              </p>
-              <ul className="flex flex-col gap-3">
-                {[
-                  "Works in any modern browser",
-                  "Copy it, or send it by email or WhatsApp in one tap",
-                  "Pro follows you: switch it on elsewhere with your Paddle receipt",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2.5 text-[0.9375rem] leading-6 text-ink">
-                    <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-success" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <Reveal>
-              <DeviceShowcase />
-            </Reveal>
-          </div>
-        </Container>
-      </Section>
-
       {/* ---------------- plans ---------------- */}
       <Section tone="white" id="pricing" className="scroll-mt-20">
         <Container size="wide" className="py-16 sm:py-24">
@@ -517,7 +478,7 @@ export default function Home() {
           <div className="mx-auto mt-6 flex max-w-md flex-col gap-2 rounded-2xl border border-line bg-ivory p-5 text-center">
             <p className="text-[0.9375rem] font-semibold text-navy">Want to see it on your own text first?</p>
             <p className="text-[0.9375rem] leading-6 text-muted">
-              {FREE_PLAN.features[0]}, with just your email — no password, no card. Then decide.
+              {FREE_PLAN.features[0]} — no email, password, or card. Then decide.
             </p>
             <Link
               href="#tool"

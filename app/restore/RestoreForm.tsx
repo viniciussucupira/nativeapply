@@ -59,17 +59,22 @@ export default function RestoreForm() {
   const [transactionId, setTransactionId] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [fieldError, setFieldError] = useState("");
+  const [serviceUnavailable, setServiceUnavailable] = useState(false);
 
   async function restore(id: string) {
     setStatus("working");
+    setServiceUnavailable(false);
     try {
       const res = await fetch("/api/paddle/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ transactionId: id.trim() }),
+        signal: AbortSignal.timeout(30000),
       });
+      setServiceUnavailable(res.status >= 500);
       setStatus(res.ok ? "done" : "failed");
     } catch {
+      setServiceUnavailable(true);
       setStatus("failed");
     }
   }
@@ -94,8 +99,8 @@ export default function RestoreForm() {
       return;
     }
     const normalized = raw.startsWith("txn_") ? raw : `txn_${raw.replace(/^txn_?/, "")}`;
-    if (normalized.length < 10) {
-      setFieldError("That looks too short. The ID is a long code starting with txn_.");
+    if (!/^txn_[a-z0-9]{26}$/i.test(normalized)) {
+      setFieldError("Copy the complete transaction ID: txn_ followed by 26 letters and numbers.");
       return;
     }
     setTransactionId(normalized);
@@ -143,6 +148,7 @@ export default function RestoreForm() {
                     <input
                       id="txn"
                       value={transactionId}
+                      disabled={status === "working"}
                       onChange={(e) => setTransactionId(e.target.value)}
                       placeholder="txn_01hq8k3m…"
                       autoComplete="off"
@@ -171,11 +177,10 @@ export default function RestoreForm() {
                     <div role="alert" className="rounded-2xl border border-flag/25 bg-flag-50 p-4">
                       <p className="flex items-center gap-2 text-[0.9375rem] font-semibold text-navy">
                         <IconAlert className="h-4 w-4 text-flag" />
-                        We could not find an active purchase with that ID
+                        {serviceUnavailable ? "We could not check your purchase right now" : "We could not find an active purchase with that ID"}
                       </p>
                       <p className="mt-1.5 text-[0.875rem] leading-6 text-muted">
-                        Check that you copied the full code from the receipt. If it still does not work, email us
-                        from the address you paid with and we will sort it out.
+                        {serviceUnavailable ? "Please try again shortly. This does not mean your subscription has ended. You do not need to pay again." : "Check the full code from your receipt. If it still does not work, contact support from your purchase email. You do not need to pay again."}
                       </p>
                       <a
                         href={mailto}
@@ -190,9 +195,18 @@ export default function RestoreForm() {
 
               <p className="flex items-start gap-2 text-[0.8125rem] leading-5 text-muted">
                 <IconLock className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-                The transaction ID only confirms a purchase. It cannot be used to charge you, and it gives nobody
-                access to your payment details.
+                Keep your transaction ID and restore link private: they unlock your subscription.
+                Restoring access does not charge you again or reveal your card details.
               </p>
+              {status !== "done" && (
+                <p className="text-sm leading-6 text-muted">
+                  Cannot find your receipt?{" "}
+                  <a href={mailto} className="font-semibold text-brand-700 underline underline-offset-4">
+                    Ask support for a restore link
+                  </a>
+                  {" "}from the email you used to pay. Support will help you recover access.
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col gap-5">

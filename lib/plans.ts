@@ -12,11 +12,13 @@ export const MONTHLY_PLAN: Plan = {
   id: "monthly",
   name: "Monthly Pro",
   price: "$14",
-  cadence: "per month",
+  cadence: "USD per month",
   summary: "Unlimited rewrites while you are actively job hunting.",
   features: [
     "Unlimited rewrites, every day",
     "All four document types",
+    "American or British English",
+    "Compare numeric expressions with your draft",
     "Cancel anytime — access runs to the end of the paid month",
     "Switch it on in another browser with your Paddle receipt",
   ],
@@ -31,7 +33,7 @@ export const FREE_PLAN: Plan = {
   features: [
     "1 rewrite a day",
     "All four document types",
-    "Email only — no password, no card",
+    "No email, password, or card required",
   ],
 };
 
