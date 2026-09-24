@@ -105,6 +105,7 @@ export default function ProfessionPage({
       <Section tone="white" id="tool" className="scroll-mt-20">
         <Container size="wide" className="py-12 sm:py-16">
           <Rewriter
+            key={`${docKey}-${profession.slug}`}
             initialContext={doc.context}
             lockContext
             placeholder={professionPlaceholder(doc, profession)}
@@ -116,7 +117,7 @@ export default function ProfessionPage({
         <Container size="wide" className="py-16 sm:py-20">
           <SectionHeading
             eyebrow="What changes"
-            title={`What the rewrite does to a ${profession.singular.replace(/^an? /, "")}'s ${doc.label}`}
+            title={`Clearer ${doc.label} for ${profession.label.toLowerCase()}`}
           />
           <div className="mt-11 grid gap-5 md:grid-cols-3">
             {benefits.map((benefit, index) => (
@@ -140,7 +141,7 @@ export default function ProfessionPage({
           <SectionHeading
             eyebrow="Before and after"
             title="The same content, in native English"
-            description="A worked example for this role. Marked words show what the rewrite changes; every name, date and number is identical on both sides."
+            description="An illustrative example for this role. Highlighted phrases show the edits. Your result will depend on your draft."
           />
           <div className="mt-10">
             <ExamplePair example={example} />

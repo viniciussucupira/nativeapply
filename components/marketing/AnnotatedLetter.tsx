@@ -28,8 +28,8 @@ const LAYERS: Layer[] = [
   },
   {
     n: 4,
-    label: "Your facts — untouched",
-    note: "Employers, dates, and numbers are copied through exactly as written.",
+    label: "Your experience, checked by you",
+    note: "Compare employers, dates, numbers, and responsibilities before sending.",
     tone: "success",
   },
 ];

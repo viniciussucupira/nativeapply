@@ -33,7 +33,7 @@ export const PROFESSIONS: Profession[] = [
     singular: "a teacher",
     role: "Secondary School Teacher",
     duty: "the preparation of the lessons of math for 5 classes",
-    dutyNatural: "planned math lessons for five classes",
+    dutyNatural: "planned math lessons for 5 classes",
   },
   {
     slug: "accountants",
@@ -41,7 +41,7 @@ export const PROFESSIONS: Profession[] = [
     singular: "an accountant",
     role: "Accountant",
     duty: "the elaboration of the monthly closing of 3 subsidiaries",
-    dutyNatural: "closed the monthly books for three subsidiaries",
+    dutyNatural: "closed the monthly books for 3 subsidiaries",
   },
   {
     slug: "marketing-professionals",
@@ -65,7 +65,7 @@ export const PROFESSIONS: Profession[] = [
     singular: "a sales representative",
     role: "Sales Representative",
     duty: "the achievement of 120% of the goal of sales during 6 quarters",
-    dutyNatural: "hit 120% of quota for six straight quarters",
+    dutyNatural: "hit 120% of quota for 6 quarters",
   },
   {
     slug: "project-managers",
@@ -73,7 +73,7 @@ export const PROFESSIONS: Profession[] = [
     singular: "a project manager",
     role: "Project Manager",
     duty: "the conduction of 4 simultaneous projects with teams of 12 people",
-    dutyNatural: "ran four concurrent projects with 12-person teams",
+    dutyNatural: "ran 4 concurrent projects with teams of 12 people",
   },
   {
     slug: "data-analysts",
@@ -97,7 +97,7 @@ export const PROFESSIONS: Profession[] = [
     singular: "an administrative assistant",
     role: "Administrative Assistant",
     duty: "the organization of the agenda of 3 directors",
-    dutyNatural: "managed the calendars of three directors",
+    dutyNatural: "managed the calendars of 3 directors",
   },
   {
     slug: "mechanical-engineers",
@@ -105,7 +105,7 @@ export const PROFESSIONS: Profession[] = [
     singular: "a mechanical engineer",
     role: "Mechanical Engineer",
     duty: "the realization of the project of the cooling system of 2 industrial lines",
-    dutyNatural: "designed the cooling system for two industrial lines",
+    dutyNatural: "designed the cooling system for 2 industrial lines",
   },
   {
     slug: "physicians",
@@ -121,7 +121,7 @@ export const PROFESSIONS: Profession[] = [
     singular: "a pharmacist",
     role: "Pharmacist",
     duty: "the control of the stock of medicines of 2 pharmacies",
-    dutyNatural: "managed medication inventory for two pharmacies",
+    dutyNatural: "managed medication inventory for 2 pharmacies",
   },
   {
     slug: "physical-therapists",
@@ -153,7 +153,7 @@ export const PROFESSIONS: Profession[] = [
     singular: "a truck driver",
     role: "Truck Driver",
     duty: "the realization of deliveries of 500 km per day without accidents during 6 years",
-    dutyNatural: "drove 500 km of deliveries a day with a six-year clean record",
+    dutyNatural: "drove 500 km of deliveries a day without accidents for 6 years",
   },
   {
     slug: "caregivers",
@@ -161,7 +161,7 @@ export const PROFESSIONS: Profession[] = [
     singular: "a caregiver",
     role: "Caregiver",
     duty: "the care of 3 elderly persons with reduced mobility",
-    dutyNatural: "cared for three older adults with limited mobility",
+    dutyNatural: "cared for 3 older adults with limited mobility",
   },
   {
     slug: "chefs",

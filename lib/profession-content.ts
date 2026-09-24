@@ -64,7 +64,7 @@ export function professionIntro(doc: DocType, p: Profession): string {
     case "cover-letter":
       return `Paste the cover letter you wrote as ${p.singular} and get it back in natural professional English. Compare the rewrite with your original and review your employers, dates, and numbers before sending.`;
     case "resume-bullet":
-      return `Paste the bullet points from your ${p.label.toLowerCase().replace(/s$/, "")} experience and get them back short and verb-first, in the style US and European recruiters expect. Every metric you earned stays untouched.`;
+      return `Make your experience as ${p.singular} easier to read. Paste your resume or CV bullets, choose American or British English, and review a concise rewrite for your next application.`;
     case "linkedin-message":
       return `Paste the message you are about to send to a recruiter about ${p.label.toLowerCase()} roles and get it back short, warm, and easy to answer — without the formality that reads as distance in English.`;
     case "follow-up-email":
@@ -101,7 +101,7 @@ export function professionExample(doc: DocType, p: Profession): Example {
       return {
         ...shared,
         caption: `Opening paragraph of an application for ${p.role === "HR Generalist" ? "an" : "a"} ${p.role} role`,
-        before: `Dear Hiring Manager,\n\nI am writing [[cut:for apply]] to the position of ${p.role}. In my [[cut:actual]] job I [[cut:was responsible for]] ${p.duty}, and I [[cut:am very interest for]] work in your company.`,
+        before: `Dear Hiring Manager,\n\nI am writing [[cut:for apply]] to the position of ${p.role}. In my [[cut:most recent]] job I [[cut:was responsible for]] ${p.duty}, and I [[cut:am very interest for]] work in your company.`,
         after: `Dear Hiring Manager,\n\n[[add:I'm writing to apply for]] the ${p.role} position. [[add:In my most recent role, I]] ${p.dutyNatural}, and [[add:I'd welcome the chance to bring that work to]] your company.`,
         notes: ["More natural", "Same numbers", "Confident tone"],
       };
@@ -110,7 +110,7 @@ export function professionExample(doc: DocType, p: Profession): Example {
         ...shared,
         caption: `A bullet point from the experience section of ${p.singular}`,
         before: `• [[cut:Was responsible for]] ${p.duty}\n• [[cut:Participated in the improvement of the processes of]] the team`,
-        after: `• [[add:${cap(p.dutyNatural)}]]\n• [[add:Improved team processes]]`,
+        after: `• [[add:${cap(p.dutyNatural)}]]\n• [[add:Contributed to improving team processes]]`,
         notes: ["Verb first", "Shorter", "Facts preserved"],
       };
     case "linkedin-message":
@@ -139,7 +139,7 @@ export function professionExample(doc: DocType, p: Profession): Example {
 export function professionBenefits(doc: DocType, p: Profession): { title: string; body: string }[] {
   const keepsFacts = {
     title: "Your record stays your record",
-    body: `Employers, dates, certifications, and every number you wrote come back identical. Nothing is added to make you look better than your actual experience as ${p.singular}.`,
+    body: `The rewrite is instructed to preserve your employers, dates, certifications, and contribution as ${p.singular}. Compare both versions before sending; the number check cannot verify every fact.`,
   };
 
   switch (doc.key) {
@@ -214,7 +214,7 @@ export function professionFaq(doc: DocType, p: Profession): FaqItem[] {
     },
     {
       q: `Can I use the same rewrite for every application?`,
-      a: `Rewrite each one. Two employers hiring ${p.label.toLowerCase()} will often see similar applications, and a letter that clearly names the role and the company is the one that gets read to the end.`,
+      a: `Reuse relevant experience, but check the role, employer, and purpose each time. Add truthful details that fit the application before rewriting. NativeApply does not compare your text with the employer's job description.`,
     },
   ];
 }

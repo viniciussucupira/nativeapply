@@ -86,8 +86,8 @@ const STEPS = [
   },
   {
     n: "03",
-    title: "Apply",
-    body: "Copy the result, or send it straight to email or WhatsApp, and get on with the application.",
+    title: "Review and use",
+    body: "Compare the original, make any final edits, then copy the text into your application. You choose when and where to send it.",
     badge: "bg-jade-50 text-jade",
     rule: "from-jade to-jade-100",
   },
@@ -348,7 +348,7 @@ export default function Home() {
         <Container size="wide" className="py-16 sm:py-24">
           <SectionHeading
             eyebrow="What it handles"
-            title="The four documents a job search actually needs"
+            title="One editor for four parts of your job search"
           />
           <div className="mt-12 grid gap-5 sm:grid-cols-2">
             {USE_CASES.map(({ Icon, title, body, href, tint, hover, link }, index) => (

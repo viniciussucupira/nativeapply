@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { FREE_PLAN, MONTHLY_PLAN, type Plan } from "@/lib/plans";
 import { Button, ButtonLink, Container, Eyebrow, Section } from "@/components/ui/Primitives";
 import { IconCheck, IconLock, IconClock, IconShield, IconReceipt } from "@/components/ui/Icons";
+import { useProStatus } from "@/components/ui/useProStatus";
 
 type PaddleCheckoutEvent = {
   name: string;
@@ -79,6 +80,7 @@ function PlanColumn({
 }
 
 export default function CheckoutPlans() {
+  const { isPro, ready: accessReady } = useProStatus();
   const [paddleReady, setPaddleReady] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
   const [paymentReceived, setPaymentReceived] = useState(false);
@@ -151,7 +153,7 @@ export default function CheckoutPlans() {
   }
 
   function handleCheckout(priceId: string) {
-    if (!window.Paddle || !priceId || paymentReceived) return;
+    if (!window.Paddle || !priceId || paymentReceived || isPro || !accessReady) return;
     setCheckoutError("");
     try {
     window.Paddle.Checkout.open({
@@ -184,16 +186,23 @@ export default function CheckoutPlans() {
             </p>
           </div>
 
-          <div className="mx-auto mt-14 max-w-md">
+          <div className="mx-auto mt-14 grid max-w-4xl items-stretch gap-8 md:grid-cols-2">
+            <PlanColumn plan={FREE_PLAN} footnote="One shared allowance per network, resetting at midnight UTC.">
+              <ButtonLink href="/#tool" variant="secondary" size="lg" className="w-full">Try the free rewriter</ButtonLink>
+            </PlanColumn>
             <PlanColumn plan={MONTHLY_PLAN} highlight footnote="Full refund within 14 days of your first payment.">
+              {isPro ? <div role="status"><p className="mb-3 text-sm font-semibold text-success">Pro is already active in this browser. No new purchase is needed.</p><ButtonLink href="/#tool" size="lg" className="w-full">Continue rewriting</ButtonLink></div> : <>
               <Button
                 size="lg"
                 onClick={() => handleCheckout(MONTHLY_PRICE_ID)}
-                disabled={!paddleReady || paymentReceived}
+                disabled={!paddleReady || paymentReceived || !accessReady}
                 className="w-full"
               >
-                {confirming ? "Activating Pro…" : paymentReceived ? "Payment completed" : paddleReady ? "Subscribe monthly" : checkoutError ? "Checkout unavailable" : "Loading checkout…"}
+                {!accessReady ? "Checking access…" : confirming ? "Activating Pro…" : paymentReceived ? "Payment completed" : paddleReady ? "Subscribe monthly" : checkoutError ? "Checkout unavailable" : "Loading checkout…"}
               </Button>
+              <p className="mt-3 text-xs leading-5 text-muted">Renews monthly until canceled. Any applicable taxes and the final total are shown in secure checkout.</p>
+              <p className="mt-3 text-sm text-muted">Already subscribed? <Link href="/restore" className="font-semibold text-brand-700 underline underline-offset-4">Restore your access</Link> before buying again.</p>
+              </>}
               {checkoutError && (
                 <div role="alert" className="mt-4 text-sm leading-6 text-flag">
                   <p>{checkoutError}</p>
@@ -203,15 +212,7 @@ export default function CheckoutPlans() {
             </PlanColumn>
           </div>
 
-          <div className="mx-auto mt-6 flex max-w-md flex-col items-center gap-2 rounded-2xl border border-line bg-ivory p-5 text-center">
-            <p className="text-[0.9375rem] font-semibold text-navy">Not ready to subscribe?</p>
-            <p className="text-[0.9375rem] leading-6 text-muted">
-              {FREE_PLAN.features[0]}, with no email or card — {FREE_PLAN.summary.toLowerCase()}
-            </p>
-            <ButtonLink href="/#tool" variant="secondary" className="mt-1">
-              Start with one rewrite
-            </ButtonLink>
-          </div>
+          <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-6 text-muted">Both plans use the same rewriting tool, English styles, and number comparison. Each request accepts up to 6,000 characters. Pro removes the daily rewrite limit.</p>
 
           <ul className="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-x-7 gap-y-3 text-[0.875rem] text-muted">
             {[

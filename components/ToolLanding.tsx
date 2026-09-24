@@ -86,7 +86,8 @@ export default function ToolLanding({ page }: { page: ToolPage }) {
       {/* ---------------- tool ---------------- */}
       <Section tone="white" id="tool" className="scroll-mt-20">
         <Container size="wide" className="py-12 sm:py-16">
-          <Rewriter initialContext={page.context} lockContext placeholder={page.placeholder} />
+          <p className="mb-5 text-sm leading-6 text-muted">The NativeApply editor, set to this document type. Paste English text up to 6,000 characters; review and copy the result into your application.</p>
+          <Rewriter key={page.slug} initialContext={page.context} initialEnglishVariant={page.slug === "cv-english-rewriter" ? "en-GB" : "en-US"} lockContext placeholder={page.placeholder} />
         </Container>
       </Section>
 
@@ -120,7 +121,7 @@ export default function ToolLanding({ page }: { page: ToolPage }) {
           <SectionHeading
             eyebrow="Before and after"
             title="One rewrite, start to finish"
-            description="A worked example of this document type. Marked words show what the rewrite changes; every name, date and number is identical on both sides."
+            description="An illustrative example of this document type. Highlighted phrases show the edits. Your result will depend on your draft."
           />
           <div className="mt-10">
             <ExamplePair example={page.example} />

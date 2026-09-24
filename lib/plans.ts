@@ -28,12 +28,14 @@ export const FREE_PLAN: Plan = {
   id: "free",
   name: "Free",
   price: "$0",
-  cadence: "to try it",
-  summary: "Enough to see exactly what the rewrite does to your own text.",
+  cadence: "no subscription",
+  summary: "Try your own draft before deciding whether you need Pro.",
   features: [
     "1 rewrite a day",
     "All four document types",
     "No email, password, or card required",
+    "American or British English",
+    "Review, edit, and copy your result",
   ],
 };
 
