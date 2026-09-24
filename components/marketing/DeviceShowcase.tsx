@@ -74,7 +74,7 @@ function PhoneScreen() {
           <div className="flex items-center justify-between px-1 text-[0.625rem] font-medium text-muted">
             <span>Email</span>
             <span>WhatsApp</span>
-            <span>Messages</span>
+            <span>Start another</span>
           </div>
         </div>
       </div>

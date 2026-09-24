@@ -220,7 +220,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         title: "Consistent, scannable lines",
-        body: "Every bullet gets the same shape, so a recruiter skimming six CVs in three minutes can actually see what you did.",
+        body: "Every bullet gets the same shape, so someone reading quickly can see what you did without hunting for it.",
       },
       {
         title: "Your metrics stay yours",
@@ -287,7 +287,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     headingLead: "Bullets a tracking system can read and a",
     headingAccent: "human wants to read",
     intro:
-      "Applicant tracking systems do not reward clever phrasing; they reward plain words in a predictable shape. Paste your bullets and get them back short, verb-first, and measurable — the format that survives both the parser and the six-second skim after it.",
+      "Applicant tracking systems do not reward clever phrasing; they reward plain words in a predictable shape. Paste your bullets and get them back short, verb-first, and measurable — the format that survives both the parser and the quick human skim after it.",
     ctaLabel: "Rewrite my bullets",
     placeholder:
       "• Had the responsibility of the optimisation of the processes of the logistic sector, obtaining a diminution of the costs\n• Acted in the elaboration of dashboards for the follow-up of the KPIs…",
@@ -311,7 +311,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     ],
     guidance: {
       title: "What actually helps with an ATS",
-      intro: "Most ATS advice is folklore. These four things are consistently true.",
+      intro: "Most ATS advice is folklore. These five are plain mechanics, and cost you nothing to follow.",
       items: [
         "Use the words from the job description when they honestly describe your work.",
         "Standard section headings — Experience, Education, Skills — beat creative ones.",
@@ -407,10 +407,10 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       tab: "Recruiter message",
       caption: "First message to a recruiter about a Data Engineer opening",
       before:
-        "Dear Madam, I hope this message [[cut:find]] you well. I am writing to you because I saw [[cut:the announce of the position of]] Data Engineer in your company and I [[cut:would like very much that you consider my candidature]]. Thank you for your attention.",
+        "Dear Mrs. Lindqvist, I hope this message [[cut:find]] you well. I am writing to you because I saw [[cut:the announce of the position of]] Data Engineer in your company and I [[cut:would like very much that you consider my candidature]]. Thank you for your attention.",
       after:
-        "Hi Maria, I hope [[add:you're doing well]]. I saw [[add:your opening for]] the Data Engineer [[add:role]], and [[add:I'd love to be considered]]. [[add:Would it help if I sent my resume over?]]",
-      notes: ["Warmer", "Half the length", "Ends with a question"],
+        "Hi [[add:Ms.]] Lindqvist, I hope [[add:you're doing well]]. I saw [[add:your opening for]] the Data Engineer [[add:role]], and [[add:I'd love to be considered]]. Thanks for your time.",
+      notes: ["Warmer", "Half the length", "Same request"],
     },
     faq: [
       {
@@ -458,8 +458,8 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       "Hello, I would like to add you to my professional network because I am very interested in the area of your company and I think we could have a professional exchange very enriching…",
     benefits: [
       {
-        title: "Fits the 300-character limit",
-        body: "Connection notes are capped. The rewrite is direct by default, so the message arrives whole instead of cut in half.",
+        title: "Short enough for a connection note",
+        body: "LinkedIn caps these notes at 300 characters. The rewrite drops the padding and the editor counts both versions for you, so you can see it fits before you send it.",
       },
       {
         title: "Specific instead of generic",
@@ -490,19 +490,19 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       tab: "Connection note",
       caption: "Connection request to an engineering manager after a conference talk",
       before:
-        "Hello, I [[cut:would like to add you to my professional network because I am very interested in the area of]] your company [[cut:and I think we could have a professional exchange very enriching]].",
+        "Hello, I [[cut:assisted to]] your [[cut:presentation about]] reliability [[cut:in the conference of]] last week and I [[cut:would like very much to]] follow your work [[cut:in the future]].",
       after:
-        "Hi Daniel — [[add:I watched your talk on platform reliability at DevCon and it changed how I think about on-call rotations]]. [[add:I'd like to follow your work]].",
-      notes: ["Specific", "Under 300 characters", "No empty flattery"],
+        "Hi — I [[add:was at]] your [[add:talk on]] reliability last week, and I'd [[add:like to]] follow your work.",
+      notes: ["Natural phrasing", "Nothing invented", "Short enough to send"],
     },
     faq: [
       {
         q: "Should I always add a note to a connection request?",
-        a: "For someone who does not know you, yes. A note that gives one concrete reason is accepted far more often than a bare request, in any language.",
+        a: "For someone who does not know you, yes. A note that gives one concrete reason gives them something to say yes to; a bare request gives them nothing.",
       },
       {
         q: "Does it count characters for me?",
-        a: "The editor shows a character count as you type, and the rewrite is naturally shorter than most drafts. Check the result against LinkedIn's 300-character limit before sending.",
+        a: "Yes — the editor counts your draft as you type and counts the rewrite when it comes back, so you can check both against LinkedIn's 300-character limit before sending.",
       },
       {
         q: "Can I use it for InMail as well?",
@@ -553,7 +553,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         title: "Short enough to be read at once",
-        body: "A follow-up that fits on one phone screen gets answered. One that scrolls gets postponed.",
+        body: "A follow-up that fits on one phone screen is easy to answer on the spot. One that scrolls is easy to leave for later.",
       },
     ],
     guidance: {

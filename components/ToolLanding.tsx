@@ -13,6 +13,7 @@ import {
   SectionHeading,
 } from "@/components/ui/Primitives";
 import { IconArrowRight, IconCheck } from "@/components/ui/Icons";
+import { ACCENT_RULES } from "@/lib/accents";
 import type { ToolPage } from "@/lib/tool-pages";
 
 const SITE_URL = "https://www.nativeapply.net";
@@ -41,10 +42,11 @@ export default function ToolLanding({ page }: { page: ToolPage }) {
 
       {/* ---------------- hero ---------------- */}
       <Section tone="white" className="relative overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-[26rem] bg-[radial-gradient(70%_60%_at_50%_0%,rgba(39,100,231,0.07),transparent_70%)]"
-        />
+        <div className="na-aurora" aria-hidden="true">
+          <span className="na-orb-blue" />
+          <span className="na-orb-jade" />
+          <span className="na-orb-amber" />
+        </div>
         <Container size="wide" className="relative pb-10 pt-8 sm:pb-14 sm:pt-12">
           <nav aria-label="Breadcrumb" className="mb-7">
             <ol className="flex flex-wrap items-center gap-2 text-[0.8125rem] text-muted-soft">
@@ -95,7 +97,11 @@ export default function ToolLanding({ page }: { page: ToolPage }) {
           <div className="mt-11 grid gap-5 sm:grid-cols-2">
             {page.benefits.map((benefit, index) => (
               <Reveal key={benefit.title} delay={index * 60}>
-                <div className="flex h-full flex-col gap-2.5 rounded-2xl border border-line bg-white p-6">
+                <div className="relative flex h-full flex-col gap-2.5 overflow-hidden rounded-2xl border border-line bg-white p-6">
+                  <span
+                    aria-hidden="true"
+                    className={`absolute inset-y-0 left-0 w-1 bg-gradient-to-b ${ACCENT_RULES[index % ACCENT_RULES.length]}`}
+                  />
                   <h3 className="text-[1.0625rem] font-semibold text-navy">{benefit.title}</h3>
                   <p className="text-[0.9375rem] leading-6 text-muted">{benefit.body}</p>
                 </div>
@@ -106,12 +112,15 @@ export default function ToolLanding({ page }: { page: ToolPage }) {
       </Section>
 
       {/* ---------------- example ---------------- */}
-      <Section tone="white" id="example" className="scroll-mt-20">
-        <Container size="wide" className="py-16 sm:py-20">
+      <Section tone="white" id="example" className="relative overflow-hidden scroll-mt-20">
+        <div className="na-aurora" aria-hidden="true">
+          <span className="na-orb-jade" />
+        </div>
+        <Container size="wide" className="relative py-16 sm:py-20">
           <SectionHeading
             eyebrow="Before and after"
-            title="One real rewrite, start to finish"
-            description="Marked words show what changed. Every name, date, and number is identical on both sides."
+            title="One rewrite, start to finish"
+            description="A worked example of this document type. Marked words show what the rewrite changes; every name, date and number is identical on both sides."
           />
           <div className="mt-10">
             <ExamplePair example={page.example} />
@@ -120,8 +129,12 @@ export default function ToolLanding({ page }: { page: ToolPage }) {
       </Section>
 
       {/* ---------------- guidance ---------------- */}
-      <Section tone="navy">
-        <Container size="wide" className="py-16 sm:py-20">
+      <Section tone="navy" className="relative overflow-hidden">
+        <div className="na-aurora" aria-hidden="true">
+          <span className="na-orb-night-blue" />
+          <span className="na-orb-night-violet" />
+        </div>
+        <Container size="wide" className="relative py-16 sm:py-20">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <SectionHeading
               align="left"

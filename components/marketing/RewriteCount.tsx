@@ -29,7 +29,7 @@ export default function RewriteCount({ className = "" }: { className?: string })
   return (
     <span className={className}>
       <strong className="font-semibold text-navy tabular-nums">{total.toLocaleString("en-US")}</strong>{" "}
-      {total === 1 ? "application" : "applications"} rewritten so far
+      {total === 1 ? "text" : "texts"} rewritten so far
     </span>
   );
 }

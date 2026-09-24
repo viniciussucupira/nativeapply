@@ -48,7 +48,7 @@ export const EXAMPLES: Example[] = [
       "Hello Sarah, I hope this message [[cut:find]] you well. I saw your [[cut:announce for]] the position of Backend Developer and I [[cut:would like very much that you consider my candidature]]. Thank you for your attention.",
     after:
       "Hi Sarah, I hope [[add:you're doing well]]. I saw your [[add:post for]] the Backend Developer [[add:role, and I'd love to be considered]]. Thanks for your time.",
-    notes: ["Shorter", "Warmer", "Fits LinkedIn's limit"],
+    notes: ["Shorter", "Warmer", "Nothing added"],
   },
   {
     context: "follow-up-email",

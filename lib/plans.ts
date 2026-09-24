@@ -18,7 +18,7 @@ export const MONTHLY_PLAN: Plan = {
     "Unlimited rewrites, every day",
     "All four document types",
     "Cancel anytime — access runs to the end of the paid month",
-    "Works on every browser you sign in from",
+    "Switch it on in another browser with your Paddle receipt",
   ],
 };
 

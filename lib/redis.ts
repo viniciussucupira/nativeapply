@@ -24,6 +24,9 @@ function getRedis(): Redis | null {
 
 const DAY_SECONDS = 60 * 60 * 24;
 
+/** Returned by incrementDailyUsage when the count could not be read at all. */
+export const USAGE_UNVERIFIABLE = -1;
+
 function usageKey(ip: string): string {
   return `na:usage:${ip}:${new Date().toISOString().slice(0, 10)}`;
 }
@@ -45,8 +48,10 @@ export async function incrementDailyUsage(ip: string): Promise<number> {
     return count;
   } catch (err) {
     console.error(`na:rate-limit: incr failed for key=${key}`, err);
-    // Fail closed: if usage can't be verified, don't grant unlimited free use.
-    return Number.MAX_SAFE_INTEGER;
+    // Fail closed, but distinguishably: -1 means "we could not check", which
+    // is our problem, not the visitor's. Telling them they have used up a
+    // rewrite they never got would be a lie, so the route says what happened.
+    return USAGE_UNVERIFIABLE;
   }
 }
 

@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { CONTEXT_TYPES, FREE_LIMIT_MESSAGE, FREE_LIMIT_PER_DAY } from "@/lib/constants";
-import { incrementDailyUsage, incrementTotalRewrites, refundDailyUsage } from "@/lib/redis";
+import {
+  USAGE_UNVERIFIABLE,
+  incrementDailyUsage,
+  incrementTotalRewrites,
+  refundDailyUsage,
+} from "@/lib/redis";
 import { getProStatus } from "@/lib/pro";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -39,6 +44,18 @@ export async function POST(req: NextRequest) {
 
   if (!pro) {
     const usage = await incrementDailyUsage(ip);
+    if (usage === USAGE_UNVERIFIABLE) {
+      // Our counter is down. Don't hand out free rewrites we can't count, and
+      // don't tell the person they used one they never got.
+      return NextResponse.json(
+        {
+          error: "usage_unavailable",
+          message:
+            "We could not check today's free rewrite just now — that is a problem on our side, not with your text. Please try again in a minute.",
+        },
+        { status: 503 }
+      );
+    }
     if (usage > FREE_LIMIT_PER_DAY) {
       return NextResponse.json({ error: "limit_reached", message: FREE_LIMIT_MESSAGE }, { status: 429 });
     }

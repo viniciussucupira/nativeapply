@@ -14,7 +14,7 @@ Paddle (Merchant of Record) with a webhook, deployed on Vercel.
 - `/cover-letter-for-non-native-speakers`
 - `/native-sounding-resume`
 - `/recruiter-message-rewriter`
-- `/checkout` — Paddle checkout (Lifetime $49 promoted, Monthly $14)
+- `/checkout` — Paddle checkout (Monthly $14; the Lifetime plan is no longer sold)
 - `/restore` — turn Pro on in another browser with a Paddle transaction ID (`/restore?txn=txn_...`)
 - `/terms`, `/privacy`, `/refunds`
 

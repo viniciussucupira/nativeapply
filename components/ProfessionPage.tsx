@@ -5,6 +5,7 @@ import Faq from "@/components/marketing/Faq";
 import FinalCta from "@/components/marketing/FinalCta";
 import TrustStrip from "@/components/marketing/TrustStrip";
 import Reveal from "@/components/ui/Reveal";
+import { ACCENT_RULES } from "@/lib/accents";
 import { ButtonLink, Container, Eyebrow, Section, SectionHeading } from "@/components/ui/Primitives";
 import { IconArrowRight } from "@/components/ui/Icons";
 import { PROFESSIONS, type Profession } from "@/lib/professions";
@@ -58,10 +59,11 @@ export default function ProfessionPage({
       />
 
       <Section tone="white" className="relative overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-[24rem] bg-[radial-gradient(70%_60%_at_50%_0%,rgba(39,100,231,0.07),transparent_70%)]"
-        />
+        <div className="na-aurora" aria-hidden="true">
+          <span className="na-orb-blue" />
+          <span className="na-orb-violet" />
+          <span className="na-orb-jade" />
+        </div>
         <Container size="wide" className="relative pb-10 pt-8 sm:pb-14 sm:pt-12">
           <nav aria-label="Breadcrumb" className="mb-7">
             <ol className="flex flex-wrap items-center gap-2 text-[0.8125rem] text-muted-soft">
@@ -119,8 +121,12 @@ export default function ProfessionPage({
           <div className="mt-11 grid gap-5 md:grid-cols-3">
             {benefits.map((benefit, index) => (
               <Reveal key={benefit.title} delay={index * 60}>
-                <div className="flex h-full flex-col gap-2.5 rounded-2xl border border-line bg-white p-6">
-                  <h3 className="text-[1.0625rem] font-semibold text-navy">{benefit.title}</h3>
+                <div className="relative flex h-full flex-col gap-2.5 overflow-hidden rounded-2xl border border-line bg-white p-6">
+                  <span
+                    aria-hidden="true"
+                    className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${ACCENT_RULES[index % ACCENT_RULES.length]}`}
+                  />
+                  <h3 className="mt-1 text-[1.0625rem] font-semibold text-navy">{benefit.title}</h3>
                   <p className="text-[0.9375rem] leading-6 text-muted">{benefit.body}</p>
                 </div>
               </Reveal>
@@ -134,7 +140,7 @@ export default function ProfessionPage({
           <SectionHeading
             eyebrow="Before and after"
             title="The same content, in native English"
-            description="Marked words show what changed. Every name, date, and number is identical on both sides."
+            description="A worked example for this role. Marked words show what the rewrite changes; every name, date and number is identical on both sides."
           />
           <div className="mt-10">
             <ExamplePair example={example} />

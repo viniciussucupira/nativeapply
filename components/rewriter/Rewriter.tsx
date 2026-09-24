@@ -9,7 +9,6 @@ import {
   IconCheck,
   IconCopy,
   IconCoverLetter,
-  IconFacts,
   IconFollowUpEmail,
   IconLock,
   IconRecruiterMessage,
@@ -378,8 +377,8 @@ export default function Rewriter({
             <div className="flex items-baseline justify-between gap-3">
               <h3 className="text-sm font-semibold text-navy">Native English</h3>
               {phase === "done" && (
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-success">
-                  <IconFacts className="h-3.5 w-3.5" /> Facts preserved
+                <span className="text-xs tabular-nums text-muted-soft">
+                  {result.length.toLocaleString("en-US")} characters
                 </span>
               )}
             </div>
@@ -434,6 +433,12 @@ export default function Rewriter({
                       Start another text
                     </button>
                   </div>
+                  {/* An instruction to the model is not a guarantee, so the
+                      last check stays with the person sending the letter. */}
+                  <p className="border-t border-line px-4 py-3 text-[0.8125rem] leading-5 text-muted">
+                    Your names, dates and numbers are meant to come back untouched — read the rewrite once before
+                    you send it. It is your application.
+                  </p>
                 </div>
               )}
 

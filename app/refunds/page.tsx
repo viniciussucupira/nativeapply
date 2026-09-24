@@ -14,10 +14,29 @@ const sections: LegalSection[] = [
     id: "monthly",
     heading: "Monthly plan",
     body: (
+      <>
+        <p>
+          Your first payment is fully refundable for 14 days. Ask within 14 days of that charge and you get the
+          whole amount back, no questions asked and no reason needed. This is the same 14-day refund promised on
+          the pricing page, written here so the wording matches.
+        </p>
+        <p>
+          You can cancel at any time; you keep access until the end of the billing period you already paid for,
+          with no further charges after that. If a later charge looks wrong to you, contact us within 14 days of
+          it and we&apos;ll review it with Paddle.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "cancel",
+    heading: "How to cancel",
+    body: (
       <p>
-        You can cancel your monthly subscription at any time; you will keep access until the end of the current
-        billing period, with no further charges after that. If you believe you were charged in error, contact us
-        within 14 days of the charge and we&apos;ll review it with Paddle.
+        Open the receipt Paddle emailed you after the payment and use the link in it to manage your subscription —
+        cancelling there stops any future charge immediately. If you cannot find the receipt, email{" "}
+        <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> from the address you paid with and we&apos;ll
+        cancel it for you.
       </p>
     ),
   },

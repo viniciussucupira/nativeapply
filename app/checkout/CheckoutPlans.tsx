@@ -53,7 +53,7 @@ function PlanColumn({
     >
       {highlight && (
         <span className="absolute -top-3 left-6 rounded-full bg-brand px-3 py-1 text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-white">
-          Best value
+          Cancel anytime
         </span>
       )}
       <p className="text-[0.9375rem] font-semibold text-navy">{plan.name}</p>
@@ -125,10 +125,10 @@ export default function CheckoutPlans() {
       <Script src="https://cdn.paddle.com/paddle/v2/paddle.js" onLoad={initializePaddle} strategy="afterInteractive" />
 
       <Section tone="white" className="relative overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-[24rem] bg-[radial-gradient(70%_60%_at_50%_0%,rgba(39,100,231,0.07),transparent_70%)]"
-        />
+        <div className="na-aurora" aria-hidden="true">
+          <span className="na-orb-blue" />
+          <span className="na-orb-jade" />
+        </div>
         <Container size="wide" className="relative py-14 sm:py-20">
           <div className="na-rise mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
             <Eyebrow>Pricing</Eyebrow>
@@ -141,13 +141,7 @@ export default function CheckoutPlans() {
             </p>
           </div>
 
-          <div className="mx-auto mt-14 grid max-w-3xl gap-5 sm:grid-cols-2">
-            <PlanColumn plan={FREE_PLAN}>
-              <ButtonLink href="/#tool" size="lg" variant="secondary" className="w-full">
-                Start with one rewrite
-              </ButtonLink>
-            </PlanColumn>
-
+          <div className="mx-auto mt-14 max-w-md">
             <PlanColumn plan={MONTHLY_PLAN} highlight footnote="Full refund within 14 days of your first payment.">
               <Button
                 size="lg"
@@ -160,15 +154,25 @@ export default function CheckoutPlans() {
             </PlanColumn>
           </div>
 
+          <div className="mx-auto mt-6 flex max-w-md flex-col items-center gap-2 rounded-2xl border border-line bg-ivory p-5 text-center">
+            <p className="text-[0.9375rem] font-semibold text-navy">Not ready to subscribe?</p>
+            <p className="text-[0.9375rem] leading-6 text-muted">
+              {FREE_PLAN.features[0]}, with just your email — {FREE_PLAN.summary.toLowerCase()}
+            </p>
+            <ButtonLink href="/#tool" variant="secondary" className="mt-1">
+              Start with one rewrite
+            </ButtonLink>
+          </div>
+
           <ul className="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-x-7 gap-y-3 text-[0.875rem] text-muted">
             {[
-              { Icon: IconLock, text: "Secure payment by Paddle" },
-              { Icon: IconShield, text: "NativeApply never stores your card" },
-              { Icon: IconClock, text: "14-day refund policy" },
-              { Icon: IconCheck, text: "Cancel the monthly plan anytime" },
-            ].map(({ Icon, text }) => (
+              { Icon: IconLock, text: "Secure payment by Paddle", tone: "text-brand" },
+              { Icon: IconShield, text: "NativeApply never stores your card", tone: "text-jade" },
+              { Icon: IconClock, text: "14-day refund policy", tone: "text-amber" },
+              { Icon: IconCheck, text: "Cancel the monthly plan anytime", tone: "text-violet" },
+            ].map(({ Icon, text, tone }) => (
               <li key={text} className="flex items-center gap-2">
-                <Icon className="h-[1.1rem] w-[1.1rem] text-brand" />
+                <Icon className={`h-[1.1rem] w-[1.1rem] ${tone}`} />
                 {text}
               </li>
             ))}

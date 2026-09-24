@@ -2,9 +2,11 @@
 
 /* ------------------------------------------------------------------
    NativeApply design system
-   One primary colour (professional blue) on ivory and white, with deep
-   navy for structure and a single reserved green for success. Anything
-   outside this list is a functional accent used in small doses.
+   A professional blue leads, on ivory and white, with deep navy for
+   structure. Four supporting hues — jade, violet, amber, and the
+   reserved green for success — carry meaning in icons, markers, and
+   small surfaces, never in body text. Every accent below is dark
+   enough to pass WCAG AA on white.
 ------------------------------------------------------------------- */
 
 @theme {
@@ -27,8 +29,19 @@
   --color-flag: #b4405f;
   --color-flag-50: #fdf1f4;
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Supporting hues. One per idea, so a colour always means something. */
+  --color-jade: #0b7d70;
+  --color-jade-100: #cfeae5;
+  --color-jade-50: #e8f6f3;
+  --color-violet: #5b45cf;
+  --color-violet-100: #ddd6fb;
+  --color-violet-50: #efebff;
+  --color-amber: #96620a;
+  --color-amber-100: #f6e3c2;
+  --color-amber-50: #fdf3e3;
+
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   --radius-card: 1.25rem;
 }
@@ -180,6 +193,124 @@ body {
     var(--color-line-strong),
     transparent
   );
+}
+
+/* ------------------------------------------------------------------
+   Aurora — soft coloured light behind a section. Built from radial
+   gradients (no blur filter, which is expensive to paint on phones),
+   drifting slowly enough to read as light rather than animation.
+------------------------------------------------------------------- */
+
+.na-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.na-aurora > span {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.na-orb-blue {
+  top: -18%;
+  right: -10%;
+  width: 46rem;
+  height: 34rem;
+  background: radial-gradient(closest-side, rgba(39, 100, 231, 0.16), transparent 72%);
+  animation: na-drift-a 26s ease-in-out infinite alternate;
+}
+
+.na-orb-jade {
+  top: 22%;
+  left: -16%;
+  width: 40rem;
+  height: 30rem;
+  background: radial-gradient(closest-side, rgba(11, 125, 112, 0.14), transparent 70%);
+  animation: na-drift-b 32s ease-in-out infinite alternate;
+}
+
+.na-orb-amber {
+  bottom: -22%;
+  right: 12%;
+  width: 34rem;
+  height: 26rem;
+  background: radial-gradient(closest-side, rgba(214, 150, 46, 0.16), transparent 70%);
+  animation: na-drift-c 29s ease-in-out infinite alternate;
+}
+
+.na-orb-violet {
+  top: -12%;
+  left: 8%;
+  width: 36rem;
+  height: 28rem;
+  background: radial-gradient(closest-side, rgba(91, 69, 207, 0.14), transparent 70%);
+  animation: na-drift-b 34s ease-in-out infinite alternate;
+}
+
+/* Same idea over the navy sections, where light has to be stronger to
+   register at all. */
+.na-orb-night-blue {
+  top: -30%;
+  left: -8%;
+  width: 42rem;
+  height: 32rem;
+  background: radial-gradient(closest-side, rgba(61, 126, 255, 0.35), transparent 70%);
+  animation: na-drift-a 28s ease-in-out infinite alternate;
+}
+
+.na-orb-night-violet {
+  bottom: -36%;
+  right: -6%;
+  width: 40rem;
+  height: 30rem;
+  background: radial-gradient(closest-side, rgba(124, 99, 240, 0.32), transparent 70%);
+  animation: na-drift-b 33s ease-in-out infinite alternate;
+}
+
+.na-orb-night-jade {
+  top: 10%;
+  right: 24%;
+  width: 28rem;
+  height: 22rem;
+  background: radial-gradient(closest-side, rgba(24, 173, 155, 0.22), transparent 70%);
+  animation: na-drift-c 30s ease-in-out infinite alternate;
+}
+
+@keyframes na-drift-a {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-4%, 5%, 0) scale(1.08);
+  }
+}
+
+@keyframes na-drift-b {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.04);
+  }
+  to {
+    transform: translate3d(6%, -4%, 0) scale(1);
+  }
+}
+
+@keyframes na-drift-c {
+  from {
+    transform: translate3d(0, 2%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-5%, -3%, 0) scale(1.1);
+  }
+}
+
+/* A rounded, slightly irregular shape — used for illustration frames so
+   the page is not built entirely from rectangles. */
+.na-blob {
+  border-radius: 46% 54% 52% 48% / 52% 48% 52% 48%;
 }
 
 /* Highlight marks inside before/after examples. Colour is never the only

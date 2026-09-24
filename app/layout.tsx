@@ -1,4 +1,10 @@
 import type { Metadata, Viewport } from "next";
+// Inter, served from our own domain instead of fonts.googleapis.com: one
+// less third party in the request path of a page that promises privacy,
+// and no render-blocking stylesheet on someone else's server. Each
+// @font-face carries a unicode-range, so a visitor downloads only the
+// subset their text needs.
+import "@fontsource-variable/inter/wght.css";
 import "./globals.css";
 import Header from "@/components/site/Header";
 import Footer from "@/components/site/Footer";
@@ -40,18 +46,6 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full antialiased">
-      <head>
-        {/* Inter is loaded here, in the root layout, so it applies to every
-            route. The rule below is written for the pages router, where a font
-            link in a single page would not be shared — not the case here. */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-        />
-      </head>
       <body className="flex min-h-full flex-col bg-white text-ink">
         <a
           href="#main"

@@ -7,15 +7,15 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "Is my text stored anywhere?",
-    a: "Your draft is not stored on NativeApply servers. It is sent to our AI provider, Anthropic, for the single purpose of producing the rewrite, and it is not used to train any AI model.",
+    a: "Your draft is not written to any NativeApply database or log. It is sent to our AI provider, Anthropic, for the single purpose of producing the rewrite, and under their API terms it is not used to train any AI model.",
   },
   {
     q: "Do I need to create an account?",
-    a: "No password and no account. You enter your email once so we know who is using the product and can contact you about NativeApply. If you buy Pro, access is remembered in your browser and can be restored on another device with your Paddle transaction ID.",
+    a: "No password and no account. You enter your email once, before your first free rewrite, so we can reach you about NativeApply itself. If you buy Pro, access is remembered in your browser and can be switched on elsewhere with your Paddle transaction ID.",
   },
   {
     q: "What does it cost?",
-    a: "NativeApply Pro is $14 a month, with unlimited rewrites, and you can cancel anytime. You can run one free rewrite a day first, with just your email, to see the result on your own text before paying anything.",
+    a: "NativeApply Pro is $14 a month, with unlimited rewrites. You cancel from the receipt Paddle emails you — one link, no email to us needed — and you keep access to the end of the month you already paid for. You can run one free rewrite a day first, with just your email, to see the result on your own text before paying anything.",
   },
   {
     q: "Which English does it write — American or British?",
@@ -31,6 +31,6 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "What if it does not work for me?",
-    a: "Try it free first — one rewrite a day, on your own text, costs nothing. If you do buy Pro and change your mind, you get a full refund within 14 days, handled through Paddle.",
+    a: "Try it free first — one rewrite a day, on your own text, costs nothing. If you do buy Pro and change your mind, your first payment is fully refundable for 14 days, no reason needed, handled through Paddle.",
   },
 ];

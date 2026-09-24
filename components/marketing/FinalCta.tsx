@@ -12,8 +12,13 @@ export default function FinalCta({
   cta?: string;
 }) {
   return (
-    <section className="bg-navy">
-      <Container size="wide" className="py-16 sm:py-20">
+    <section className="relative overflow-hidden bg-navy">
+      <div className="na-aurora" aria-hidden="true">
+        <span className="na-orb-night-blue" />
+        <span className="na-orb-night-violet" />
+        <span className="na-orb-night-jade" />
+      </div>
+      <Container size="wide" className="relative py-16 sm:py-20">
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
           <h2 className="text-[1.75rem] font-semibold leading-[1.18] tracking-[-0.022em] text-white sm:text-[2.125rem]">
             {title}

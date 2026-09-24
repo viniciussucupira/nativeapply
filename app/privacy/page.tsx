@@ -24,9 +24,10 @@ const sections: LegalSection[] = [
     heading: "2. Your email address",
     body: (
       <p>
-        To use NativeApply you enter your email address. We store it so we know who uses the product and can contact
-        you about NativeApply (for example, important changes to the service). We never sell it or share it with
-        advertisers. To have it deleted, email us at the address below.
+        Before your first free rewrite, the tool asks for your email address and we store it, so we can reach you
+        about NativeApply itself — for example, an important change to the service. The unlock is then a flag saved
+        in your own browser, so your email is not attached to the text you rewrite or to the usage count described
+        below. We never sell it or share it with advertisers. To have it deleted, email us at the address below.
       </p>
     ),
   },
@@ -64,22 +65,8 @@ const sections: LegalSection[] = [
     ),
   },
   {
-    id: "extension",
-    heading: "6. Browser extension (Gmail)",
-    body: (
-      <p>
-        NativeApply also offers an optional browser extension for Gmail. The extension only reads the text inside a
-        Gmail compose window when you click the &quot;NativeApply&quot; button — it does not read your inbox, other
-        emails, or any other tab or website. The text you choose to rewrite is sent only to the same NativeApply API
-        described in Section 1 above, processed the same way, and is not shared with any additional third party. The
-        extension does not track your browsing activity and does not run on any site other than Gmail and
-        nativeapply.net.
-      </p>
-    ),
-  },
-  {
     id: "contact",
-    heading: "7. Contact",
+    heading: "6. Contact",
     body: (
       <p>
         Questions about this policy, or requests to access or delete your data, can be sent to{" "}
