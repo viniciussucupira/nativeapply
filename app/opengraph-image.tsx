@@ -69,7 +69,7 @@ export default function Image() {
               display: "flex",
             }}
           >
-            $14/month or $49 lifetime
+            $14 a month, cancel anytime
           </div>
           <div style={{ fontSize: 24, color: "#667085", display: "flex" }}>nativeapply.net</div>
         </div>

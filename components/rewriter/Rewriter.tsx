@@ -508,8 +508,7 @@ export default function Rewriter({
         {!isPro && (
           <div className="flex flex-col items-center gap-1 border-t border-line bg-white px-4 py-4 text-center sm:flex-row sm:justify-center sm:gap-2 sm:py-3.5">
             <p className="text-[0.875rem] text-muted">
-              Unlimited rewrites: <span className="font-semibold text-navy">$14/month</span> or{" "}
-              <span className="font-semibold text-navy">$49 lifetime</span>.
+              Unlimited rewrites: <span className="font-semibold text-navy">$14/month</span>, cancel anytime.
             </p>
             <Link
               href="/checkout"

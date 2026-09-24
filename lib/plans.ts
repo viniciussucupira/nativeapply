@@ -1,5 +1,5 @@
 export type Plan = {
-  id: "free" | "monthly" | "lifetime";
+  id: "free" | "monthly";
   name: string;
   price: string;
   cadence: string;
@@ -22,21 +22,6 @@ export const MONTHLY_PLAN: Plan = {
   ],
 };
 
-export const LIFETIME_PLAN: Plan = {
-  id: "lifetime",
-  name: "Lifetime Pro",
-  price: "$49",
-  cadence: "one time",
-  summary: "Pay once. No renewal, no recurring charge, ever.",
-  features: [
-    "Everything in Monthly Pro",
-    "One payment — nothing recurring",
-    "Keeps working for future job searches",
-    "Full refund within 14 days",
-  ],
-  note: "Best value — about three and a half months of the monthly plan.",
-};
-
 export const FREE_PLAN: Plan = {
   id: "free",
   name: "Free",
@@ -50,4 +35,4 @@ export const FREE_PLAN: Plan = {
   ],
 };
 
-export const PLANS: Plan[] = [FREE_PLAN, MONTHLY_PLAN, LIFETIME_PLAN];
+export const PLANS: Plan[] = [FREE_PLAN, MONTHLY_PLAN];

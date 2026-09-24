@@ -20,7 +20,7 @@ export async function generateMetadata({
   if (!profession) return {};
 
   const heading = `${doc.labelCapitalized} for ${profession.label}`;
-  const description = `Rewrite the ${doc.label} you wrote as ${profession.singular} into natural professional English, with every employer, date and number preserved. $14/month or $49 lifetime, with one free rewrite a day to try it first.`;
+  const description = `Rewrite the ${doc.label} you wrote as ${profession.singular} into natural professional English, with every employer, date and number preserved. $14/month, with one free rewrite a day to try it first.`;
 
   return {
     title: `${heading} | NativeApply`,

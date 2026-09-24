@@ -28,7 +28,7 @@ import {
   IconShield,
   IconClock,
 } from "@/components/ui/Icons";
-import { FREE_PLAN, LIFETIME_PLAN, MONTHLY_PLAN } from "@/lib/plans";
+import { FREE_PLAN, MONTHLY_PLAN } from "@/lib/plans";
 import { HOME_FAQ } from "@/lib/faq";
 
 const USE_CASES = [
@@ -456,10 +456,10 @@ export default function Home() {
         <Container size="wide" className="py-16 sm:py-24">
           <SectionHeading
             eyebrow="Pricing"
-            title="Unlimited rewrites for $14 a month, or $49 once"
-            description="Both paid plans do exactly the same thing. The only question is whether you would rather stop paying after this job search or never pay again."
+            title="Unlimited rewrites for $14 a month"
+            description="One paid plan, everything included. Try it free first, and cancel whenever your job search ends."
           />
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+          <div className="mx-auto mt-12 grid max-w-3xl gap-5 sm:grid-cols-2">
             <PlanCard
               name={FREE_PLAN.name}
               price={FREE_PLAN.price}
@@ -477,17 +477,8 @@ export default function Home() {
               features={MONTHLY_PLAN.features}
               cta="Subscribe monthly"
               href="/checkout"
-            />
-            <PlanCard
-              name={LIFETIME_PLAN.name}
-              price={LIFETIME_PLAN.price}
-              cadence={LIFETIME_PLAN.cadence}
-              summary={LIFETIME_PLAN.summary}
-              features={LIFETIME_PLAN.features}
-              cta="Get lifetime access"
-              href="/checkout"
               highlight
-              footnote="Full refund within 14 days."
+              footnote="Full refund within 14 days of your first payment."
             />
           </div>
           <p className="mt-8 text-center text-[0.875rem] text-muted">

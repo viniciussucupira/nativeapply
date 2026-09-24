@@ -1,6 +1,6 @@
 export const APP_NAME = "NativeApply";
 
-export const SUPPORT_EMAIL = "viniciussucupira091@gmail.com";
+export const SUPPORT_EMAIL = "support@nativeapply.net";
 
 export const FREE_LIMIT_PER_DAY = 1;
 

@@ -15,7 +15,6 @@ const jsonLd = {
     "AI tool that rewrites cover letters, resume bullet points, and recruiter messages so they sound like a native English speaker wrote them.",
   offers: [
     { "@type": "Offer", price: "14", priceCurrency: "USD", name: "Monthly" },
-    { "@type": "Offer", price: "49", priceCurrency: "USD", name: "Lifetime" },
   ],
 };
 

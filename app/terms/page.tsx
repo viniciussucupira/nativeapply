@@ -17,8 +17,7 @@ const sections: LegalSection[] = [
       <p>
         NativeApply rewrites text you submit — such as cover letters, resume bullet points, and messages to
         recruiters — using artificial intelligence, so it reads more naturally to a native English speaker. Without a
-        paid plan, use is limited to 1 rewrite per day. NativeApply Pro ($14/month or $49 once for Lifetime access)
-        removes this limit.
+        paid plan, use is limited to 1 rewrite per day. NativeApply Pro ($14/month) removes this limit.
       </p>
     ),
   },
@@ -56,8 +55,16 @@ const sections: LegalSection[] = [
   },
   {
     id: "lifetime",
-    heading: "5. Lifetime plan",
-    body: <p>{LIFETIME_FULL}</p>,
+    heading: "5. Lifetime plan (no longer sold)",
+    body: (
+      <>
+        <p>
+          The Lifetime plan is no longer offered to new customers. Everyone who bought it keeps it, on exactly the
+          terms it was sold under:
+        </p>
+        <p>{LIFETIME_FULL}</p>
+      </>
+    ),
   },
   {
     id: "changes",

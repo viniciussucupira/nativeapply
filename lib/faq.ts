@@ -15,11 +15,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "What does it cost?",
-    a: "NativeApply Pro is $14 a month or $49 once for lifetime access, both with unlimited rewrites. You can run one free rewrite a day first, with just your email, to see the result on your own text before paying anything.",
-  },
-  {
-    q: "What is the difference between Monthly and Lifetime?",
-    a: "Nothing in the product — both give unlimited rewrites and all four document types. Monthly is $14 and you can cancel anytime; Lifetime is a single $49 payment with no renewal. Lifetime pays for itself in under four months.",
+    a: "NativeApply Pro is $14 a month, with unlimited rewrites, and you can cancel anytime. You can run one free rewrite a day first, with just your email, to see the result on your own text before paying anything.",
   },
   {
     q: "Which English does it write — American or British?",

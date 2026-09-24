@@ -23,12 +23,12 @@ const sections: LegalSection[] = [
   },
   {
     id: "lifetime",
-    heading: "Lifetime plan",
+    heading: "Lifetime plan (no longer sold)",
     body: (
       <>
         <p>
-          The Lifetime plan is a one-time payment. We offer a full refund if requested within 14 days of purchase, no
-          questions asked.
+          The Lifetime plan is no longer offered to new customers, and nothing changes for the people who bought it.
+          It was a one-time payment with a full refund if requested within 14 days of purchase, no questions asked.
         </p>
         <p>{LIFETIME_FULL}</p>
       </>

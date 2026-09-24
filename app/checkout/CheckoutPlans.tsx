@@ -3,8 +3,7 @@
 import Script from "next/script";
 import Link from "next/link";
 import { useState } from "react";
-import { LIFETIME_SHORT } from "@/lib/lifetime-policy";
-import { FREE_PLAN, LIFETIME_PLAN, MONTHLY_PLAN, type Plan } from "@/lib/plans";
+import { FREE_PLAN, MONTHLY_PLAN, type Plan } from "@/lib/plans";
 import { Button, ButtonLink, Container, Eyebrow, Section } from "@/components/ui/Primitives";
 import { IconCheck, IconLock, IconClock, IconShield, IconReceipt } from "@/components/ui/Icons";
 
@@ -31,7 +30,6 @@ declare global {
 }
 
 const MONTHLY_PRICE_ID = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID!;
-const LIFETIME_PRICE_ID = process.env.NEXT_PUBLIC_PADDLE_LIFETIME_PRICE_ID!;
 
 function PlanColumn({
   plan,
@@ -135,41 +133,29 @@ export default function CheckoutPlans() {
           <div className="na-rise mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
             <Eyebrow>Pricing</Eyebrow>
             <h1 className="text-[2rem] font-semibold leading-[1.1] tracking-[-0.03em] text-navy sm:text-[2.75rem]">
-              Unlimited rewrites for <span className="na-accent-text">$14 a month</span>, or $49 once
+              Unlimited rewrites for <span className="na-accent-text">$14 a month</span>
             </h1>
             <p className="text-[1.0625rem] leading-7 text-muted">
-              Both paid plans give you exactly the same product. The only decision is whether you would rather stop
-              paying when this job search ends, or never pay again.
+              One paid plan with everything in it. Try it free first, and cancel the moment your job search ends —
+              access runs to the end of the month you already paid for.
             </p>
           </div>
 
-          <div className="mt-14 grid gap-5 lg:grid-cols-3">
+          <div className="mx-auto mt-14 grid max-w-3xl gap-5 sm:grid-cols-2">
             <PlanColumn plan={FREE_PLAN}>
               <ButtonLink href="/#tool" size="lg" variant="secondary" className="w-full">
                 Start with one rewrite
               </ButtonLink>
             </PlanColumn>
 
-            <PlanColumn plan={MONTHLY_PLAN} footnote="Cancel anytime from your Paddle receipt.">
+            <PlanColumn plan={MONTHLY_PLAN} highlight footnote="Full refund within 14 days of your first payment.">
               <Button
                 size="lg"
-                variant="secondary"
                 onClick={() => handleCheckout(MONTHLY_PRICE_ID)}
                 disabled={!paddleReady}
                 className="w-full"
               >
                 {paddleReady ? "Subscribe monthly" : "Loading checkout…"}
-              </Button>
-            </PlanColumn>
-
-            <PlanColumn plan={LIFETIME_PLAN} highlight footnote="Full refund within 14 days.">
-              <Button
-                size="lg"
-                onClick={() => handleCheckout(LIFETIME_PRICE_ID)}
-                disabled={!paddleReady}
-                className="w-full"
-              >
-                {paddleReady ? "Get lifetime access" : "Loading checkout…"}
               </Button>
             </PlanColumn>
           </div>
@@ -194,8 +180,11 @@ export default function CheckoutPlans() {
         <Container size="wide" className="py-14 sm:py-18">
           <div className="mx-auto grid max-w-4xl gap-5 md:grid-cols-2">
             <div className="rounded-2xl border border-line bg-white p-6">
-              <h2 className="text-[1.0625rem] font-semibold text-navy">What “lifetime” means here</h2>
-              <p className="mt-2.5 text-[0.9375rem] leading-6 text-muted">{LIFETIME_SHORT}</p>
+              <h2 className="text-[1.0625rem] font-semibold text-navy">What you are paying for</h2>
+              <p className="mt-2.5 text-[0.9375rem] leading-6 text-muted">
+                Unlimited rewrites while the subscription is active, all four document types, and no lock-in: you
+                cancel from your Paddle receipt and keep access until the end of the month you paid for.
+              </p>
               <p className="mt-3 text-[0.9375rem] leading-6 text-muted">
                 The full wording is in the{" "}
                 <Link href="/terms" className="font-medium text-brand-700 underline underline-offset-4">
@@ -205,7 +194,7 @@ export default function CheckoutPlans() {
                 <Link href="/refunds" className="font-medium text-brand-700 underline underline-offset-4">
                   Refund Policy
                 </Link>
-                . We would rather write down the worst case than promise you forever and stay quiet about it.
+                . We would rather write the exact terms down than promise more than we can deliver.
               </p>
             </div>
 
