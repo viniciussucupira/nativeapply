@@ -8,6 +8,7 @@ import { Button, ButtonLink, Container, Eyebrow, Section } from "@/components/ui
 import { IconCheck, IconLock, IconClock, IconShield, IconReceipt } from "@/components/ui/Icons";
 import { useProStatus, refreshProStatus } from "@/components/ui/useProStatus";
 import { activatePurchase } from "@/lib/payment-activation";
+import { PRO_BURST_LIMIT, PRO_BURST_SECONDS } from "@/lib/constants";
 
 type PaddleCheckoutEvent = {
   name: string;
@@ -221,7 +222,7 @@ export default function CheckoutPlans() {
             </PlanColumn>
           </div>
 
-          <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-6 text-muted">Both plans use the same rewriting tool, English styles, and number comparison. Each request accepts up to 6,000 characters. Pro removes the daily rewrite limit.</p>
+          <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-6 text-muted">Both plans use the same rewriting tool, English styles, and number comparison. Each request accepts up to 6,000 characters. Pro removes the daily rewrite limit, with a safeguard of {PRO_BURST_LIMIT} requests per {PRO_BURST_SECONDS} seconds per account.</p>
           <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-6 text-muted">No NativeApply account or password to create. Pay securely with Paddle, keep your receipt, and Pro activates in this browser. <Link href="/subscription" className="font-semibold text-brand-700 underline">Access & billing help</Link> · <Link href="/subscription#cancel" className="font-semibold text-brand-700 underline">How to cancel</Link></p>
 
           <ul className="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-x-7 gap-y-3 text-[0.875rem] text-muted">

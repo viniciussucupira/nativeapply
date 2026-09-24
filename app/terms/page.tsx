@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import LegalLayout, { type LegalSection } from "@/components/legal/LegalLayout";
-import { SUPPORT_EMAIL } from "@/lib/constants";
+import { SUPPORT_EMAIL, PRO_BURST_LIMIT, PRO_BURST_SECONDS } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Terms of Service | NativeApply",
@@ -71,7 +71,9 @@ const sections: LegalSection[] = [
           request a single-use link at <a href="/restore">Restore Pro access</a> using your purchase email.
           Links expire after 15 minutes. Keep access links private and contact support if you lose access to that email.</p>
         <p>Do not disrupt the service or attempt to bypass security controls. Temporary safeguards may limit
-          abusive traffic. Pro has no daily rewrite allowance; service interruptions can still occur.
+          abusive traffic. Pro has no daily rewrite allowance. To protect availability, each Pro account can
+          submit up to {PRO_BURST_LIMIT} rewrite requests per {PRO_BURST_SECONDS} seconds across its browsers and devices.
+          Service interruptions can still occur.
           If you cannot use a paid service, contact us so we can restore access or address the payment.</p>
         <p>Our <a href="/privacy">Privacy Policy</a> explains how text, access details, and usage data are processed.</p>
         <p>Copy, email, and WhatsApp tools help you move a result to another application. NativeApply does

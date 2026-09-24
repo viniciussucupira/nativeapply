@@ -3,7 +3,7 @@ import { freeBrowserSession, FREE_COOKIE } from "@/lib/free-session";
 import { sessionSecret } from "@/lib/pro-cookie";
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { CONTEXT_TYPES, FREE_LIMIT_MESSAGE, FREE_LIMIT_PER_DAY, MAX_INPUT_CHARS } from "@/lib/constants";
+import { CONTEXT_TYPES, FREE_LIMIT_MESSAGE, FREE_LIMIT_PER_DAY, MAX_INPUT_CHARS, PRO_BURST_LIMIT, PRO_BURST_SECONDS } from "@/lib/constants";
 import {
   USAGE_UNVERIFIABLE,
   incrementDailyUsage,
@@ -72,6 +72,20 @@ export async function POST(req: NextRequest) {
     return reply({ error: "access_unavailable", message: "We could not check your access right now. Please try again shortly; your draft has not been changed." }, { status: 503 });
   }
   const ip = getClientIp(req);
+
+  // Account-scoped and atomic: changing browsers/IPs cannot multiply a Pro burst.
+  // This protects provider capacity without introducing a daily Pro allowance.
+  if (pro) {
+    try {
+      if (!email || !await allowRecoveryAttempt("pro-rewrite-burst", email, PRO_BURST_LIMIT, PRO_BURST_SECONDS)) {
+        const response = reply({ error: "temporarily_limited", message: "Your Pro account has sent several requests in a short time. Please wait one minute and try again. Your draft is still here; you have not reached a daily limit." }, { status: 429 });
+        response.headers.set("Retry-After", String(PRO_BURST_SECONDS));
+        return response;
+      }
+    } catch {
+      return reply({ error: "access_unavailable", message: "We could not start your rewrite right now. Your draft is still here. Please try again shortly." }, { status: 503 });
+    }
+  }
 
   if (!pro) {
     // A separate generous network safeguard prevents automated cookie cycling.
