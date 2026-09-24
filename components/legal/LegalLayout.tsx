@@ -32,6 +32,14 @@ export default function LegalLayout({
             <p className="mt-5 inline-flex items-center rounded-full border border-line bg-white px-3 py-1.5 text-[0.8125rem] font-medium text-muted">
               Last updated: {updated}
             </p>
+            <nav aria-label="Legal policies" className="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+              {[["Terms of Service", "/terms"], ["Privacy Policy", "/privacy"], ["Refund Policy", "/refunds"]].map(([label, href]) => (
+                <a key={href} href={href} aria-current={title === label ? "page" : undefined}
+                  className="inline-flex min-h-11 items-center text-brand-700 underline underline-offset-4 aria-[current=page]:font-semibold">
+                  {label}
+                </a>
+              ))}
+            </nav>
           </div>
         </Container>
       </Section>

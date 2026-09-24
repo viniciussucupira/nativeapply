@@ -4,121 +4,79 @@ import { Container } from "@/components/ui/Primitives";
 import { SUPPORT_EMAIL } from "@/lib/constants";
 
 type FooterLink = { href: string; label: string; external?: boolean };
-
-const COLUMNS: { title: string; links: FooterLink[] }[] = [
-  {
-    title: "Product",
-    links: [
-      { href: "/#tool", label: "Rewrite your text" },
-      { href: "/#how-it-works", label: "How it works" },
-      { href: "/#examples", label: "Before and after" },
-      { href: "/checkout", label: "Pricing" },
-      { href: "/restore", label: "Restore Pro access" },
-      { href: "/subscription", label: "Access & billing" },
-      { href: "/subscription#cancel", label: "Cancel subscription" },
-    ],
-  },
-  {
-    title: "Use cases",
-    links: [
-      { href: "/cover-letter-for-non-native-speakers", label: "Cover letter rewriter" },
-      { href: "/native-sounding-resume", label: "Resume rewriter" },
-      { href: "/cv-english-rewriter", label: "CV rewriter" },
-      { href: "/ats-friendly-resume-bullet-points", label: "ATS resume bullet points" },
-      { href: "/recruiter-message-rewriter", label: "Recruiter message rewriter" },
-      { href: "/linkedin-connection-message-rewriter", label: "LinkedIn message rewriter" },
-      { href: "/interview-follow-up-email-generator", label: "Interview follow-up email" },
-      { href: "/job-application-letter-rewriter", label: "Job application letter" },
-      { href: "/visa-sponsorship-cover-letter", label: "Visa sponsorship cover letter" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { href: "https://www.nimbuslabsai.com", label: "Nimbus Labs", external: true },
-      { href: "https://www.retoneai.net", label: "Retone — AI text rewriter", external: true },
-      { href: `mailto:${SUPPORT_EMAIL}`, label: "Contact support" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { href: "/terms", label: "Terms of Service" },
-      { href: "/privacy", label: "Privacy Policy" },
-      { href: "/refunds", label: "Refund Policy" },
-    ],
-  },
+const PRODUCT: FooterLink[] = [
+  { href: "/#tool", label: "Rewrite your text" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#examples", label: "Before & after" },
+  { href: "/checkout", label: "Pricing" },
 ];
-
+const TOOLS: FooterLink[] = [
+  { href: "/cover-letter-for-non-native-speakers", label: "Cover letters" },
+  { href: "/native-sounding-resume", label: "Resume bullets" },
+  { href: "/cv-english-rewriter", label: "CV writing" },
+  { href: "/ats-friendly-resume-bullet-points", label: "ATS-friendly bullets" },
+  { href: "/visa-sponsorship-cover-letter", label: "Visa sponsorship" },
+  { href: "/recruiter-message-rewriter", label: "Recruiter messages" },
+  { href: "/linkedin-connection-message-rewriter", label: "LinkedIn messages" },
+  { href: "/interview-follow-up-email-generator", label: "Interview follow-ups" },
+  { href: "/job-application-letter-rewriter", label: "Application letters" },
+];
+const HELP: FooterLink[] = [
+  { href: "/restore", label: "Restore Pro access" },
+  { href: "/subscription", label: "Access & billing" },
+  { href: "/subscription#cancel", label: "Cancel subscription" },
+  { href: `mailto:${SUPPORT_EMAIL}`, label: "Contact support" },
+];
+const LEGAL: FooterLink[] = [
+  { href: "/terms", label: "Terms of Service" },
+  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/refunds", label: "Refund Policy" },
+];
 function FooterAnchor({ link }: { link: FooterLink }) {
-  const className =
-    "inline-flex min-h-[2.25rem] items-center text-[0.9375rem] text-muted transition-colors hover:text-navy";
-  if (link.external) {
-    return (
-      <a href={link.href} target="_blank" rel="noopener noreferrer" className={className}>
-        {link.label}
-      </a>
-    );
-  }
-  if (link.href.startsWith("mailto:")) {
-    return (
-      <a href={link.href} className={className}>
-        {link.label}
-      </a>
-    );
-  }
-  return (
-    <Link href={link.href} className={className}>
-      {link.label}
-    </Link>
-  );
+  const className = "inline-flex min-h-11 items-center rounded-sm py-2 text-sm leading-5 text-muted transition-colors hover:text-brand-700 hover:underline hover:underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4";
+  if (link.external || link.href.startsWith("mailto:")) return <a href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined} className={className}>{link.label}</a>;
+  return <Link href={link.href} className={className}>{link.label}</Link>;
 }
+function LinkList({ links }: { links: FooterLink[] }) {
+  return <ul>{links.map(link => <li key={link.href}><FooterAnchor link={link} /></li>)}</ul>;
+}
+const headingClass = "mb-3 text-xs font-semibold uppercase tracking-[0.13em] text-navy";
 
 export default function Footer() {
-  return (
-    <footer className="border-t border-line bg-ivory">
-      <Container size="wide" className="py-14 sm:py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.25fr_repeat(4,1fr)] lg:gap-8">
-          <div className="max-w-xs">
-            <Logo size={34} />
-            <p className="mt-4 text-[0.9375rem] leading-6 text-muted">
-              Clear, natural English for your next job application.
-            </p>
-            <p className="mt-5 text-sm text-muted-soft">
-              A{" "}
-              <a
-                href="https://www.nimbuslabsai.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-muted underline decoration-line-strong underline-offset-4 hover:text-navy"
-              >
-                Nimbus Labs
-              </a>{" "}
-              product.
-            </p>
+  return <footer className="border-t border-line bg-ivory">
+    <Container size="wide" className="pt-10 sm:pt-12">
+      <div className="grid gap-x-8 gap-y-9 pb-9 sm:grid-cols-2 lg:grid-cols-[1.1fr_.8fr_1.8fr_1fr] lg:gap-x-7 lg:pb-11">
+        <div className="sm:col-span-2 lg:col-span-1">
+          <Logo size={36} />
+          <p className="mt-4 max-w-64 text-sm leading-6 text-muted">Clear, natural English.<br />More confidence in your next application.</p>
+          <div className="mt-5 border-l-2 border-brand-100 pl-3 text-xs leading-6 text-muted">
+            <p>A <a href="https://www.nimbuslabsai.com" target="_blank" rel="noopener noreferrer" className="font-medium text-navy underline decoration-line-strong underline-offset-4 hover:text-brand-700">Nimbus Labs</a> product.</p>
+            <a href="https://www.retoneai.net" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-sm underline decoration-line-strong underline-offset-4 hover:text-brand-700 focus-visible:outline-2 focus-visible:outline-brand">Also by us: Retone <span aria-hidden="true" className="ml-1">↗</span></a>
           </div>
-
-          {COLUMNS.map((column) => (
-            <nav key={column.title} aria-label={column.title}>
-              <h2 className="text-[0.8125rem] font-semibold uppercase tracking-[0.12em] text-navy">
-                {column.title}
-              </h2>
-              <ul className="mt-3 flex flex-col gap-0.5">
-                {column.links.map((link) => (
-                  <li key={link.href + link.label}>
-                    <FooterAnchor link={link} />
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
         </div>
-
-        <div className="mt-12 flex flex-col gap-3 border-t border-line pt-7 text-sm text-muted-soft sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} NativeApply. All rights reserved.</p>
-          <p>Payments processed by Paddle.com, our Merchant of Record.</p>
+        <nav aria-label="Product">
+          <h2 className={headingClass}>Explore</h2>
+          <LinkList links={PRODUCT} />
+        </nav>
+        <nav aria-label="Writing tools" className="order-last sm:col-span-2 lg:order-none lg:col-span-1">
+          <h2 className={headingClass}>Writing tools</h2>
+          <div className="grid grid-cols-2 gap-x-5 lg:gap-x-4">
+            <LinkList links={TOOLS.slice(0, 5)} />
+            <LinkList links={TOOLS.slice(5)} />
+          </div>
+        </nav>
+        <nav aria-label="Access and support" className="rounded-2xl border border-brand-100 bg-white p-5 sm:-mt-5 lg:p-4">
+          <h2 className={headingClass}>Access & help</h2>
+          <LinkList links={HELP} />
+        </nav>
+      </div>
+      <div className="border-t border-line py-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs leading-6 text-muted">© {new Date().getFullYear()} NativeApply. All rights reserved.</p>
+          <nav aria-label="Legal"><ul className="flex flex-wrap gap-x-5">{LEGAL.map(link => <li key={link.href}><FooterAnchor link={link} /></li>)}</ul></nav>
         </div>
-      </Container>
-    </footer>
-  );
+        <p className="mt-1 text-xs leading-6 text-muted">Payments securely processed by Paddle, our Merchant of Record.</p>
+      </div>
+    </Container>
+  </footer>;
 }

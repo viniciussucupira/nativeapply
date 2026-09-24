@@ -17,7 +17,8 @@ const sections: LegalSection[] = [
       <p>
         NativeApply rewrites text you submit — such as cover letters, resume bullet points, and messages to
         recruiters — using artificial intelligence, so it reads more naturally to a native English speaker. Without a
-        paid plan, use is limited to 1 rewrite per day. NativeApply Pro ($19/month) removes this limit.
+        paid plan, use is limited to one rewrite per browser per day, resetting at midnight UTC. Failed generations
+        do not use this allowance. NativeApply Pro removes the daily limit. Each request supports up to 6,000 characters.
       </p>
     ),
   },
@@ -38,7 +39,9 @@ const sections: LegalSection[] = [
     body: (
       <p>
         NativeApply helps you write clearer, more natural English. It does not guarantee that you will get an
-        interview, an offer, or any specific job-search outcome.
+        interview, an offer, or any specific job-search outcome. AI can make mistakes or change the meaning of a
+        sentence. Review every result before using it, especially names, dates, qualifications, and achievements.
+        NativeApply does not make hiring decisions or verify your credentials.
       </p>
     ),
   },
@@ -46,16 +49,37 @@ const sections: LegalSection[] = [
     id: "payments",
     heading: "4. Payments",
     body: (
-      <p>
-        Payments are processed by Paddle.com, our Merchant of Record. Paddle handles billing, taxes, and payment
-        security for all transactions. See our <a href="/refunds">Refund Policy</a> for details on cancellations and
-        refunds.
-      </p>
+      <>
+        <p>New Pro subscriptions cost US$19 per month and renew automatically each month until cancelled.
+          Checkout shows the currency, applicable taxes, and total before you pay. Existing subscriptions remain
+          at their agreed price unless a change is communicated in advance, with consent where required by law.</p>
+        <p>Paddle is our Merchant of Record and authorised reseller. It handles payment processing, billing,
+          taxes, and refunds. Purchases are also subject to the <a href="https://www.paddle.com/legal/buyer-terms">Paddle Buyer Terms</a>.</p>
+        <p>You can <a href="/subscription#cancel">cancel on NativeApply</a> after verifying your purchase email.
+          Confirm cancellation before the next renewal to stop future renewals. You normally keep Pro until the
+          end of the paid billing period. Cancelling does not automatically request a refund. Your first payment
+          has a 14-day money-back guarantee; see our <a href="/refunds">Refund Policy</a>.</p>
+      </>
+    ),
+  },
+  {
+    id: "access",
+    heading: "5. Access and responsible use",
+    body: (
+      <>
+        <p>No NativeApply password is required. To use your purchase in another browser or recover access,
+          request a single-use link at <a href="/restore">Restore Pro access</a> using your purchase email.
+          Links expire after 15 minutes. Keep access links private and contact support if you lose access to that email.</p>
+        <p>Do not disrupt the service or attempt to bypass security controls. Temporary safeguards may limit
+          abusive traffic. Pro has no daily rewrite allowance; service interruptions can still occur.
+          If you cannot use a paid service, contact us so we can restore access or address the payment.</p>
+        <p>Our <a href="/privacy">Privacy Policy</a> explains how text, access details, and usage data are processed.</p>
+      </>
     ),
   },
   {
     id: "lifetime",
-    heading: "5. Lifetime plan (no longer sold)",
+    heading: "6. Lifetime plan (no longer sold)",
     body: (
       <>
         <p>
@@ -68,17 +92,19 @@ const sections: LegalSection[] = [
   },
   {
     id: "changes",
-    heading: "6. Changes",
+    heading: "7. Changes and your rights",
     body: (
       <p>
-        We may update these Terms from time to time. Continued use of the Service means you accept the changes.
-        Changes never reduce what you already paid for.
+        We may update these Terms and will show the revised date here. Material changes affecting paid access
+        will be communicated in advance, with consent where required. Changes do not reduce benefits you have
+        already paid for. Nothing in these Terms excludes rights or remedies that cannot be excluded under
+        applicable consumer law.
       </p>
     ),
   },
   {
     id: "contact",
-    heading: "7. Contact",
+    heading: "8. Contact",
     body: (
       <p>
         Questions about these Terms can be sent to <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
@@ -91,7 +117,7 @@ export default function TermsPage() {
   return (
     <LegalLayout
       title="Terms of Service"
-      updated="September 2026"
+      updated="September 24, 2026"
       intro={
         <>
           NativeApply is a product operated by Nimbus Labs (&quot;we&quot;, &quot;us&quot;). By using nativeapply.net
