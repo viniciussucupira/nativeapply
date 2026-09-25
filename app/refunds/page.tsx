@@ -15,15 +15,10 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>
-          If you subscribe to Pro, your first payment is fully refundable for 14 days. Ask within 14 days of that charge and you get the
-          whole amount back, no questions asked and no reason needed.
+          Every Pro payment, including the initial payment and each monthly renewal, is fully refundable for 14 days. Request within 14 days of the charge for a full refund, no questions asked and no reason needed.
         </p>
         <p>
-          You can cancel at any time; you keep access until the end of the billing period you already paid for,
-          with no further renewals once cancellation is confirmed. The first-payment guarantee does not
-          automatically apply to renewal payments. If a renewal charge looks wrong, request a review through
-          <a href="https://paddle.net/contact"> Paddle payment help</a> within 14 days. You do not need to email NativeApply.
-          This review window does not limit your statutory rights.
+          You can cancel at any time. Cancellation stops future renewals and keeps the remaining paid period unless refunded. Request a refund of your latest payment directly on this site; the confirmation also stops renewal. For another eligible payment, use <a href="https://paddle.net/contact">Paddle payment help</a>. You do not need to email NativeApply. This policy does not limit your statutory rights.
         </p>
       </>
     ),
@@ -34,7 +29,7 @@ const sections: LegalSection[] = [
     body: (
       <>
         <ol className="list-decimal space-y-2 pl-5">
-          <li>Open <a href="/subscription#cancel">Access &amp; billing</a> and enter the email used for your purchase.</li>
+          <li>Open <a href="/subscription#cancel">Billing &amp; support</a> and enter the email used for your purchase.</li>
           <li>Open the secure link in your email to verify access. No NativeApply password or Paddle login is required.</li>
           <li>Select your subscription, choose Cancel subscription, and confirm. Check the confirmation and access end date.</li>
         </ol>
@@ -55,10 +50,10 @@ const sections: LegalSection[] = [
       <>
         <ol className="list-decimal space-y-2 pl-5">
           <li>Open <a href="/subscription#refund">Request a refund</a> and verify your purchase email using the secure link we send automatically.</li>
-          <li>Review the first payment shown, choose Request first-payment refund, and confirm the refund and cancellation of future renewals.</li>
+          <li>Review the latest payment shown, choose Request a refund, and confirm the refund and cancellation of future renewals.</li>
           <li>We submit eligible requests directly to Paddle. Check the status on the same page. A request awaiting approval is not yet an approved refund.</li>
         </ol>
-        <p>No support email or explanation is needed for an eligible first-payment request. Paddle may require
+        <p>No support email or explanation is needed for an eligible payment request. Paddle may require
           its own approval. Approved refunds return to the original payment method; the time for the credit
           to appear depends on that provider. Access from the refunded payment ends.</p>
         <p>Your request date determines whether you meet our 14-day guarantee, even if processing takes longer.
@@ -83,7 +78,7 @@ export default function RefundsPage() {
   return (
     <LegalLayout
       title="Refund Policy"
-      updated="September 24, 2026"
+      updated="September 25, 2026"
       intro="All payments for NativeApply are processed by Paddle.com, acting as Merchant of Record. Paddle handles billing and refunds on our behalf."
       sections={sections}
     />

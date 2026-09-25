@@ -57,7 +57,7 @@ const sections: LegalSection[] = [
           taxes, and refunds. Purchases are also subject to the <a href="https://www.paddle.com/legal/buyer-terms">Paddle Buyer Terms</a>.</p>
         <p>You can <a href="/subscription#cancel">cancel on NativeApply</a> after verifying your purchase email.
           Confirm cancellation before the next renewal to stop future renewals. You normally keep Pro until the
-          end of the paid billing period. Cancelling does not automatically request a refund. Your first payment
+          end of the paid billing period. Cancelling does not automatically request a refund. Every payment, including renewals,
           has a 14-day money-back guarantee; see our <a href="/refunds">Refund Policy</a>.</p>
       </>
     ),
@@ -110,7 +110,7 @@ export default function TermsPage() {
   return (
     <LegalLayout
       title="Terms of Service"
-      updated="September 24, 2026"
+      updated="September 25, 2026"
       intro={
         <>
           NativeApply is a product operated by Nimbus Labs (&quot;we&quot;, &quot;us&quot;). By using nativeapply.net
