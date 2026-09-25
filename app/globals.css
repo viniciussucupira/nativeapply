@@ -450,3 +450,54 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .family-header a[href="/#tool"] { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 20px; border-radius: 12px; font-size: 14px; line-height: 24px; font-weight: 600; white-space: nowrap; }
 .family-header a:focus-visible, .family-header button:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 4px; }
 @media(max-width: 1279px) { .family-header > div:first-child, .family-header > div:first-child > div { min-height: 64px; } .family-header > div:first-child { padding-inline: 20px; } }
+
+/* NativeApply editorial identity, shared across marketing and product pages. */
+.na-hero { background: radial-gradient(ellipse at 100% 15%, #dbe7ed, transparent 58%), linear-gradient(115deg, #faf9f5 36%, #edf2f3); border-color: #dce4e8; }
+.na-hero > div { padding-top: 82px; padding-bottom: 86px; }
+.na-display { font-family: var(--font-sans); font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 550; letter-spacing: -.065em; line-height: 1.09; }
+.na-hero-accent { display: inline-block; padding-top: .12em; font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-style: italic; color: #305c7a; letter-spacing: -.055em; }
+.na-hero h1 + p { max-width: 31rem; line-height: 1.8; }
+.na-hero a[href="#tool"] { background: #193d58; min-height: 54px; box-shadow: 0 8px 20px -9px #193d5870; border-radius: 13px; }
+.na-hero a[href="#tool"]:hover { background: #245273; }
+.na-hero a[href="#examples"] { background: #ffffffb3; min-height: 54px; border-color: #cdd9df; border-radius: 13px; }
+.na-demo-stage { padding: 24px 20px 19px; border-radius: 26px; background: #e2eaed; border: 1px solid #cad8df; box-shadow: 0 30px 70px -35px #17384a50, inset 0 1px 0 #fff; }
+.na-demo-stage::before { inset: 8px; border-radius: 20px; border-color: #ffffff80; transform: none; }
+.na-stage-caption { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 0 2px 20px; color: #3d5a6b; font-size: 9px; font-weight: 650; letter-spacing: .13em; }
+.na-demo-stage .na-demo { border-radius: 16px; border-color: #cbd9e0; box-shadow: 0 14px 30px -21px #17384a65; }
+.na-demo-stage .na-demo > :first-child { background: #193d58; }
+.na-editorial-note { color: #34546a; margin-top: 20px; font-size: 1.05rem; }
+.na-editorial-note::before { background: #a18254; width: 24px; }
+.na-section h2 { letter-spacing: -.04em; }
+.na-card { border-color: #dfe6eb; border-radius: 22px; box-shadow: 0 10px 28px -24px #163a5350; }
+.na-section.bg-ivory { background-color: #f7f8f6; }
+#tool { background: radial-gradient(ellipse at 50% 0, #e2ebf3, transparent 70%), #f7f8f6; }
+.na-workspace { border-color: #ccdbe5; border-radius: 24px; box-shadow: 0 24px 65px -36px #20486265; }
+.na-workspace textarea { background: #fdfdfb; border-color: #d8e0e4; }
+.na-workspace textarea:focus { background: white; }
+.na-page-intro { background: radial-gradient(ellipse at 90% 0, #dce9ef, transparent 65%), #f9faf7; border-color: #dce4e8; }
+.na-page-intro h1 { font-weight: 550; letter-spacing: -.05em; }
+.na-page-intro .rounded-xl { box-shadow: 0 12px 32px -26px #193d5850; }
+.na-section nav[aria-label="On this page"] a { border-radius: 8px; }
+.na-section nav[aria-label="On this page"] a:hover { background: #edf3f6; }
+.na-finale { margin: 24px; border-radius: 28px; border: 1px solid #2f526a; background: radial-gradient(ellipse at 90% 0, #315a72, transparent 65%), #112c40; }
+.na-finale h2 { font-size: clamp(2.2rem, 4vw, 3.6rem); line-height: 1.14; letter-spacing: -.04em; color: #fffdf6; }
+.na-finale .na-aurora { opacity: .3; }
+.family-header { background: #fcfcf9f5; backdrop-filter: blur(16px); border-color: #e2e8ea; }
+.family-header a[href="/#tool"] { background: #193d58; box-shadow: 0 5px 16px -8px #193d5860; }
+.family-header a[href="/#tool"]:hover { background: #245273; }
+.family-footer { background: linear-gradient(180deg, #f5f8f8, #fcfcfa); }
+.family-footer .footer-help { border-top-color: #315e7b; }
+.family-footer nav[aria-label="More from us"] li > a { border-color: #dce5e9; }
+@media (min-width: 1024px) {
+  .na-hero .na-demo { transform: none; }
+  .na-demo-stage { transform: rotate(1deg); }
+  .na-demo-stage > :not(.na-editorial-note) { transform: rotate(-1deg); }
+}
+@media (max-width: 639px) {
+  .na-hero > div { padding-top: 42px; padding-bottom: 48px; }
+  .na-display { font-size: clamp(2.7rem, 10.8vw, 3.6rem); line-height: 1.13; }
+  .na-demo-stage { padding: 19px 12px 17px; border-radius: 23px; }
+  .na-stage-caption { font-size: 8px; gap: 8px; margin-bottom: 16px; letter-spacing: .09em; }
+  .na-editorial-note { font-size: .95rem; }
+  .na-finale { margin: 16px 10px; border-radius: 23px; }
+}

@@ -12,7 +12,7 @@ export default function FinalCta({
   cta?: string;
 }) {
   return (
-    <section className="relative overflow-hidden border-y border-white/10 bg-navy">
+    <section className="na-finale relative overflow-hidden border-y border-white/10 bg-navy">
       <div className="na-aurora" aria-hidden="true">
         <span className="na-orb-night-blue" />
         <span className="na-orb-night-violet" />

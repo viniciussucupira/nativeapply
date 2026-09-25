@@ -192,11 +192,11 @@ export default function Home() {
             <div className="na-rise flex flex-col items-start gap-6">
               <Pill>
                 <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-                Your job search. Your words, refined.
+                For your next career move.
               </Pill>
               <h1 className="na-display text-navy">
                 Your experience.<br />
-                <span className="na-hero-accent">In better English.</span>
+                <span className="na-hero-accent">Your best words.</span>
               </h1>
               <p className="max-w-xl text-[1.0625rem] leading-7 text-muted sm:text-lg">
                 Make your next application clear, natural, and professional. Polish cover letters,
@@ -228,7 +228,7 @@ export default function Home() {
             </div>
 
             <div className="na-rise na-demo-stage" style={{ animationDelay: "0.12s" }}>
-              <p className="mb-5 text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-muted">A small edit. A stronger first impression.</p>
+              <div className="na-stage-caption"><span>A STRONGER FIRST IMPRESSION</span><span aria-hidden="true">01 / NATIVEAPPLY</span></div>
               <HeroDemo />
               <div aria-hidden="true" className="na-editorial-note">Still your story. Beautifully told.</div>
             </div>

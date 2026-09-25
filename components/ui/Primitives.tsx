@@ -35,7 +35,7 @@ export function Section({
     navy: "bg-navy text-white",
   } as const;
   return (
-    <section id={id} className={`${tones[tone]} ${className}`}>
+    <section id={id} className={`na-section ${tones[tone]} ${className}`}>
       {children}
     </section>
   );
@@ -173,7 +173,7 @@ export function Card({
   as?: "div" | "li" | "article";
 }) {
   return (
-    <Tag className={`rounded-2xl border border-line bg-white ${className}`}>{children}</Tag>
+    <Tag className={`na-card rounded-2xl border border-line bg-white ${className}`}>{children}</Tag>
   );
 }
 
