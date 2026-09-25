@@ -413,7 +413,7 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 
 /* Shared Nimbus Labs footer design. */
 .family-footer { --footer-accent: #295ec5; background: linear-gradient(180deg, #f8f9fc, #fff); border-top: 1px solid #e3e7ef; }
-.family-footer-grid { display: grid; grid-template-columns: 1.05fr .75fr 1.7fr 1.1fr; gap: 32px; align-items: start; }
+.family-footer-grid { display: grid; grid-template-columns: 1.05fr .75fr .95fr 1fr 1.1fr; gap: 24px; align-items: start; }
 .family-footer h2 { font-size: 14px; font-weight: 650; letter-spacing: -.015em; }
 .family-footer .footer-help { padding: 22px; border: 1px solid #e3e7ef; border-top: 3px solid var(--footer-accent); border-radius: 18px; background: #fff; box-shadow: 0 8px 28px -20px #1e294c40; }
 .family-footer .footer-help h2 { margin-bottom: 3px; }
@@ -437,3 +437,5 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 @media(max-width: 1023px) { .family-footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
 @media(max-width: 479px) { .family-footer-grid { grid-template-columns: 1fr; gap: 28px; } .family-footer .footer-brand { padding-bottom: 24px; border-bottom: 1px solid #e3e7ef; } .family-footer nav[aria-label="More from us"] li > a { padding: 18px; } }
 @media(prefers-reduced-motion: reduce) { .family-footer nav[aria-label="More from us"] li > a { transition: none; } .family-footer nav[aria-label="More from us"] li > a:hover { transform: none; } }
+
+@media (min-width: 480px) and (max-width: 1023px) { .family-footer .footer-brand { grid-column: 1 / -1; } }

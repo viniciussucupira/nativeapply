@@ -19,6 +19,8 @@ const WRITING = [
   ["/job-application-letter-rewriter", "Application letters"],
   ["/visa-sponsorship-cover-letter", "Visa sponsorship"],
 ];
+const DOCUMENTS = [WRITING[0], WRITING[2], WRITING[4], WRITING[6], WRITING[7], WRITING[8]];
+const MESSAGES = [WRITING[1], WRITING[3], WRITING[5]];
 const HELP = [
   ["/restore", "Restore Pro access"],
   ["/subscription", "Access & billing"],
@@ -29,8 +31,8 @@ const HELP = [
 const LEGAL = [["/terms", "Terms of Service"], ["/privacy", "Privacy Policy"], ["/refunds", "Refund Policy"]];
 const linkClass = "inline-flex min-h-11 items-center rounded-sm text-sm leading-6 text-muted transition-colors hover:text-brand-700 hover:underline underline-offset-4";
 const headingClass = "mb-3 text-sm font-semibold leading-6 text-ink";
-function Links({ items, columns = false }: { items: string[][]; columns?: boolean }) {
-  return <ul className={columns ? "grid grid-cols-2 gap-x-5" : "grid"}>{items.map(([href, label]) => <li key={href}><Link href={href} className={linkClass}>{label}</Link></li>)}</ul>;
+function Links({ items }: { items: string[][] }) {
+  return <ul className="grid">{items.map(([href, label]) => <li key={href}><Link href={href} className={linkClass}>{label}</Link></li>)}</ul>;
 }
 export default function Footer() {
   return <footer className="family-footer mt-auto border-t border-line bg-white">
@@ -41,9 +43,10 @@ export default function Footer() {
           <p className="mt-5 max-w-[15rem] text-sm leading-7 text-muted">Clear, natural English.<br/>More confidence in your next application.</p>
           <p className="mt-6 border-l-2 border-line pl-3 text-xs leading-6 text-muted">A <a href="https://nimbuslabsai.com/products" target="_blank" rel="noopener noreferrer" className="text-ink underline underline-offset-4">Nimbus Labs</a> product.</p>
         </div>
-        <nav aria-label="Explore NativeApply"><h2 className={headingClass}>Explore</h2><Links items={EXPLORE}/></nav>
-        <nav aria-label="Writing tools" className="footer-writing"><h2 className={headingClass}>Writing tools</h2><Links items={WRITING} columns/></nav>
-        <nav aria-label="Access and help" className="footer-help"><h2 className={headingClass}>Access &amp; help</h2><p className="family-help-intro">Your plan. Your control.</p><Links items={HELP}/></nav>
+        <nav aria-label="Get started"><h2 className={headingClass}>Get started</h2><Links items={EXPLORE}/></nav>
+        <nav aria-label="Resumes and letters"><h2 className={headingClass}>Resumes &amp; letters</h2><Links items={DOCUMENTS}/></nav>
+        <nav aria-label="Messages and follow-ups"><h2 className={headingClass}>Messages &amp; follow-ups</h2><Links items={MESSAGES}/></nav>
+        <nav aria-label="Billing and support" className="footer-help"><h2 className={headingClass}>Billing &amp; support</h2><p className="family-help-intro">Your plan. Your control.</p><Links items={HELP}/></nav>
       </div>
       <div className="text-muted"><MoreFromUs/></div>
       <div className="mt-8 border-t border-line pt-6">
