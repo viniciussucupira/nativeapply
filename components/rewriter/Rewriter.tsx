@@ -63,6 +63,7 @@ export default function Rewriter({
   const [error, setError] = useState("");
   const [limitReached, setLimitReached] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState("");
 
   const [englishVariant, setEnglishVariant] = useState<EnglishVariant>(initialEnglishVariant);
   const [submittedDraft, setSubmittedDraft] = useState("");
@@ -116,7 +117,7 @@ export default function Rewriter({
       setPhase("loading");
       setError("");
       setLimitReached(false);
-      setCopied(false);
+      setCopied(false); setCopyError("");
       try {
         const res = await fetch("/api/rewrite", {
           method: "POST",
@@ -155,7 +156,7 @@ export default function Rewriter({
   async function handleCopy() {
     if (!result.trim()) return;
     const version = ++copyVersion.current;
-    setError("");
+    setCopyError("");
     try {
       await navigator.clipboard.writeText(result);
       if (version !== copyVersion.current) return;
@@ -166,7 +167,7 @@ export default function Rewriter({
       setCopied(false);
       editedResultRef.current?.focus();
       editedResultRef.current?.select();
-      setError("Your browser blocked automatic copying. Select the result, then use Copy from your device’s menu or press Ctrl+C / Command+C.");
+      setCopyError("Your browser blocked automatic copying. Select the result, then use Copy from your device’s menu or press Ctrl+C / Command+C.");
     }
   }
 
@@ -178,7 +179,7 @@ export default function Rewriter({
     setError("");
     setLimitReached(false);
     setSubmittedDraft("");
-    setCopied(false);
+    setCopied(false); setCopyError("");
     textareaRef.current?.focus();
   }
 
@@ -391,7 +392,7 @@ export default function Rewriter({
                       {numberReview.changed ? "Check the numbers before sending" : numberReview.hasNumbers ? "Numeric expressions match your draft" : "Ready for your review"}
                     </p>
                     <p className="mt-1 text-xs leading-5 text-muted">
-                      {numberReview.changed ? "A number was added, removed, or reformatted. Compare the original below." : "Check names, meaning, and achievements too. A number check cannot verify every fact."}
+                      {numberReview.changed ? "A number, currency, or unit was added, removed, or changed. Compare the original below." : "Check names, meaning, and achievements too. A number check cannot verify every fact."}
                     </p>
                     <details className="mt-3">
                       <summary className="cursor-pointer font-medium text-brand-700">Compare with your original</summary>
@@ -399,7 +400,7 @@ export default function Rewriter({
                     </details>
                   </div>
                   <label htmlFor="na-result" className="px-5 pt-4 text-sm font-medium text-navy">Review and edit your result</label>
-                  <textarea ref={editedResultRef} id="na-result" value={result} onChange={(event) => { copyVersion.current++; setResult(event.target.value); setCopied(false); setError(""); }} rows={10} spellCheck lang={submittedVariant} aria-describedby="na-result-help" className="m-3 min-h-56 flex-1 resize-y rounded-lg border border-line bg-white px-3 py-3 text-base leading-7 text-ink focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15" />
+                  <textarea ref={editedResultRef} id="na-result" value={result} onChange={(event) => { copyVersion.current++; setResult(event.target.value); setCopied(false); setCopyError(""); setError(""); }} rows={10} spellCheck lang={submittedVariant} aria-describedby="na-result-help" className="m-3 min-h-56 flex-1 resize-y rounded-lg border border-line bg-white px-3 py-3 text-base leading-7 text-ink focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15" />
                   <p id="na-result-help" className="px-5 pb-3 text-xs leading-5 text-muted">Make final adjustments here. Copy and sharing use this edited version. Editing does not use another rewrite.</p>
                   <div className="flex flex-wrap items-center gap-2 border-t border-line px-4 py-3">
                     <Button type="button" onClick={handleCopy} disabled={!result.trim()} variant={copied ? "secondary" : "primary"}>
@@ -436,7 +437,7 @@ export default function Rewriter({
                     WhatsApp receives the text when you open its link, even before you send. You choose the recipient and confirm sending in that app.
                   </p>
                   <p className="px-4 pb-3 text-xs leading-5 text-muted">Email uses your device’s default mail app, not a connected Gmail account. Gmail, Outlook, Apple Mail, Yahoo Mail, and other providers can be used through a configured mail app or by copying and pasting. If nothing opens, copy the result and paste it into your preferred email service.</p>
-                  {error && <p role="alert" className="px-4 pb-3 text-sm text-flag">{error}</p>}
+                  {copyError && <p role="alert" className="px-4 pb-3 text-sm text-flag">{copyError}</p>}
                 </div>
               )}
 
@@ -451,7 +452,7 @@ export default function Rewriter({
                     {limitReached ? <IconSparkle className="h-5 w-5" /> : <IconAlert className="h-5 w-5" />}
                   </span>
                   <p className="text-[0.9375rem] leading-6 text-navy">{error}</p>
-                  {result && <details className="rounded-xl border border-line p-3 text-sm"><summary className="cursor-pointer font-medium text-brand-700">Your previous result is still available</summary><textarea ref={editedResultRef} readOnly aria-label="Previous result" value={result} rows={8} className="mt-3 w-full rounded-lg border border-line p-3 text-base leading-6" /><Button type="button" onClick={handleCopy} variant="secondary" className="mt-3">{copied ? "Copied" : "Copy previous result"}</Button></details>}
+                  {result && <details className="rounded-xl border border-line p-3 text-sm"><summary className="cursor-pointer font-medium text-brand-700">Your previous result is still available</summary><textarea ref={editedResultRef} readOnly aria-label="Previous result" value={result} rows={8} className="mt-3 w-full rounded-lg border border-line p-3 text-base leading-6" /><Button type="button" onClick={handleCopy} variant="secondary" className="mt-3">{copied ? "Copied" : "Copy previous result"}</Button>{copyError && <p role="alert" className="mt-3 text-flag">{copyError}</p>}</details>}
                   {limitReached ? (
                     <div className="flex flex-col gap-2 sm:flex-row">
                       <ButtonLink href="/checkout">See Pro pricing</ButtonLink>
