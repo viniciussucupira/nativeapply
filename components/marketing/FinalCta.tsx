@@ -12,15 +12,15 @@ export default function FinalCta({
   cta?: string;
 }) {
   return (
-    <section className="relative overflow-hidden bg-navy">
+    <section className="relative overflow-hidden border-y border-white/10 bg-navy">
       <div className="na-aurora" aria-hidden="true">
         <span className="na-orb-night-blue" />
         <span className="na-orb-night-violet" />
         <span className="na-orb-night-jade" />
       </div>
-      <Container size="wide" className="relative py-16 sm:py-20">
+      <Container size="wide" className="relative py-16 sm:py-24">
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <h2 className="text-[1.75rem] font-semibold leading-[1.18] tracking-[-0.022em] text-white sm:text-[2.125rem]">
+          <h2 className="font-[Georgia,serif] text-[2.125rem] font-normal leading-[1.14] tracking-[-0.035em] text-white sm:text-[3rem]">
             {title}
           </h2>
           <p className="text-[1.0625rem] leading-7 text-brand-100/80">{body}</p>

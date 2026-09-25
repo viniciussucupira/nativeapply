@@ -22,7 +22,7 @@ export default function LegalLayout({
 }) {
   return (
     <>
-      <Section tone="ivory">
+      <Section tone="ivory" className="na-page-intro border-b border-line">
         <Container size="wide" className="py-12 sm:py-16">
           <div className="max-w-3xl">
             <Eyebrow>Legal</Eyebrow>
@@ -97,7 +97,7 @@ export default function LegalLayout({
               </ol>
             </details>
 
-            <article className="min-w-0 max-w-[44rem] [overflow-wrap:anywhere]">
+            <article className="min-w-0 max-w-[44rem] rounded-2xl border border-line bg-white p-5 sm:p-8 [overflow-wrap:anywhere]">
               {sections.map((section) => (
                 <section key={section.id} id={section.id} className="scroll-mt-28 border-b border-line py-7 first:pt-0 last:border-0">
                   <h2 className="text-[1.25rem] font-semibold tracking-[-0.015em] text-navy">{section.heading}</h2>

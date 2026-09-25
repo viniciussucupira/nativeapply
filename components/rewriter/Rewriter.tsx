@@ -206,9 +206,9 @@ export default function Rewriter({
         </div>
       )}
 
-      <div className="overflow-hidden rounded-[1.75rem] border border-line bg-white shadow-[0_28px_70px_-50px_rgba(16,35,63,0.55)]">
+      <div className="na-workspace overflow-hidden rounded-[1.5rem] border border-line bg-white">
         {/* ---------- document type ---------- */}
-        <div className="border-b border-line bg-ivory/70 px-4 py-4 sm:px-6">
+        <div className="border-b border-line bg-brand-50/60 px-4 py-5 sm:px-7 sm:py-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p id="na-context-label" className="text-[0.8125rem] font-semibold uppercase tracking-[0.12em] text-navy">
               {lockContext ? "Document type" : "What are you writing?"}

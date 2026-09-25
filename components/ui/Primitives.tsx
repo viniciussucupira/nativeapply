@@ -102,7 +102,7 @@ type ButtonSize = "md" | "lg";
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary:
-    "bg-brand text-white shadow-[0_10px_24px_-12px_rgba(39,100,231,0.85)] hover:bg-brand-700 active:bg-brand-700",
+    "bg-brand text-white shadow-sm hover:bg-brand-700 active:bg-brand-700",
   secondary:
     "bg-white text-navy border border-line-strong hover:border-brand-300 hover:bg-brand-50/60",
   ghost: "text-navy hover:bg-brand-50",
@@ -115,7 +115,7 @@ const SIZES: Record<ButtonSize, string> = {
 };
 
 const BUTTON_BASE =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full font-semibold tracking-[-0.01em] transition-[background-color,border-color,color,box-shadow,transform] duration-200 disabled:cursor-not-allowed disabled:opacity-45 active:translate-y-px";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl font-semibold tracking-[-0.01em] transition-[background-color,border-color,color,box-shadow,transform] duration-200 disabled:cursor-not-allowed disabled:opacity-45 active:translate-y-px";
 
 export function Button({
   variant = "primary",

@@ -186,26 +186,21 @@ export default function Home() {
   return (
     <>
       {/* ---------------- hero ---------------- */}
-      <Section tone="white" className="relative overflow-hidden">
-        <div className="na-aurora" aria-hidden="true">
-          <span className="na-orb-blue" />
-          <span className="na-orb-jade" />
-          <span className="na-orb-amber" />
-        </div>
+      <Section tone="white" className="na-hero relative overflow-hidden">
         <Container size="wide" className="relative py-12 sm:py-16 lg:py-24">
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
             <div className="na-rise flex flex-col items-start gap-6">
               <Pill>
                 <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-                For professionals whose first language is not English
+                Your job search. Your words, refined.
               </Pill>
-              <h1 className="text-[2.25rem] font-semibold leading-[1.08] tracking-[-0.03em] text-navy sm:text-[3rem] lg:text-[3.5rem]">
-                Send job applications that read like{" "}
-                <span className="na-accent-text">native English</span>.
+              <h1 className="na-display text-navy">
+                Your experience.<br />
+                <span className="na-hero-accent">In better English.</span>
               </h1>
               <p className="max-w-xl text-[1.0625rem] leading-7 text-muted sm:text-lg">
-                Turn your cover letters, resume bullets, and recruiter messages into clear, natural English.
-                Choose American or British English, then compare the result with your original.
+                Make your next application clear, natural, and professional. Polish cover letters,
+                resume bullets, and recruiter messages in American or British English.
               </p>
 
               <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
@@ -232,8 +227,10 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="na-rise" style={{ animationDelay: "0.12s" }}>
+            <div className="na-rise na-demo-stage" style={{ animationDelay: "0.12s" }}>
+              <p className="mb-5 text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-muted">A small edit. A stronger first impression.</p>
               <HeroDemo />
+              <div aria-hidden="true" className="na-editorial-note">Still your story. Beautifully told.</div>
             </div>
           </div>
         </Container>
@@ -242,7 +239,7 @@ export default function Home() {
       <TrustStrip />
 
       {/* ---------------- the tool ---------------- */}
-      <Section tone="white" id="tool" className="scroll-mt-20">
+      <Section tone="ivory" id="tool" className="scroll-mt-20 border-b border-line">
         <Container size="wide" className="py-14 sm:py-20">
           <SectionHeading
             eyebrow="Try it on your own words"

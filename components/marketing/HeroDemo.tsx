@@ -37,9 +37,9 @@ export default function HeroDemo() {
         aria-hidden="true"
         className="absolute -inset-x-6 -inset-y-8 -z-10 rounded-[2.5rem] bg-[radial-gradient(60%_55%_at_50%_35%,rgba(39,100,231,0.10),transparent_75%)]"
       />
-      <div className="overflow-hidden rounded-[1.5rem] border border-line bg-white shadow-[0_34px_80px_-48px_rgba(16,35,63,0.55)]">
+      <div className="na-demo overflow-hidden rounded-[1.5rem] border border-line bg-white">
         {/* window chrome */}
-        <div className="flex items-center gap-3 border-b border-line bg-ivory px-4 py-3">
+        <div className="flex flex-wrap items-center gap-3 border-b border-line bg-navy px-4 py-4">
           <span className="flex gap-1.5" aria-hidden="true">
             <span className="h-2.5 w-2.5 rounded-full bg-line-strong" />
             <span className="h-2.5 w-2.5 rounded-full bg-line-strong" />
@@ -49,10 +49,10 @@ export default function HeroDemo() {
             <IconCoverLetter className="h-3.5 w-3.5" />
             Cover letter
           </span>
-          <span className="ml-auto text-[0.6875rem] font-medium text-muted-soft">nativeapply.net</span>
+          <span className="ml-auto text-[0.6875rem] font-medium text-white/80">Writing preview</span>
         </div>
 
-        <div className="p-4 sm:p-5">
+        <div className="p-4 sm:p-6">
           {/* before */}
           <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-muted-soft">Your draft</p>
           <p className="mt-2 rounded-xl bg-ivory px-4 py-3.5 text-[0.9375rem] leading-7 text-muted">

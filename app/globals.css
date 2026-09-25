@@ -10,17 +10,17 @@
 ------------------------------------------------------------------- */
 
 @theme {
-  --color-ink: #18202b;
-  --color-navy: #10233f;
+  --color-ink: #26354a;
+  --color-navy: #112c49;
   --color-navy-700: #1b3560;
-  --color-brand: #2764e7;
-  --color-brand-700: #1d4fb8;
+  --color-brand: #245bc7;
+  --color-brand-700: #19489f;
   --color-brand-300: #9dbaf7;
   --color-brand-100: #dbe7ff;
   --color-brand-50: #eef4ff;
   --color-indigo-deep: #3f34ae;
-  --color-ivory: #fbfaf7;
-  --color-muted: #667085;
+  --color-ivory: #f7f8fa;
+  --color-muted: #596a7e;
   --color-muted-soft: #676e7d;
   --color-line: #e3e8f0;
   --color-line-strong: #cfd7e4;
@@ -49,7 +49,7 @@
 :root {
   color-scheme: light;
   --background: #ffffff;
-  --foreground: #18202b;
+  --foreground: #26354a;
 }
 
 html {
@@ -62,6 +62,69 @@ body {
   font-family: var(--font-sans);
   font-feature-settings: "cv05" 1, "ss03" 1;
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { text-wrap: balance; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+
+.na-hero {
+  background: radial-gradient(ellipse at 88% 42%, #e7edf8 0%, transparent 52%), #faf9f6;
+  border-bottom: 1px solid var(--color-line);
+}
+.na-display {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.65rem, 5.4vw, 4.65rem);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.055em;
+}
+.na-hero-accent { color: var(--color-brand); }
+.na-demo-stage { position: relative; isolation: isolate; }
+.na-demo-stage::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 12% -7% -3% 9%;
+  border: 1px solid rgba(36,91,199,.13);
+  border-radius: 50% 50% 42% 48%;
+  transform: rotate(-16deg);
+  pointer-events: none;
+}
+.na-editorial-note {
+  margin-top: 1.5rem;
+  text-align: right;
+  color: var(--color-navy);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.15rem;
+  font-style: italic;
+}
+.na-editorial-note::before {
+  content: "";
+  display: inline-block;
+  width: 2rem;
+  height: 1px;
+  margin-right: .75rem;
+  vertical-align: middle;
+  background: #bc945a;
+}
+@media (max-width: 400px) {
+  .na-display { font-size: clamp(2.15rem, 10.8vw, 2.65rem); }
+}
+.na-demo {
+  box-shadow: 0 24px 64px -30px rgba(17,44,73,.28), 0 3px 8px rgba(17,44,73,.04);
+}
+.na-workspace {
+  box-shadow: 0 18px 50px -30px rgba(17,44,73,.25);
+}
+.na-page-intro {
+  background: linear-gradient(120deg, #f2f6fc, #fafbfd);
+}
+/* Decorative light stays still so the writing remains the focus. */
+.na-aurora > span { animation: none; will-change: auto; opacity: .45; }
+
+@media (min-width: 1024px) {
+  .na-hero .na-demo { transform: rotate(1deg); }
 }
 
 /* Keyboard focus that is always visible, never only a colour change. */

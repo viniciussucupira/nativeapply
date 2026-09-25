@@ -45,8 +45,8 @@ function LinkList({ links }: { links: FooterLink[] }) {
 const headingClass = "mb-3 text-xs font-semibold leading-5 text-navy";
 
 export default function Footer() {
-  return <footer className="border-t border-line bg-ivory">
-    <Container size="wide" className="pt-8 sm:pt-9">
+  return <footer className="border-t border-line bg-brand-50/40">
+    <Container size="wide" className="pt-12 sm:pt-16">
       <div className="grid items-start gap-x-8 gap-y-7 pb-6 sm:grid-cols-2 lg:grid-cols-[1.1fr_.75fr_2fr_1fr] lg:gap-x-7">
         <div className="sm:col-span-2 lg:col-span-1">
           <Logo size={36} />
