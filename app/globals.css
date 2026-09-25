@@ -409,3 +409,18 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
     transform: none;
   }
 }
+
+
+/* Shared Nimbus Labs footer rhythm; each product keeps its brand accent. */
+.family-footer { background: #fafbfe; }
+.family-footer-grid { display: grid; grid-template-columns: 1.05fr .75fr 1.7fr 1.1fr; gap: 32px; align-items: start; }
+.family-footer .footer-help { padding: 20px; border: 1px solid var(--color-line); border-radius: 20px; background: white; }
+.family-footer .footer-brand > p:first-of-type { margin-top: 20px; line-height: 1.75; }
+.family-footer .footer-brand > p:last-of-type { margin-top: 20px; }
+.family-footer nav a { text-underline-offset: 4px; }
+.family-footer nav a:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 3px; }
+@media(min-width: 1024px) { .family-footer-grid nav li > a { min-height: 38px; } }
+@media(max-width: 1023px) { .family-footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; } }
+@media(max-width: 479px) { .family-footer-grid { grid-template-columns: 1fr; gap: 28px; } }
+
+.family-footer nav[aria-label="More from us"] li > a { border-radius: 16px; background: white; }
