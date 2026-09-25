@@ -53,8 +53,8 @@ export default function RefundManager({ onSessionExpired, onSubmitted }: { onSes
       {view.state === "eligible" && view.deadline && <p className="text-sm text-muted">Request by {new Date(view.deadline).toLocaleString("en-US", { timeZone: "UTC", dateStyle: "long", timeStyle: "short" })} UTC.</p>}
       {view.state === "eligible" && (confirm ? <div className="rounded-xl border border-line bg-white p-4">
         <p>Request a full refund of {amount(view)} and stop future renewals for this subscription? Once approved, the Pro access from this payment ends. The money returns to the original payment method; the timing depends on your payment provider.</p>
-        <div className="mt-4 flex flex-wrap gap-3"><Button disabled={busy} onClick={submit}>{busy ? "Submitting request…" : "Confirm refund and stop renewal"}</Button><Button disabled={busy} variant="secondary" onClick={() => setConfirm(false)}>Keep my purchase</Button></div>
-      </div> : <Button onClick={() => setConfirm(true)}>Request first-payment refund</Button>)}
+        <div className="mt-4 flex flex-wrap gap-3"><Button disabled={busy} onClick={submit}>{busy ? "Submitting request…" : "Confirm refund and stop renewal"}</Button><Button disabled={busy} variant="secondary" onClick={() => setConfirm(false)}>Go back</Button></div>
+      </div> : <Button onClick={() => setConfirm(true)}>Request a refund</Button>)}
       {view.state === "pending_approval" && <p role="status" className="font-semibold">Refund request received by Paddle — awaiting approval. Do not submit another request. You can refresh the status here.</p>}
       {view.state === "approved" && <p role="status" className="font-semibold">Refund approved by Paddle. The credit may take time to appear on your original payment method. Access from this refunded payment ends.</p>}
       {view.state === "unconfirmed" && <p role="status">A refund submission was attempted, but its outcome has not been confirmed. To prevent duplicate requests, we will not submit it again automatically. Refresh the status or ask Paddle to check your payment.</p>}
