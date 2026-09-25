@@ -90,7 +90,7 @@ export default function Image() {
               Job applications that read like native English
             </div>
             <div style={{ fontSize: 27, color: "#667085", lineHeight: 1.4 }}>
-              Cover letters, resume bullets and recruiter messages — rewritten, with every fact unchanged.
+              Clearer cover letters, resume bullets and recruiter messages. Review, edit, and make them yours.
             </div>
           </div>
 
@@ -155,7 +155,7 @@ export default function Image() {
                 borderRadius: 999,
               }}
             >
-              Facts preserved
+              Illustrative example
             </div>
             <div style={{ display: "flex", fontSize: 19, color: "#676E7D" }}>names · dates · numbers</div>
           </div>

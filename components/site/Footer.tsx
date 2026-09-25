@@ -24,9 +24,10 @@ const MESSAGES: FooterLink[] = [
   { href: "/interview-follow-up-email-generator", label: "Interview follow-ups" },
 ];
 const HELP: FooterLink[] = [
-  { href: "/restore", label: "Recover Pro access" },
+  { href: "/restore", label: "Restore Pro access" },
   { href: "/subscription", label: "Access & billing" },
   { href: "/subscription#cancel", label: "Cancel subscription" },
+  { href: "/subscription#refund", label: "Request a refund" },
   { href: "/support", label: "Contact support" },
 ];
 const LEGAL: FooterLink[] = [

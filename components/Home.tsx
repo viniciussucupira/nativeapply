@@ -43,7 +43,7 @@ const USE_CASES = [
   {
     Icon: IconResumeBullets,
     title: "Resume and CV bullets",
-    body: "Short, direct lines that start with a verb and keep every number you earned.",
+    body: "Make your experience concise and easy to read, then compare the numbers with your original.",
     href: "/native-sounding-resume",
     tint: "bg-jade-50 text-jade",
     hover: "hover:border-jade-100 hover:bg-jade-50/40",
@@ -108,8 +108,8 @@ const PRIVACY_POINTS = [
   },
   {
     Icon: IconFacts,
-    title: "Never used for training",
-    body: "We train nothing on your writing, and under Anthropic's API terms neither do they.",
+    title: "No model training by default",
+    body: "NativeApply does not train models on your writing. Anthropic does not use API inputs and outputs for model training by default under its commercial terms.",
     tint: "bg-violet-50 text-violet",
   },
   {
@@ -332,7 +332,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="Before and after"
             title="Before and after, four kinds of document"
-            description="See how grammar, phrasing, and tone change across four documents. The examples keep the original names and numeric values."
+            description="Illustrative examples across four document types. Highlighted phrases show the edits; your result depends on your draft and needs your review."
           />
           <div className="mt-10">
             <BeforeAfterTabs />
@@ -457,7 +457,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="Pricing"
             title="Unlimited rewrites for $19 a month"
-            description="One paid plan, everything included. Try it free first, and cancel whenever your job search ends."
+            description="One paid plan, renewed automatically each month until canceled. Try it free first, and cancel whenever your job search ends."
           />
           <div className="mx-auto mt-12 max-w-md">
             <PlanCard

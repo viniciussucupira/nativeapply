@@ -55,6 +55,10 @@ function cap(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+function roleArticle(role: string): string {
+  return /^(?:[AEIOU]|HR\b)/i.test(role) ? "an" : "a";
+}
+
 /* ------------------------------------------------------------------ */
 /* Hero copy                                                           */
 /* ------------------------------------------------------------------ */
@@ -68,7 +72,7 @@ export function professionIntro(doc: DocType, p: Profession): string {
     case "linkedin-message":
       return `Paste the message you are about to send to a recruiter about ${p.label.toLowerCase()} roles and get it back short, warm, and easy to answer — without the formality that reads as distance in English.`;
     case "follow-up-email":
-      return `Paste the thank-you note or status check you drafted after a ${p.role} interview and get it back polite, brief, and correctly pitched — grateful without sounding impatient.`;
+      return `Paste the thank-you note or status check you drafted after ${roleArticle(p.role)} ${p.role} interview and review a polite, brief rewrite before sending.`;
   }
 }
 
@@ -100,7 +104,7 @@ export function professionExample(doc: DocType, p: Profession): Example {
     case "cover-letter":
       return {
         ...shared,
-        caption: `Opening paragraph of an application for ${p.role === "HR Generalist" ? "an" : "a"} ${p.role} role`,
+        caption: `Opening paragraph of an application for ${roleArticle(p.role)} ${p.role} role`,
         before: `Dear Hiring Manager,\n\nI am writing [[cut:for apply]] to the position of ${p.role}. In my [[cut:most recent]] job I [[cut:was responsible for]] ${p.duty}, and I [[cut:am very interest for]] work in your company.`,
         after: `Dear Hiring Manager,\n\n[[add:I'm writing to apply for]] the ${p.role} position. [[add:In my most recent role, I]] ${p.dutyNatural}, and [[add:I'd welcome the chance to bring that work to]] your company.`,
         notes: ["More natural", "Same numbers", "Confident tone"],
@@ -124,7 +128,7 @@ export function professionExample(doc: DocType, p: Profession): Example {
     case "follow-up-email":
       return {
         ...shared,
-        caption: `Thank-you note sent the day after a ${p.role} interview`,
+        caption: `Thank-you note sent the day after ${roleArticle(p.role)} ${p.role} interview`,
         before: `Dear Ms. Alvarez,\n\nI want to thank you for [[cut:the interview of yesterday]] for the position of ${p.role}. I am still very [[cut:interest in]] the position and I [[cut:stay at your disposition for any question]].`,
         after: `Dear Ms. Alvarez,\n\nThank you for [[add:taking the time to meet me yesterday]] about the ${p.role} [[add:role]]. I'm still very [[add:interested]], and [[add:I'm happy to answer any questions]].`,
         notes: ["Polite, not pushy", "Correct tense"],
@@ -162,15 +166,15 @@ export function professionBenefits(doc: DocType, p: Profession): { title: string
           body: "“Was responsible for the coordination of” becomes one strong verb. Recruiters skim resumes in seconds, and the first word of each line does the work.",
         },
         {
-          title: `The terms recruiters search for in ${p.label.toLowerCase()}`,
-          body: "Plain, standard vocabulary for your field — the words that appear in the job description and parse cleanly in an applicant tracking system.",
+          title: `Clear descriptions of your work`,
+          body: "Improve the wording of skills and responsibilities already in your draft. NativeApply does not read the job description, add missing qualifications, or test ATS compatibility.",
         },
         keepsFacts,
       ];
     case "linkedin-message":
       return [
         {
-          title: "Short enough to get an answer",
+          title: "Brief and easy to read",
           body: "Recruiters read messages between meetings. The rewrite cuts the opening ceremony and puts the role and your ask where they can be seen.",
         },
         {
@@ -201,7 +205,7 @@ export function professionBenefits(doc: DocType, p: Profession): { title: string
 export function professionFaq(doc: DocType, p: Profession): FaqItem[] {
   return [
     {
-      q: `What makes a ${doc.label} sound native for ${p.label.toLowerCase()}?`,
+      q: `What makes ${doc.label} sound natural for ${p.label.toLowerCase()}?`,
       a: `It uses the vocabulary and tone hiring managers expect in your field, replaces phrasing translated word for word from another language, and keeps sentences short and direct — the way ${p.singular} working in English would write it.`,
     },
     {

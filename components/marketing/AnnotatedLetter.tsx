@@ -72,11 +72,11 @@ export default function AnnotatedLetter() {
         <div className="rounded-[1.5rem] border border-line bg-white p-6 shadow-[0_28px_70px_-50px_rgba(16,35,63,0.55)] sm:p-8">
           <div className="flex items-center justify-between gap-3 border-b border-line pb-4">
             <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-muted-soft">
-              Cover letter · after the rewrite
+              Cover letter · illustrative example
             </p>
             <span className="inline-flex items-center gap-1.5 text-[0.6875rem] font-semibold text-success">
               <IconFacts className="h-3.5 w-3.5" />
-              Facts preserved
+              Review your facts
             </span>
           </div>
 

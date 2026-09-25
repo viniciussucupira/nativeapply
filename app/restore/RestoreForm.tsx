@@ -251,7 +251,7 @@ export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: b
             <p className="text-[0.9375rem] leading-6 text-muted">
               Email us from the address you used to pay. Our support team will verify the purchase and help restore access. This is a manual support request, not an automatic sign-in email. Do not buy again to recover a purchase. Have not bought Pro yet? The{" "}
               <Link href="/checkout" className="font-medium text-brand-700 underline underline-offset-4">
-                plans are here
+                Pro pricing is here
               </Link>
               .
             </p>

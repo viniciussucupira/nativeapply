@@ -59,7 +59,8 @@ export default function RefundManager({ onSessionExpired, onSubmitted }: { onSes
       {view.state === "approved" && <p role="status" className="font-semibold">Refund approved by Paddle. The credit may take time to appear on your original payment method. Access from this refunded payment ends.</p>}
       {view.state === "unconfirmed" && <p role="status">A refund submission was attempted, but its outcome has not been confirmed. To prevent duplicate requests, we will not submit it again automatically. Refresh the status or ask Paddle to check your payment.</p>}
       {view.state === "none" && <p>No completed NativeApply payment was found for this email. If you just paid, refresh in a moment or verify the email on your receipt.</p>}
-      {(view.state === "outside_window" || view.state === "review") && <p>This payment needs individual review. Request help directly from Paddle below; you do not need to email NativeApply. This does not remove any rights you have under consumer law.</p>}
+      {view.state === "outside_window" && <p>The 14-day first-payment guarantee has ended for this payment. You can still ask Paddle to review a payment issue below. This does not remove any rights you have under consumer law.</p>}
+      {view.state === "review" && <p>This payment needs individual review. Request help directly from Paddle below; you do not need to email NativeApply. This does not remove any rights you have under consumer law.</p>}
     </>}
     <div className="flex flex-wrap gap-4"><button type="button" disabled={busy || loading} onClick={load} className="min-h-11 font-semibold text-brand-700 underline">Refresh refund status</button><a href="https://paddle.net/contact" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-brand-700 underline">Paddle payment help</a></div>
   </div>;

@@ -35,10 +35,10 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "Does it help with anything other than job applications?",
-    a: "This tool is tuned for four job-search documents: cover letters, resume and CV bullets, recruiter and LinkedIn messages, and interview follow-ups. For everyday emails and general writing, our sister product Retone does the same job for any kind of text.",
+    a: "This tool is tuned for four job-search documents: cover letters, resume and CV bullets, recruiter and LinkedIn messages, and interview follow-ups. For everyday emails and general writing, see Retone in More from us at the bottom of this page. It is a separate product with its own pricing and terms; NativeApply Pro does not include access to it.",
   },
   {
     q: "What if it does not work for me?",
-    a: "Try it free first — one rewrite a day, on your own text, costs nothing. If you do buy Pro and change your mind, your first payment is fully refundable for 14 days, no reason needed, handled through Paddle.",
+    a: "Try one free rewrite a day first. Your first Pro payment has a 14-day money-back guarantee. Open Access & billing, verify your purchase email, and choose Request first-payment refund under Request a refund. Confirm refund and stop renewal submits the request to Paddle. No support email is needed. Check the status there: awaiting approval is not yet an approved refund, and an approved refund ends the access from that payment.",
   },
 ];

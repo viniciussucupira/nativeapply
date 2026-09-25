@@ -49,7 +49,7 @@ export default function HeroDemo() {
             <IconCoverLetter className="h-3.5 w-3.5" />
             Cover letter
           </span>
-          <span className="ml-auto text-[0.6875rem] font-medium text-white/80">Writing preview</span>
+          <span className="ml-auto text-[0.6875rem] font-medium text-white/80">Illustrative example</span>
         </div>
 
         <div className="p-4 sm:p-6">
@@ -117,7 +117,7 @@ export default function HeroDemo() {
                 className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-navy px-3.5 text-[0.75rem] font-semibold text-white transition-colors hover:bg-navy-700"
               >
                 {copied ? <IconCheck className="h-3.5 w-3.5" /> : <IconCopy className="h-3.5 w-3.5" />}
-                {copied ? "Copied" : "Copy"}
+                {copied ? "Example copied" : "Copy example"}
               </button>
               <span className="rounded-full border border-line bg-white px-2.5 py-1 text-[0.6875rem] font-medium text-muted">
                 More natural

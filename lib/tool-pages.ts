@@ -54,7 +54,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
         body: "Keeps the modest register most non-native drafts aim for, while removing the apologetic phrasing that undersells you.",
       },
       {
-        title: "Your experience, exactly as you wrote it",
+        title: "Your experience, ready for review",
         body: "The tool is instructed to keep years, employers, titles, and numbers. Compare the rewrite with your original before sending.",
       },
       {
@@ -93,7 +93,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Can I rewrite the whole letter at once?",
-        a: "Yes, up to 6,000 characters in one go — longer than almost any cover letter. If yours is longer than that, rewrite it in two parts.",
+        a: "Yes, up to 6,000 characters per request, including spaces and line breaks. For longer drafts, shorten the text or split it into parts within that limit. Each part uses a separate rewrite; the free allowance is one per browser per day.",
       },
       {
         q: "Does it keep the company name and role title?",
@@ -113,7 +113,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     context: "resume-bullet",
     metaTitle: "Resume Rewriter — Make Your Resume Sound Native | NativeApply",
     metaDescription:
-      "Rewrite your resume bullet points into the short, verb-first English US recruiters expect, with every metric preserved. " +
+      "Rewrite your resume bullet points into concise professional English, with a built-in number comparison and editable results. " +
       PRICE_LINE,
     ogTitle: "Make Your Resume Sound Native",
     ogDescription:
@@ -128,7 +128,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       "• Was responsible for the management of a team of 8 developers\n• Participated in the implementation of a new CRM that reduced the response time in 40%\n• Made the monthly reports for the direction…",
     benefits: [
       {
-        title: "Verb first, always",
+        title: "Clear action verbs",
         body: "“Was responsible for the management of” becomes “Managed”. One word instead of six, and it reads like a native resume.",
       },
       {
@@ -140,19 +140,19 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
         body: "Past roles in past tense, current role in present, every bullet built the same way — the detail recruiters notice without knowing why.",
       },
       {
-        title: "No invented achievements",
-        body: "It will not upgrade “helped” to “led”, or add a percentage you never claimed. Overstating on a resume is a problem you find out about in the interview.",
+        title: "Review your achievements",
+        body: "The rewrite is instructed not to turn “helped” into “led” or invent a percentage. AI can still make mistakes: compare responsibilities, achievements, and numbers before using the result.",
       },
     ],
     guidance: {
       title: "What a US-style resume bullet looks like",
       intro: "The rewrite handles the English. These are the structural rules behind it.",
       items: [
-        "Start with a strong past-tense verb: built, led, cut, shipped, migrated.",
+        "Use an accurate action verb: present tense for ongoing work, past tense for completed work.",
         "One achievement per bullet, one line if possible, two at most.",
         "Put the result in the bullet — a number, a percentage, a timeframe.",
-        "Drop personal pronouns. A resume never says “I”.",
-        "Six bullets for your current role, three for older ones, is a healthy shape.",
+        "For concise resume bullets, start with the action rather than “I”.",
+        "Choose the most relevant responsibilities and results; there is no fixed number of bullets for every role.",
       ],
     },
     example: {
@@ -163,7 +163,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
         "• [[cut:Was responsible for the management of]] a team of 8 developers\n• [[cut:Participated in the implementation of]] a new CRM [[cut:that reduced the response time in]] 40%\n• [[cut:Made the monthly reports for the direction]]",
       after:
         "• [[add:Managed]] a team of 8 developers\n• [[add:Contributed to implementing]] a new CRM [[add:that reduced response time by]] 40%\n• [[add:Produced monthly reports for management]]",
-      notes: ["Verb first", "Half the words", "8 and 40% kept"],
+      notes: ["Verb first", "More concise", "8 and 40% kept"],
     },
     faq: [
       {
@@ -172,7 +172,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Will it keep my bullet symbols?",
-        a: "Yes. The structure of your list comes back as you pasted it — bullets, dashes, or line breaks.",
+        a: "The rewrite aims to keep your list readable, but bullet symbols and line breaks may change. Review the result and its formatting when you paste it into your resume.",
       },
       {
         q: "Is this different from the ATS page?",
@@ -196,7 +196,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     context: "resume-bullet",
     metaTitle: "CV English Rewriter for UK and Europe | NativeApply",
     metaDescription:
-      "Rewrite your CV bullet points into the concise, understated English UK and European recruiters expect, without touching your facts. " +
+      "Improve your CV bullets in American or British English, then review the result alongside your original. " +
       PRICE_LINE,
     ogTitle: "CV English Rewriter",
     ogDescription:
@@ -205,14 +205,14 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     headingLead: "A CV that reads as",
     headingAccent: "understated and precise",
     intro:
-      "UK and European CVs reward precision over enthusiasm. Paste your bullets and get them back clear and measured — strong enough to carry your record, never inflated beyond it.",
+      "Make your CV clear and easy to read. Choose the English style your employer uses, then review a concise rewrite of your own experience.",
     ctaLabel: "Rewrite my CV bullets",
     placeholder:
       "• Realised the coordination of the quality control process for 3 production lines\n• Was in charge of the formation of new colleagues\n• Obtained a reduction of 15% in the waste of material…",
     benefits: [
       {
         title: "Measured, not boastful",
-        body: "Keeps the restrained tone UK and EU hiring managers read as credible, while removing the vague phrasing that hides your actual contribution.",
+        body: "Replace vague phrasing with clear descriptions of your contribution. Review the result for a tone that fits the role and employer.",
       },
       {
         title: "False friends corrected",
@@ -228,10 +228,10 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
     ],
     guidance: {
-      title: "What UK and EU recruiters look for",
-      intro: "Conventions differ from the US résumé. These are worth getting right before the rewrite.",
+      title: "Prepare your CV for the role",
+      intro: "Expectations vary by employer, profession, and country. Check the application instructions before rewriting.",
       items: [
-        "Two pages is normal for an experienced CV; one page is a US convention.",
+        "Follow any page or word limit in the posting and prioritize relevant experience.",
         "Lead with the responsibility, follow with the measurable outcome.",
         "Keep the language plain — superlatives read as noise, not confidence.",
         "No photo, no date of birth, no marital status for UK applications.",
@@ -254,7 +254,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Should my CV be different for each country?",
-        a: "The content rarely changes; the conventions do. This tool fixes the English, which is the part that travels everywhere. Length, photo, and personal details are decisions you keep.",
+        a: "Tailor your experience to the role and follow local and employer instructions about length and personal details. NativeApply improves the English; it does not check country-specific application requirements.",
       },
       {
         q: "Can it rewrite my personal statement too?",
@@ -278,14 +278,14 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     context: "resume-bullet",
     metaTitle: "ATS-Friendly Resume Bullet Points | NativeApply",
     metaDescription:
-      "Rewrite resume bullets into plain, keyword-clear English that applicant tracking systems parse and recruiters actually read. " +
+      "Improve the English of your resume bullets and review practical formatting guidance. No ATS scan or score. " +
       PRICE_LINE,
     ogTitle: "ATS-Friendly Resume Bullet Points",
     ogDescription:
-      "Paste your bullets and get them back plain, direct, and easy for tracking software to parse. $19/month.",
+      "Rewrite resume bullets in clear English. Includes formatting guidance, not an ATS scan or screening guarantee. $19/month.",
     eyebrow: "ATS bullet points",
-    headingLead: "Bullets a tracking system can read and a",
-    headingAccent: "human wants to read",
+    headingLead: "Clear resume bullets, with",
+    headingAccent: "practical formatting guidance",
     intro:
       "Make your existing experience easier to read in plain English. This page uses our resume rewriter and adds formatting guidance. It does not scan an ATS, score your resume, or guarantee that an application passes a screening system.",
     ctaLabel: "Rewrite my bullets",
@@ -293,31 +293,31 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       "• Had the responsibility of the optimisation of the processes of the logistic sector, obtaining a diminution of the costs\n• Acted in the elaboration of dashboards for the follow-up of the KPIs…",
     benefits: [
       {
-        title: "Plain words a parser recognises",
+        title: "Clear, relevant wording",
         body: "Simplify complicated phrasing while keeping the skills and tools you actually named. Check relevant terminology against the job description yourself.",
       },
       {
         title: "One idea per line",
-        body: "Long compound bullets are split into the short, single-claim lines both the parser and the recruiter can process.",
+        body: "Aim for a clear responsibility or result in each bullet. Review the rewrite and split a long bullet yourself where needed.",
       },
       {
         title: "Results made explicit",
-        body: "If your draft says costs went down, the rewrite says so plainly — using only the number you provided, never one it invented.",
+        body: "Make the result you described easier to read. The tool is instructed to use only your facts; check the number comparison and the meaning before submitting.",
       },
       {
         title: "No keyword stuffing",
-        body: "It will not pad your resume with terms you did not earn. Stuffing gets caught in the interview, and it reads badly to the human on the other side.",
+        body: "The tool is instructed not to add skills or tools absent from your draft. Check that every term in the result accurately describes your experience.",
       },
     ],
     guidance: {
       title: "What actually helps with an ATS",
-      intro: "Most ATS advice is folklore. These five are plain mechanics, and cost you nothing to follow.",
+      intro: "These are formatting suggestions, not a compatibility test. Follow the employer’s file and layout requirements.",
       items: [
         "Use the words from the job description when they honestly describe your work.",
         "Standard section headings — Experience, Education, Skills — beat creative ones.",
         "Keep formatting simple: no tables, text boxes, columns, or graphics in the experience section.",
         "Spell out an acronym once, then use it: “search engine optimisation (SEO)”.",
-        "Submit a .docx or a text-based PDF, never a scan or an image.",
+        "Use the file type requested by the employer. When permitted, choose a document with selectable text rather than a scanned image.",
       ],
     },
     example: {
@@ -337,15 +337,15 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Will it add keywords from the job ad?",
-        a: "Only in the sense that plain, standard vocabulary tends to match job ads. It never inserts a skill or tool you did not mention.",
+        a: "No job ad is supplied to the rewriter. Check relevant terms yourself and include only skills you actually have. The tool is instructed not to invent qualifications, but you must review the result.",
       },
       {
         q: "Should I keep my bullet characters?",
-        a: "Yes. Standard bullets and hyphens parse fine. What breaks parsing is tables, columns, and text inside images.",
+        a: "Simple bullets or hyphens are a practical choice. Parsing varies by system, so follow the employer’s instructions and check the uploaded document’s preview.",
       },
       {
         q: "How many bullets should each role have?",
-        a: "Around six for your current role and three for older ones is a shape that reads well and parses cleanly. Paste them together so the rewrite keeps them consistent.",
+        a: "Use enough bullets to show your relevant contribution without repetition. There is no fixed count or ATS advantage guaranteed by a particular number. You can paste related bullets together for a consistent rewrite.",
       },
     ],
     related: [
@@ -369,7 +369,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     headingLead: "Message a recruiter like a",
     headingAccent: "colleague, not a form letter",
     intro:
-      "Recruiters read hundreds of messages a week and answer the ones that are short, specific, and easy to reply to. Paste yours and get it back in that register — friendly, direct, and free of the formality that reads as distance in English.",
+      "Make your message clear, specific, and easy to read. Paste your draft and review a friendly, professional rewrite. A clearer message cannot guarantee a reply.",
     ctaLabel: "Rewrite my message",
     placeholder:
       "Dear Madam, I hope this message find you well. I am writing to you because I saw the announce of the position of Data Engineer in your company and I would like very much that you consider my candidature…",
@@ -392,14 +392,14 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
     ],
     guidance: {
-      title: "What gets a recruiter to reply",
+      title: "Make your message easy to answer",
       intro: "The English matters. So does the shape of the message.",
       items: [
         "Use their name and name the exact role in the first line.",
         "Give one reason you fit, not your whole history.",
-        "Keep it under about six lines — anything longer gets saved for later and forgotten.",
+        "Keep the first message brief and focused on the role and your reason for reaching out.",
         "End with a small, easy question rather than a large request.",
-        "Send it on a weekday morning in their time zone, not late on a Friday.",
+        "Respect any contact instructions in the posting and avoid repeated unsolicited messages.",
       ],
     },
     example: {
@@ -410,7 +410,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
         "Dear Mrs. Lindqvist, I hope this message [[cut:find]] you well. I am writing to you because I saw [[cut:the announce of the position of]] Data Engineer in your company and I [[cut:would like very much that you consider my candidature]]. Thank you for your attention.",
       after:
         "Hi [[add:Ms.]] Lindqvist, I hope [[add:you're doing well]]. I saw [[add:your opening for]] the Data Engineer [[add:role]], and [[add:I'd love to be considered]]. Thanks for your time.",
-      notes: ["Warmer", "Half the length", "Same request"],
+      notes: ["Warmer", "More concise", "Same request"],
     },
     faq: [
       {
@@ -419,7 +419,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Can I reuse the same message for several recruiters?",
-        a: "Change the name and the role every time. A message that is obviously copied gets the reply it deserves, however good the English is.",
+        a: "Adapt the name, role, and reason for reaching out each time. Review the details before sending so the message fits its recipient.",
       },
       {
         q: "Does it work for a reply, not just a first message?",
@@ -449,8 +449,8 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     ogDescription:
       "Paste your LinkedIn note and get it back short, natural, and easy to accept. $19/month.",
     eyebrow: "LinkedIn message rewriter",
-    headingLead: "A connection note that gets",
-    headingAccent: "accepted, not ignored",
+    headingLead: "A connection note that feels",
+    headingAccent: "personal and professional",
     intro:
       "Start a professional conversation with a short, personal note. Paste your draft, review the rewrite, and check it against the character limit shown in your LinkedIn composer before sending.",
     ctaLabel: "Rewrite my LinkedIn note",
@@ -471,7 +471,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         title: "No fake personalisation",
-        body: "It will not invent a compliment about an article you did not read. What you say is what it polishes.",
+        body: "Include only a real reason for connecting. The rewrite is instructed not to invent compliments or personal connections; check the result before sending.",
       },
     ],
     guidance: {
@@ -481,7 +481,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
         "Say where you found them in six words or fewer.",
         "Give one honest, concrete reason for connecting.",
         "Do not ask for a job in the connection request itself — ask after they accept.",
-        "Skip “I hope this message finds you well”; it costs 35 characters and says nothing.",
+        "Use the limited space for your reason for connecting rather than a long generic introduction.",
         "Read it aloud. If it sounds like a sales sequence, it reads like one.",
       ],
     },
@@ -498,7 +498,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     faq: [
       {
         q: "Should I always add a note to a connection request?",
-        a: "For someone who does not know you, yes. A note that gives one concrete reason gives them something to say yes to; a bare request gives them nothing.",
+        a: "A short, relevant note can provide context when someone does not know you. Whether you can add one depends on the options LinkedIn shows for your account.",
       },
       {
         q: "Does it count characters for me?",
@@ -506,7 +506,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Can I use it for InMail as well?",
-        a: "Yes. InMail allows more room, so use the recruiter message page if you are writing a longer, more formal approach.",
+        a: "Yes. Both pages use the LinkedIn message setting. Check the length allowed in your LinkedIn composer and edit the result to fit.",
       },
       {
         q: "Will it write the note from scratch for me?",
@@ -563,7 +563,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
         "Send the thank-you within 24 hours of the interview, while they still remember you.",
         "Mention one specific thing from the conversation — it proves you were listening.",
         "If they gave you a date, wait until it passes before checking in.",
-        "If they did not, one week is a reasonable first follow-up, and one more after that is the limit.",
+        "If no timeline was given, allow time for a response before a brief check-in, and respect any request not to follow up.",
         "Reply in the existing email thread rather than starting a new one.",
       ],
     },
@@ -592,7 +592,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "What if I was rejected and want to stay in touch?",
-        a: "Paste that draft too. A gracious reply after a rejection is one of the highest-return emails in a job search, and tone matters more there than anywhere else.",
+        a: "You can rewrite a brief reply that thanks them and expresses a genuine wish to stay in touch. Respect their decision and review your message before sending.",
       },
     ],
     related: [
@@ -608,7 +608,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     context: "cover-letter",
     metaTitle: "Job Application Letter Rewriter | NativeApply",
     metaDescription:
-      "Rewrite the application letter you are about to send into clear, professional English, with every fact preserved. " +
+      "Improve your application letter in clear, professional English, then review the editable result against your draft. " +
       PRICE_LINE,
     ogTitle: "Job Application Letter Rewriter",
     ogDescription:
@@ -617,7 +617,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     headingLead: "The letter you are about to send,",
     headingAccent: "in clearer English",
     intro:
-      "Application letters go into a form field and are read next to fifty others. Paste yours and get it back clear, specific, and correctly structured — the version that survives the comparison.",
+      "Make your application letter clear and easy to follow. Paste your own English draft, review the rewrite, and adapt the final text to the role and application instructions.",
     ctaLabel: "Rewrite my letter",
     placeholder:
       "Dear Recruitment Team,\n\nI would like to present my candidature for the position of Logistics Coordinator published in your careers page. I have worked during 7 years in the sector of transport…",
@@ -640,8 +640,8 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
     ],
     guidance: {
-      title: "The three-paragraph shape that works",
-      intro: "Almost every strong application letter follows it.",
+      title: "A possible structure for your letter",
+      intro: "Use this as a starting point, then follow the employer’s instructions and the needs of your application.",
       items: [
         "Paragraph one: the role, where you saw it, and one sentence on why you fit.",
         "Paragraph two: your strongest relevant evidence — a project, a number, a responsibility.",
@@ -662,7 +662,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     faq: [
       {
         q: "Is an application letter the same as a cover letter?",
-        a: "In practice, yes — “application letter” is the common term in Europe and “cover letter” in the US. Both pages use the same setting; pick whichever name matches the form you are filling in.",
+        a: "The terms often overlap, but employers may ask for different content. Both NativeApply pages use the cover letter setting. Follow the requirements of the application you are preparing.",
       },
       {
         q: "Can I paste a letter that is already in English?",
@@ -674,7 +674,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "How long should the letter be?",
-        a: "Three short paragraphs, around 200 words. Longer letters are skimmed, and skimming favours the applicant who was brief.",
+        a: "Follow the employer’s word or page limit. Keep your letter focused on relevant experience and remove repetition. Three short paragraphs can be a useful starting point, not a fixed rule.",
       },
     ],
     related: [
@@ -713,19 +713,19 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
         body: "“I am actually living in Brazil” means something different in English. Errors like this one are common in exactly this paragraph.",
       },
       {
-        title: "Keeps your status exactly as you describe it",
+        title: "Your status needs your review",
         body: "The tool is instructed to preserve how you describe your visa situation. Check the wording carefully before sending; a rewrite does not verify your immigration status.",
       },
       {
         title: "Leads with your value, not your paperwork",
-        body: "Sponsorship belongs in the letter, not at the top of it. The rewrite keeps your experience in the opening position.",
+        body: "Follow the employer’s instructions about sponsorship information. Arrange your own draft clearly before rewriting; NativeApply does not check immigration or hiring requirements.",
       },
     ],
     guidance: {
       title: "How to handle sponsorship in the letter",
       intro: "The wording is only half of it. This is the part candidates most often get wrong.",
       items: [
-        "Apply only where the posting says sponsorship is available — it saves everyone's time.",
+        "Check the posting for sponsorship information. If it is unclear, ask the employer rather than assuming eligibility.",
         "Mention your situation once, in one sentence, near the end of the letter.",
         "State facts you can support: your current country, and the type of permission you would need.",
         "Do not promise a timeline or an outcome you cannot control.",
@@ -757,7 +757,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Does this work for student and graduate visa routes too?",
-        a: "Yes. Whatever your situation, write it in plain terms in your draft, and the rewrite will keep the substance and fix only the English around it.",
+        a: "You can rewrite your own description of your situation. Review every detail and use a qualified immigration adviser for questions about status or eligibility.",
       },
     ],
     related: [

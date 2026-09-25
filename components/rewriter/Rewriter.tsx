@@ -313,7 +313,7 @@ export default function Rewriter({
 
             <p id="na-text-help" className="mt-2 text-[0.8125rem] text-muted">
               {tooLong
-                ? `That is ${(text.length - MAX_CHARS).toLocaleString("en-US")} characters over the limit. Rewrite it in two parts.`
+                ? `That is ${(text.length - MAX_CHARS).toLocaleString("en-US")} ${text.length - MAX_CHARS === 1 ? "character" : "characters"} over the limit. Shorten it or split it into parts of up to ${MAX_CHARS.toLocaleString("en-US")} characters. Each part uses a separate rewrite.`
                 : "Paste your own English draft. The rewrite is instructed to keep your names, dates, numbers, and facts."}
             </p>
 
@@ -432,8 +432,8 @@ export default function Rewriter({
                   {/* An instruction to the model is not a guarantee, so the
                       last check stays with the person sending the letter. */}
                   <p className="border-t border-line px-4 py-3 text-[0.8125rem] leading-5 text-muted">
-                    Your names, dates and numbers are meant to come back untouched — read the rewrite once before
-                    you send it. Email and WhatsApp open a draft; you choose the recipient and send it yourself.
+                    Review names, dates, numbers, and meaning before sending. Email opens your configured mail app.
+                    WhatsApp receives the text when you open its link, even before you send. You choose the recipient and confirm sending in that app.
                   </p>
                   <p className="px-4 pb-3 text-xs leading-5 text-muted">Email uses your device’s default mail app, not a connected Gmail account. Gmail, Outlook, Apple Mail, Yahoo Mail, and other providers can be used through a configured mail app or by copying and pasting. If nothing opens, copy the result and paste it into your preferred email service.</p>
                   {error && <p role="alert" className="px-4 pb-3 text-sm text-flag">{error}</p>}
@@ -454,7 +454,7 @@ export default function Rewriter({
                   {result && <details className="rounded-xl border border-line p-3 text-sm"><summary className="cursor-pointer font-medium text-brand-700">Your previous result is still available</summary><textarea ref={editedResultRef} readOnly aria-label="Previous result" value={result} rows={8} className="mt-3 w-full rounded-lg border border-line p-3 text-base leading-6" /><Button type="button" onClick={handleCopy} variant="secondary" className="mt-3">{copied ? "Copied" : "Copy previous result"}</Button></details>}
                   {limitReached ? (
                     <div className="flex flex-col gap-2 sm:flex-row">
-                      <ButtonLink href="/checkout">See Pro plans</ButtonLink>
+                      <ButtonLink href="/checkout">See Pro pricing</ButtonLink>
                       <ButtonLink href="/restore" variant="secondary">
                         Restore a purchase
                       </ButtonLink>
