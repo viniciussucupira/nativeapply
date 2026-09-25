@@ -15,6 +15,7 @@ import {
 import { getProStatus } from "@/lib/pro";
 import { ENGLISH_VARIANTS } from "@/lib/rewrite-review";
 import { REWRITE_MODEL } from "@/lib/ai-cost";
+import { protectCompanyNames } from "@/lib/rewrite-names";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, timeout: 45000, maxRetries: 0 });
 
@@ -133,26 +134,29 @@ Rules:
 - Preserve explicit negative statements as explicit negative statements. For example, "Helped the team. I did not manage the team." must keep both claims, even in resume bullets. "Helped" alone does not replace "I did not manage the team."
 - Never localize proper names. In British English, "I organized training at Color Center Ltd" becomes "I organised training at Color Center Ltd", NOT "Colour Centre Ltd". In American English, a company named "Colour Centre Ltd" must also keep that exact name. Treat organization, product, and person names as immutable text.
 - Preserve digits even at the beginning of a sentence or fragment. "2 years helping customers at Acme. No management experience." must remain a short fragment with "2", not "two", and must keep the lack of management experience. Do not expand fragments into letters.
+- Tokens starting with NATIVEAPPLY_NAME_ and ending with _END represent protected company names. Copy every token exactly once in its original position within the text. Never change, omit, duplicate, expand, or translate these tokens.
 - Output ONLY the rewritten text. No preamble, no explanation, no quotation marks around it.`;
 
   try {
+    const protectedDraft = protectCompanyNames(text, randomBytes(12).toString("hex"));
     const response = await anthropic.messages.create({
       model: REWRITE_MODEL,
       max_tokens: 4096,
       temperature: 0,
       system: systemPrompt,
-      messages: [{ role: "user", content: text }],
+      messages: [{ role: "user", content: protectedDraft.text }],
     });
 
     // Include billable responses even when generation is incomplete or unusable.
     await recordRewriteCost(response.usage, pro, email);
-    const rewritten = response.content
+    const generated = response.content
       .filter((block) => block.type === "text")
       .map((block) => block.text)
       .join("\n")
       .trim();
 
-    if (!rewritten || response.stop_reason === "max_tokens") throw new Error("incomplete model response");
+    if (!generated || response.stop_reason === "max_tokens") throw new Error("incomplete model response");
+    const rewritten = protectedDraft.restore(generated);
 
     const totalRewrites = await incrementTotalRewrites();
     return reply({ rewritten, totalRewrites });
