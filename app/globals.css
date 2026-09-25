@@ -439,3 +439,14 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 @media(prefers-reduced-motion: reduce) { .family-footer nav[aria-label="More from us"] li > a { transition: none; } .family-footer nav[aria-label="More from us"] li > a:hover { transform: none; } }
 
 @media (min-width: 480px) and (max-width: 1023px) { .family-footer .footer-brand { grid-column: 1 / -1; } }
+
+/* Consistent navigation across the product family. */
+.family-header { background: rgba(255,255,255,.96); border-bottom: 1px solid #e8ebf1; }
+.family-header > div:first-child { max-width: 1200px; margin-inline: auto; padding-inline: 24px; }
+.family-header > div:first-child, .family-header > div:first-child > div { min-height: 76px; }
+.family-header nav a { font-size: 14px; font-weight: 500; line-height: 24px; border-radius: 10px; transition: color .15s, background-color .15s; }
+.family-header nav a:hover { background: #f1f4f9; }
+.family-header a[href="/subscription"] { font-size: 14px; white-space: nowrap; }
+.family-header a[href="/#tool"] { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 20px; border-radius: 12px; font-size: 14px; line-height: 24px; font-weight: 600; white-space: nowrap; }
+.family-header a:focus-visible, .family-header button:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 4px; }
+@media(max-width: 1279px) { .family-header > div:first-child, .family-header > div:first-child > div { min-height: 64px; } .family-header > div:first-child { padding-inline: 20px; } }
