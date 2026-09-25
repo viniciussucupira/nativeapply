@@ -411,16 +411,29 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 }
 
 
-/* Shared Nimbus Labs footer rhythm; each product keeps its brand accent. */
-.family-footer { background: #fafbfe; }
+/* Shared Nimbus Labs footer design. */
+.family-footer { --footer-accent: #295ec5; background: linear-gradient(180deg, #f8f9fc, #fff); border-top: 1px solid #e3e7ef; }
 .family-footer-grid { display: grid; grid-template-columns: 1.05fr .75fr 1.7fr 1.1fr; gap: 32px; align-items: start; }
-.family-footer .footer-help { padding: 20px; border: 1px solid var(--color-line); border-radius: 20px; background: white; }
-.family-footer .footer-brand > p:first-of-type { margin-top: 20px; line-height: 1.75; }
-.family-footer .footer-brand > p:last-of-type { margin-top: 20px; }
+.family-footer h2 { font-size: 14px; font-weight: 650; letter-spacing: -.015em; }
+.family-footer .footer-help { padding: 22px; border: 1px solid #e3e7ef; border-top: 3px solid var(--footer-accent); border-radius: 18px; background: #fff; box-shadow: 0 8px 28px -20px #1e294c40; }
+.family-footer .footer-help h2 { margin-bottom: 3px; }
+.family-help-intro { font-size: 12px; line-height: 1.6; color: #687488; margin-bottom: 14px; }
+.family-footer .footer-brand > p:first-of-type { margin-top: 20px; line-height: 1.8; font-size: 14px; }
+.family-footer .footer-brand > p:last-of-type { margin-top: 20px; border-color: var(--footer-accent); }
 .family-footer nav a { text-underline-offset: 4px; }
-.family-footer nav a:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 3px; }
+.family-footer nav a:focus-visible { outline: 2px solid var(--footer-accent); outline-offset: 4px; }
+.family-footer nav[aria-label="More from us"] { margin-top: 40px; padding-top: 28px; }
+.family-products-intro { color: #687488; font-size: 13px; line-height: 1.6; margin-top: 5px; margin-bottom: 12px; }
+.family-footer nav[aria-label="More from us"] li > a { border-radius: 16px; background: white; padding: 20px; border-color: #e3e7ef; transition: border-color .2s, box-shadow .2s, transform .2s; }
+.family-footer nav[aria-label="More from us"] li > a:hover { border-color: var(--footer-accent); box-shadow: 0 10px 24px -16px #1e294c60; transform: translateY(-3px); }
+.family-product-heading { display: flex; align-items: center; gap: 10px; color: #233149; font-weight: 650; margin-bottom: 12px; }
+.family-product-mark { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; flex-shrink: 0; border-radius: 9px; background: #edf1fa; color: #295ec5; font-size: 10px; letter-spacing: -.025em; }
+.family-product-mark[data-product="Retone"] { background: #f0ebff; color: #7250d4; }
+.family-product-mark[data-product="NativeReply"] { background: #e6f5f1; color: #167660; }
+.family-product-mark[data-product="Nimbus Labs"] { background: #eef0f6; color: #465370; }
+.family-product-mark[data-product="Kudobox"] { background: #fff1e5; color: #a65c22; }
+.family-product-arrow { margin-left: auto; color: #748095; font-size: 16px; }
 @media(min-width: 1024px) { .family-footer-grid nav li > a { min-height: 38px; } }
-@media(max-width: 1023px) { .family-footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; } }
-@media(max-width: 479px) { .family-footer-grid { grid-template-columns: 1fr; gap: 28px; } }
-
-.family-footer nav[aria-label="More from us"] li > a { border-radius: 16px; background: white; }
+@media(max-width: 1023px) { .family-footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
+@media(max-width: 479px) { .family-footer-grid { grid-template-columns: 1fr; gap: 28px; } .family-footer .footer-brand { padding-bottom: 24px; border-bottom: 1px solid #e3e7ef; } .family-footer nav[aria-label="More from us"] li > a { padding: 18px; } }
+@media(prefers-reduced-motion: reduce) { .family-footer nav[aria-label="More from us"] li > a { transition: none; } .family-footer nav[aria-label="More from us"] li > a:hover { transform: none; } }

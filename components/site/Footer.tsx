@@ -43,7 +43,7 @@ export default function Footer() {
         </div>
         <nav aria-label="Explore NativeApply"><h2 className={headingClass}>Explore</h2><Links items={EXPLORE}/></nav>
         <nav aria-label="Writing tools" className="footer-writing"><h2 className={headingClass}>Writing tools</h2><Links items={WRITING} columns/></nav>
-        <nav aria-label="Access and help" className="footer-help"><h2 className={headingClass}>Access &amp; help</h2><Links items={HELP}/></nav>
+        <nav aria-label="Access and help" className="footer-help"><h2 className={headingClass}>Access &amp; help</h2><p className="family-help-intro">Your plan. Your control.</p><Links items={HELP}/></nav>
       </div>
       <div className="text-muted"><MoreFromUs/></div>
       <div className="mt-8 border-t border-line pt-6">
