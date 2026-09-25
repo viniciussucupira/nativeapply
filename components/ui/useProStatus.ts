@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createAccessCache } from "@/lib/access-cache";
+import { createAccessCache, parseProStatus } from "@/lib/access-cache";
 
 const changed = "nativeapply:access-changed";
 const cache = createAccessCache(async () => {
   const response = await fetch("/api/me", { signal: AbortSignal.timeout(15000), cache: "no-store" });
   if (!response.ok) throw new Error("Access unavailable");
   const data = await response.json();
-  return { pro: data?.pro === true, needsRestore: data?.needsRestore === true, unavailable: data?.unavailable === true };
+  return parseProStatus(data);
 });
 let lastForegroundRefresh = 0;
 let lastStorageValue: string | null = null;

@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Button, ButtonLink } from "@/components/ui/Primitives";
 import { refreshProStatus } from "@/components/ui/useProStatus";
+import { recoveryVerificationStatus } from "@/lib/recovery-response";
 
 export function EmailRequest({ purpose = "pro" }: { purpose?: "pro" | "billing" }) {
   const billing = purpose === "billing";
@@ -58,8 +59,9 @@ export function EmailVerify() {
     try {
       const response = await fetch("/api/recovery/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token }), signal: AbortSignal.timeout(25000) });
       const data = await response.json();
-      if (response.ok) { refreshProStatus(); setToken(""); setStatus("done"); }
-      else setStatus(data.error || "unavailable");
+      const next = recoveryVerificationStatus(response.ok, data);
+      if (next === "done") { refreshProStatus(); setToken(""); }
+      setStatus(next);
     } catch { setStatus("unavailable"); }
   }
   return <div className="mx-auto max-w-xl px-5 py-16">

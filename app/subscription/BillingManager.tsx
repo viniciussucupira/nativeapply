@@ -4,6 +4,7 @@ import { Button, ButtonLink } from "@/components/ui/Primitives";
 import { EmailRequest } from "@/app/restore/EmailAccess";
 import type { BillingSummary } from "@/lib/billing";
 import RefundManager from "./RefundManager";
+import { recoveryVerificationStatus } from "@/lib/recovery-response";
 
 function date(value: string | null) { return value && Number.isFinite(Date.parse(value)) ? new Date(value).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" }) : null; }
 export function BillingVerify() {
@@ -21,8 +22,9 @@ export function BillingVerify() {
     setStatus("working");
     try {
       const res = await fetch("/api/recovery/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token, purpose: "billing" }), signal: AbortSignal.timeout(25000) });
-      if (res.ok) { window.location.replace("/subscription#cancel"); return; }
-      setStatus(res.status === 400 ? "invalid" : "error");
+      const next = recoveryVerificationStatus(res.ok, await res.json());
+      if (next === "done") { window.location.replace("/subscription#cancel"); return; }
+      setStatus(next === "invalid_link" ? "invalid" : "error");
     } catch { setStatus("error"); }
   }
   return <div className="mx-auto max-w-xl px-5 py-16"><h1 className="text-3xl font-semibold text-navy">Manage your subscription</h1><p className="mt-4 leading-7 text-muted">Confirm your email to manage your NativeApply subscription or request a refund. This step does not cancel anything, request a refund, or charge you.</p>
