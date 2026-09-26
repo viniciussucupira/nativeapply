@@ -54,12 +54,12 @@ Set an optional `PRO_SESSION_SECRET` or keep the existing `PADDLE_WEBHOOK_SECRET
 Legacy unsigned cookies require logging in once; the editor explains that no new payment is needed.
 Logging in is by a one-time email link (Resend, verified sender). A receipt code (`txn_…`) logs in only within 24 hours of the purchase while email login is configured.
 
-## Logging in and signing out (26 Sept 2026)
+## Logging in and logging out (26 Sept 2026)
 
 The same way in as every Nimbus Labs product: **Log in** (`/login`) sends a one-time link — 32 random bytes stored only as a hash, 15 minutes, one use, carried after `#`, spent only by a POST from our own page after a tap.
 
 - Pro and billing sessions carry `iat`. Sessions made before it date themselves from their expiry, so nobody was logged out by the change.
-- **Sign out** clears this browser's Pro and billing cookies. **Sign out on all devices** (`/api/signout` with `{ everywhere: true }`, same-origin, needs a live session) stores `na:signout:<hash>` = now; every Pro or billing session issued at or before it is refused (`sessionIsLive` in `lib/pro.ts`), and `/api/me` removes the dead cookie. The key expires after 400 days, when no older session can still be valid.
+- **Log out** clears this browser's Pro and billing cookies. **Log out of all devices** (`/api/signout` with `{ everywhere: true }`, same-origin, needs a live session) stores `na:signout:<hash>` = now; every Pro or billing session issued at or before it is refused (`sessionIsLive` in `lib/pro.ts`), and `/api/me` removes the dead cookie. The key expires after 400 days, when no older session can still be valid.
 - A receipt is forwarded and archived for years, so its code is not a permanent key: `/api/paddle/confirm` answers `login_required` for a purchase older than 24 hours when email login is configured.
 
 ## On-site subscription cancellation

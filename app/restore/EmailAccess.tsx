@@ -66,7 +66,7 @@ export function EmailVerify() {
   }
   return <div className="mx-auto max-w-xl px-5 py-16">
     <h1 className="text-3xl font-semibold text-navy">{status === "done" ? "You are logged in" : "Log in to NativeApply Pro"}</h1>
-    {status === "done" ? <><p role="status" className="mt-4 text-muted">Pro is active in this browser. You have not been charged again. To sign out later, open Log in from the menu.</p><ButtonLink href="/#tool" className="mt-6">Start rewriting</ButtonLink></> : <>
+    {status === "done" ? <><p role="status" className="mt-4 text-muted">Pro is active in this browser. You have not been charged again. To log out later, open Log in from the menu.</p><ButtonLink href="/#tool" className="mt-6">Start rewriting</ButtonLink></> : <>
       <p className="mt-4 leading-7 text-muted">Tap Log in to use your existing purchase on this device. This does not create or renew a subscription.</p>
       {(status === "ready" || status === "working" || status === "unavailable") && <Button onClick={verify} disabled={status === "working"} className="mt-6">{status === "working" ? "Checking your purchase…" : "Log in"}</Button>}
       {status === "loading" && <p role="status" className="mt-4">Preparing your link…</p>}

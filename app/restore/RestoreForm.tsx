@@ -65,8 +65,8 @@ function ReceiptIllustration() {
 }
 
 const NOTICES: Record<string, string> = {
-  "signed-out": "You are signed out of this browser.",
-  "signed-out-everywhere": "You are signed out on every device. Log in again wherever you want to use Pro.",
+  "signed-out": "You are logged out of this browser.",
+  "signed-out-everywhere": "You are logged out of every device. Log in again wherever you want to use Pro.",
 };
 
 export default function LoginForm({ emailEnabled = false, notice = "" }: { emailEnabled?: boolean; notice?: string }) {

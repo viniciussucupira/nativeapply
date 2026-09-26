@@ -22,7 +22,7 @@ export default function SignedInPanel({ email, pro }: { email: string; pro: bool
         body: JSON.stringify({ everywhere }),
         signal: AbortSignal.timeout(15000),
       });
-      if (!response.ok && response.status !== 401) throw new Error("Sign-out failed");
+      if (!response.ok && response.status !== 401) throw new Error("Log-out failed");
       refreshProStatus();
       // A full navigation is intentional: the page must be rendered again
       // without the cookie this request just removed.
@@ -31,8 +31,8 @@ export default function SignedInPanel({ email, pro }: { email: string; pro: bool
     } catch {
       setPending("");
       setError(everywhere
-        ? "We could not sign out your other devices right now. Nothing has changed. Please try again shortly."
-        : "We could not sign you out right now. Please try again shortly.");
+        ? "We could not log out your other devices right now. Nothing has changed. Please try again shortly."
+        : "We could not log you out right now. Please try again shortly.");
     }
   }
 
@@ -58,24 +58,24 @@ export default function SignedInPanel({ email, pro }: { email: string; pro: bool
           <div className="mt-6 rounded-2xl border border-line bg-ivory p-5" role="status">
             <p className="font-semibold text-navy">There is no active Pro purchase for this email.</p>
             <p className="mt-2 text-[0.9375rem] leading-6 text-muted">
-              If you paid with another address, sign out and log in with that one. You can also{" "}
+              If you paid with another address, log out and log in with that one. You can also{" "}
               <Link href="/checkout" className="font-semibold text-brand-700 underline underline-offset-4">see the plans</Link>.
             </p>
           </div>
         )}
 
         <section className="mt-10 border-t border-line pt-8" aria-labelledby="signout-heading">
-          <h2 id="signout-heading" className="text-xl font-semibold text-navy">Sign out</h2>
+          <h2 id="signout-heading" className="text-xl font-semibold text-navy">Log out</h2>
           <p className="mt-2 text-[0.9375rem] leading-6 text-muted">
-            Signing out of this browser leaves your other devices as they are. To end every session for this email at once,
-            including billing links you have opened, sign out on all devices. Use it if you logged in on a shared, lost or sold device.
+            Logging out of this browser leaves your other devices as they are. To end every session for this email at once,
+            including billing links you have opened, log out of all devices. Use it if you logged in on a shared, lost or sold device.
           </p>
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <Button variant="secondary" onClick={() => signOut(false)} disabled={pending !== ""}>
-              {pending === "here" ? "Signing out…" : "Sign out"}
+              {pending === "here" ? "Logging out…" : "Log out"}
             </Button>
             <Button variant="secondary" onClick={() => signOut(true)} disabled={pending !== ""}>
-              {pending === "everywhere" ? "Signing out everywhere…" : "Sign out on all devices"}
+              {pending === "everywhere" ? "Logging out of all devices…" : "Log out of all devices"}
             </Button>
           </div>
           {error && (
@@ -86,7 +86,7 @@ export default function SignedInPanel({ email, pro }: { email: string; pro: bool
           <p className="mt-6 flex items-start gap-2 text-[0.8125rem] leading-5 text-muted">
             <IconLock className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
             <span>
-              Signing out never cancels or changes your subscription. To stop renewal, go to{" "}
+              Logging out never cancels or changes your subscription. To stop renewal, go to{" "}
               <Link href="/subscription#cancel" className="font-semibold text-brand-700 underline">Billing &amp; support</Link>.
             </span>
           </p>

@@ -27,6 +27,6 @@ Run `npm run lint`, `npm test`, `npm run build`. Verify the mobile form and erro
 - Local end-to-end fixture verified request validation, same-origin protection, delivery adapter, signed Pro cookie, `/api/me` paid status, unpaid denial, replay rejection and request rate limiting. The fixture did not call real payment/email services.
 - A real production email was delivered by Resend and arrived in the owner's Gmail inbox. Its link denied access for an email without a recorded active purchase; replay returned an invalid/used-link response. Paid activation was tested with the local fixture, not a real paid production purchase. No new payment or artificial production entitlement was created.
 
-## Sign out (26 September 2026)
+## Log out (26 September 2026)
 
-`/login` shows the signed-in address with **Sign out** and **Sign out on all devices**. The second stores one timestamp per address (`na:signout:<hash>`); every Pro and billing session issued before it is refused. Purchase codes log in only within 24 hours of payment while email login is configured.
+`/login` shows the signed-in address with **Log out** and **Log out of all devices**. The second stores one timestamp per address (`na:signout:<hash>`); every Pro and billing session issued before it is refused. Purchase codes log in only within 24 hours of payment while email login is configured.

@@ -19,7 +19,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "How do I log in? What if I forgot my password?",
-    a: "NativeApply has no password to reset. Choose Log in, enter your purchase email, open the login link we send, and tap Log in. The link expires in 15 minutes and works once. This does not charge you, renew the plan, or cancel it. From the same page you can sign out of this browser, or of every device at once if you used a shared or lost one. Support remains available if you need more help.",
+    a: "NativeApply has no password to reset. Choose Log in, enter your purchase email, open the login link we send, and tap Log in. The link expires in 15 minutes and works once. This does not charge you, renew the plan, or cancel it. From the same page you can log out of this browser, or of every device at once if you used a shared or lost one. Support remains available if you need more help.",
   },
   {
     q: "What does it cost?",
