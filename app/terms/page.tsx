@@ -68,8 +68,9 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>No NativeApply password is required. To use your purchase in another browser or recover access,
-          request a single-use link at <a href="/restore">Restore Pro access</a> using your purchase email.
-          Links expire after 15 minutes. Keep access links private and contact support if you lose access to that email.</p>
+          request a single-use login link at <a href="/login">Log in</a> using your purchase email.
+          Links expire after 15 minutes. Keep login links private and contact support if you lose access to that email.
+          You can sign out of one browser, or of every device at once, from the same page.</p>
         <p>Do not disrupt the service or attempt to bypass security controls. Temporary safeguards may limit
           abusive traffic. Pro has no daily rewrite allowance. To protect availability, each Pro account can
           submit up to {PRO_BURST_LIMIT} rewrite requests per {PRO_BURST_SECONDS} seconds across its browsers and devices.

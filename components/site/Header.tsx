@@ -68,12 +68,13 @@ export default function Header() {
           <div className="hidden items-center gap-2.5 xl:flex">
             <Link href="/subscription" className="rounded-full px-3 py-2 text-sm font-medium text-muted hover:text-navy">Billing & support</Link>
             {isPro ? (
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-success/25 bg-success-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-success">
+              <Link href="/login" aria-label="Pro active. Your account" className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-success/25 bg-success-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-success hover:border-success/50">
                 <IconCheck className="h-3.5 w-3.5" />
                 Pro active
-              </span>
+              </Link>
             ) : (
               <>
+                <Link href="/login" className="rounded-full px-3 py-2 text-sm font-medium text-muted hover:text-navy">Log in</Link>
                 <ButtonLink href="/#tool" variant="primary">
                   Start writing
                 </ButtonLink>
@@ -129,6 +130,13 @@ export default function Header() {
               className="flex min-h-[3.25rem] items-center rounded-xl px-3 text-lg font-medium text-navy hover:bg-brand-50"
             >
               Billing & support
+            </Link>
+            <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="flex min-h-[3.25rem] items-center rounded-xl px-3 text-lg font-medium text-navy hover:bg-brand-50"
+            >
+              {isPro ? "Your account" : "Log in"}
             </Link>
           </nav>
 

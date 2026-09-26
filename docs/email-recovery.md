@@ -11,7 +11,7 @@
 
 ## Flow and safeguards
 
-`/restore` requests an email; `/restore/email#token=...` displays an explicit confirmation. POST verification checks existing paid entitlement, then atomically consumes the token and sets the signed Pro cookie. GET never consumes a token, protecting against email link scanners. Only token hashes are stored, with a 15-minute expiry. No bearer token or email is logged by the handlers. Tokens are removed from the address bar before verification. Rate limits: 3 emails/address/hour, 10/IP/hour, 100 total/hour; 30 verification attempts/IP/hour. Redis errors fail closed. Delivery failures invalidate that token. Temporary entitlement errors allow retry until expiration.
+`/login` requests an email (`/restore` redirects there); `/restore/email#token=...` displays an explicit confirmation. POST verification checks existing paid entitlement, then atomically consumes the token and sets the signed Pro cookie. GET never consumes a token, protecting against email link scanners. Only token hashes are stored, with a 15-minute expiry. No bearer token or email is logged by the handlers. Tokens are removed from the address bar before verification. Rate limits: 3 emails/address/hour, 10/IP/hour, 100 total/hour; 30 verification attempts/IP/hour. Redis errors fail closed. Delivery failures invalidate that token. Temporary entitlement errors allow retry until expiration.
 
 Every valid, permitted request receives the same access email regardless of purchase status. Subscription status is disclosed only after proving control of that inbox. A purchase recorded by the Paddle checkout/webhook is required; inactive customers are never granted Pro. Missing purchase records retain the receipt-code and support fallback.
 
@@ -26,3 +26,7 @@ Run `npm run lint`, `npm test`, `npm run build`. Verify the mobile form and erro
 - 13 unit tests, lint and production build passed. Mobile layout checked at 390px.
 - Local end-to-end fixture verified request validation, same-origin protection, delivery adapter, signed Pro cookie, `/api/me` paid status, unpaid denial, replay rejection and request rate limiting. The fixture did not call real payment/email services.
 - A real production email was delivered by Resend and arrived in the owner's Gmail inbox. Its link denied access for an email without a recorded active purchase; replay returned an invalid/used-link response. Paid activation was tested with the local fixture, not a real paid production purchase. No new payment or artificial production entitlement was created.
+
+## Sign out (26 September 2026)
+
+`/login` shows the signed-in address with **Sign out** and **Sign out on all devices**. The second stores one timestamp per address (`na:signout:<hash>`); every Pro and billing session issued before it is refused. Purchase codes log in only within 24 hours of payment while email login is configured.

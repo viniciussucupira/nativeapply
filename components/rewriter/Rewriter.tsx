@@ -194,8 +194,8 @@ export default function Rewriter({
     <div className={className}>
       {(needsRestore || unavailable) && (
         <div role="status" className="mb-5 rounded-2xl border border-brand-100 bg-brand-50 p-4 text-sm leading-6 text-navy">
-          {needsRestore ? "Please verify your previous Pro purchase once to refresh access in this browser. You do not need to pay again. " : "We could not check your Pro access right now. Please refresh before rewriting if you are a subscriber. "}
-          <Link href="/restore" className="font-semibold underline underline-offset-4">Restore Pro</Link>
+          {needsRestore ? "Please log in once to refresh Pro in this browser. You do not need to pay again. " : "We could not check your Pro access right now. Please refresh before rewriting if you are a subscriber. "}
+          <Link href="/login" className="font-semibold underline underline-offset-4">Log in</Link>
         </div>
       )}
       {justUpgraded && isPro && (
@@ -456,8 +456,8 @@ export default function Rewriter({
                   {limitReached ? (
                     <div className="flex flex-col gap-2 sm:flex-row">
                       <ButtonLink href="/checkout">See Pro pricing</ButtonLink>
-                      <ButtonLink href="/restore" variant="secondary">
-                        Restore a purchase
+                      <ButtonLink href="/login" variant="secondary">
+                        Log in
                       </ButtonLink>
                     </div>
                   ) : (

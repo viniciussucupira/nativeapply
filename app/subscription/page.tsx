@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import BillingManager from "./BillingManager";
 import { ButtonLink } from "@/components/ui/Primitives";
-export const metadata: Metadata = { title: "Billing & support | NativeApply", description: "Cancel renewal, request a refund, or restore NativeApply Pro access. No password or Paddle login needed.", alternates: { canonical: "/subscription" } };
+export const metadata: Metadata = { title: "Billing & support | NativeApply", description: "Cancel renewal, request a refund, or log in to NativeApply Pro. No password or Paddle login needed.", alternates: { canonical: "/subscription" } };
 export default function SubscriptionPage() {
  return <div className="mx-auto w-full max-w-4xl px-5 py-12 sm:px-6 sm:py-16">
   <h1 className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">Billing &amp; support</h1>
@@ -17,7 +17,7 @@ export default function SubscriptionPage() {
    <p className="mt-3 text-sm leading-6 text-muted">Already verified? Your options appear below. Opening the email link does not cancel anything or request a refund.</p>
    <BillingManager />
   </section>
-  <section className="mt-8 rounded-2xl border border-line p-6"><h2 className="text-lg font-semibold text-ink">Need your Pro access back?</h2><p className="mt-2 leading-7 text-muted">Use your purchase email to restore access on this device. You do not need to pay again.</p><ButtonLink href="/restore" variant="secondary" className="mt-4">Restore Pro access</ButtonLink></section>
+  <section className="mt-8 rounded-2xl border border-line p-6"><h2 className="text-lg font-semibold text-ink">Need Pro on this device?</h2><p className="mt-2 leading-7 text-muted">Log in with your purchase email. You do not need to pay again.</p><ButtonLink href="/login" variant="secondary" className="mt-4">Log in</ButtonLink></section>
   <details className="mt-8 border-t border-line pt-5"><summary className="cursor-pointer py-2 font-semibold text-ink">Payment help &amp; other options</summary><p className="mt-3 leading-7 text-muted">For a payment that needs review, an inaccessible purchase email, or a problem with these options, contact Paddle payment support. A support request is not a completed cancellation or approved refund until confirmed.</p><a href="https://paddle.net/contact" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center font-semibold underline">Paddle payment help</a><p className="mt-3 leading-7 text-muted">To update your payment method or download an invoice, use the Paddle customer portal linked in your receipt.</p></details>
   <p className="mt-6 text-sm leading-6 text-muted">Closing this site or clearing cookies does not stop renewal. Refund approval and processing are handled by Paddle. See the <Link href="/refunds" className="underline">refund policy</Link> for eligibility and your rights.</p>
  </div>;

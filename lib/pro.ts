@@ -1,20 +1,31 @@
 import { cookies } from "next/headers";
-import { PRO_COOKIE_NAME, readProSession, sessionSecret } from "./pro-cookie";
-import { isPro as isProInRedis } from "./redis";
+import { PRO_COOKIE_NAME, readProSessionDetails, sessionSecret } from "./pro-cookie";
+import { isPro as isProInRedis, signedOutAt } from "./redis";
 import { refreshMonthlyPro } from "./paddle";
 
+/** A session is live unless its address signed out everywhere after it was issued. */
+export async function sessionIsLive(session: { email: string; issuedAt: number }): Promise<boolean> {
+  const cutoff = await signedOutAt(session.email);
+  return cutoff === 0 || session.issuedAt > cutoff;
+}
+
 /**
- * Reads the Pro cookie (set after a successful Paddle checkout or manual
- * activation) and confirms the email is actually marked Pro in Redis.
+ * Reads the Pro cookie (set after a successful Paddle checkout or an email
+ * login) and confirms the email is actually marked Pro in Redis.
  * Never trust the cookie alone — Redis is the source of truth.
+ *
+ * `signedOut` means the cookie is genuine but was ended by "Sign out on all
+ * devices"; the caller should clear it.
  */
-export async function getProStatus(): Promise<{ pro: boolean; email: string | null; needsRestore?: boolean }> {
+export async function getProStatus(): Promise<{ pro: boolean; email: string | null; needsRestore?: boolean; signedOut?: boolean }> {
   const cookieStore = await cookies();
   const raw = cookieStore.get(PRO_COOKIE_NAME)?.value;
   if (!raw) return { pro: false, email: null };
-  const email = readProSession(raw, sessionSecret());
-  // Older unsigned email cookies must be re-verified using a Paddle receipt.
-  if (!email) return { pro: false, email: null, needsRestore: true };
+  const session = readProSessionDetails(raw, sessionSecret());
+  // Older unsigned email cookies must be re-verified by logging in again.
+  if (!session) return { pro: false, email: null, needsRestore: true };
+  if (!await sessionIsLive(session)) return { pro: false, email: null, signedOut: true };
+  const { email } = session;
 
   let pro = await isProInRedis(email);
   if (!pro) {

@@ -1,15 +1,8 @@
-import type { Metadata } from "next";
-import RestoreForm from "./RestoreForm";
-import { recoveryEmailReady } from "@/lib/recovery-email";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export const metadata: Metadata = {
-  title: "Restore Pro | NativeApply",
-  description: "Turn on NativeApply Pro in a new browser or device.",
-  robots: { index: false },
-};
-
-export default function RestorePage() {
-  return <RestoreForm emailEnabled={recoveryEmailReady()} />;
+// Logging in lives at /login. Older links and bookmarks, including receipt
+// links carrying ?txn=, still arrive here and are sent on.
+export default async function RestorePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const { txn } = await searchParams;
+  redirect(typeof txn === "string" && txn ? `/login?txn=${encodeURIComponent(txn)}` : "/login");
 }

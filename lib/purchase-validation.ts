@@ -1,6 +1,7 @@
 export type Adjustment = { action?: string; status?: string; type?: string; totals?: { total?: string } };
 export type Purchase = {
   id: string; status: string; customer_id?: string | null; subscription_id?: string | null;
+  created_at?: string | null; billed_at?: string | null;
   billing_period?: { starts_at?: string; ends_at?: string } | null;
   items?: { price?: { id?: string } | null; price_id?: string }[];
   adjustments?: Adjustment[] | null;

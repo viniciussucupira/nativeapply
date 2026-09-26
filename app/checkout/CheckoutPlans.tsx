@@ -133,7 +133,7 @@ export default function CheckoutPlans() {
     setCheckoutError("");
     const transactionId = event.data?.transaction_id;
     if (!transactionId) {
-      setCheckoutError("Payment completed, but we could not activate this browser. Use Restore Pro with your receipt. Do not pay again.");
+      setCheckoutError("Payment completed, but we could not activate this browser. Log in with your purchase email to switch Pro on. Do not pay again.");
       return;
     }
     setRestoreId(transactionId);
@@ -149,7 +149,7 @@ export default function CheckoutPlans() {
     if (!await activatePurchase(transactionId)) throw new Error("Activation pending");
     done();
     } catch {
-      setCheckoutError("Your payment completed, but activation could not be confirmed. Use Restore Pro below to retry. Do not pay again.");
+      setCheckoutError("Your payment completed, but activation could not be confirmed. Use Log in below to retry. Do not pay again.");
     } finally {
       confirmationInFlight.current = false;
       setConfirming(false);
@@ -209,14 +209,14 @@ export default function CheckoutPlans() {
                 {!accessReady ? "Checking access…" : accessUnavailable ? "Access check unavailable" : confirming ? "Activating Pro…" : paymentReceived ? "Payment completed" : checkoutOpen ? "Checkout open…" : paddleReady ? "Subscribe monthly" : checkoutError ? "Checkout unavailable" : "Loading checkout…"}
               </Button>
               <p className="mt-3 text-xs leading-5 text-muted">Renews monthly until canceled. Any applicable taxes and the final total are shown in secure checkout.</p>
-              <p className="mt-3 text-sm text-muted">Already subscribed? <Link href="/restore" className="font-semibold text-brand-700 underline underline-offset-4">Restore your access</Link> before buying again.</p>
+              <p className="mt-3 text-sm text-muted">Already subscribed? <Link href="/login" className="font-semibold text-brand-700 underline underline-offset-4">Log in</Link> before buying again.</p>
               </>}
               {accessUnavailable && <div role="alert" className="mt-4 text-sm leading-6 text-flag"><p>We could not check whether you already have Pro. Please retry before paying to avoid a duplicate purchase.</p><button type="button" onClick={refreshProStatus} className="min-h-11 font-semibold underline">Check my access again</button></div>}
               {checkoutError && (
                 <div role="alert" className="mt-4 text-sm leading-6 text-flag">
                   <p>{checkoutError}</p>
                   <Link href="/support" className="mt-2 inline-flex min-h-11 items-center font-semibold underline">Get help</Link>
-                  {paymentReceived && <Link href={restoreId ? `/restore?txn=${encodeURIComponent(restoreId)}` : "/restore"} className="mt-2 inline-flex min-h-11 items-center font-semibold underline">Restore Pro</Link>}
+                  {paymentReceived && <Link href={restoreId ? `/login?txn=${encodeURIComponent(restoreId)}` : "/login"} className="mt-2 inline-flex min-h-11 items-center font-semibold underline">Log in</Link>}
                 </div>
               )}
             </PlanColumn>
@@ -269,11 +269,11 @@ export default function CheckoutPlans() {
                 Already paid on another device?
               </h2>
               <p className="mt-2.5 text-[0.9375rem] leading-6 text-muted">
-                Pro is remembered in the browser you paid from. To switch it on somewhere else, request a secure
-                link using your purchase email — no password or new payment needed.
+                Pro is remembered in the browser you paid from. To use it somewhere else, log in with your
+                purchase email — no password or new payment needed.
               </p>
-              <ButtonLink href="/restore" variant="secondary" className="mt-5">
-                Restore Pro
+              <ButtonLink href="/login" variant="secondary" className="mt-5">
+                Log in
               </ButtonLink>
             </div>
           </div>

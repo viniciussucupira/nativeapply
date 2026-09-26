@@ -9,10 +9,14 @@ function signature(payload: string, secret: string) {
 }
 export function createBillingSession(email: string, secret: string, now = Date.now()) {
   if (!secret) throw new Error("Signing unavailable");
-  const payload = Buffer.from(JSON.stringify({ email: email.trim().toLowerCase(), expires: Math.floor(now / 1000) + BILLING_SESSION_SECONDS })).toString("base64url");
+  const payload = Buffer.from(JSON.stringify({ email: email.trim().toLowerCase(), expires: Math.floor(now / 1000) + BILLING_SESSION_SECONDS, iat: now })).toString("base64url");
   return `${payload}.${signature(payload, secret)}`;
 }
 export function readBillingSession(value: string, secret: string, now = Date.now()): string | null {
+  return readBillingSessionDetails(value, secret, now)?.email ?? null;
+}
+/** Issue time is derived from the expiry for sessions made before `iat` existed. */
+export function readBillingSessionDetails(value: string, secret: string, now = Date.now()): { email: string; issuedAt: number } | null {
   if (!secret || value.length > 2048) return null;
   const [payload, supplied, extra] = value.split(".");
   if (!payload || !supplied || extra !== undefined) return null;
@@ -20,7 +24,9 @@ export function readBillingSession(value: string, secret: string, now = Date.now
   if (a.length !== b.length || !timingSafeEqual(a, b)) return null;
   try {
     const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
-    return typeof data.email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email) && typeof data.expires === "number" && data.expires > Math.floor(now / 1000) ? data.email : null;
+    if (typeof data.email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email) || typeof data.expires !== "number" || data.expires <= Math.floor(now / 1000)) return null;
+    const issuedAt = typeof data.iat === "number" && Number.isFinite(data.iat) && data.iat > 0 ? data.iat : (data.expires - BILLING_SESSION_SECONDS) * 1000;
+    return { email: data.email, issuedAt };
   } catch { return null; }
 }
 

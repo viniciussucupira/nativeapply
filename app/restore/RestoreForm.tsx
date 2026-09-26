@@ -27,9 +27,9 @@ const STEPS = [
 ];
 
 const EMAIL_STEPS = [
-  { title: "Enter your purchase email", body: "Use the same email you entered at checkout. No password or receipt code is needed." },
-  { title: "Open your access email", body: "Check your inbox and spam folder. The link expires in 15 minutes and works once." },
-  { title: "Tap Access my Pro", body: "Open the link on the device you want to use. We verify your active purchase and reconnect Pro without another charge." },
+  { title: "Enter your purchase email", body: "Use the same email you entered at checkout. There is no password to remember." },
+  { title: "Open your login email", body: "Check your inbox and spam folder. The link expires in 15 minutes and works once." },
+  { title: "Tap Log in", body: "Open the link on the device you want to use. We check your purchase and switch Pro on, with no new charge." },
 ];
 
 function ReceiptIllustration() {
@@ -64,15 +64,22 @@ function ReceiptIllustration() {
   );
 }
 
-export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: boolean }) {
+const NOTICES: Record<string, string> = {
+  "signed-out": "You are signed out of this browser.",
+  "signed-out-everywhere": "You are signed out on every device. Log in again wherever you want to use Pro.",
+};
+
+export default function LoginForm({ emailEnabled = false, notice = "" }: { emailEnabled?: boolean; notice?: string }) {
   const [transactionId, setTransactionId] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [fieldError, setFieldError] = useState("");
   const [serviceUnavailable, setServiceUnavailable] = useState(false);
+  const [loginRequired, setLoginRequired] = useState(false);
 
   async function restore(id: string) {
     setStatus("working");
     setServiceUnavailable(false);
+    setLoginRequired(false);
     try {
       const res = await fetch("/api/paddle/confirm", {
         method: "POST",
@@ -81,6 +88,7 @@ export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: b
         signal: AbortSignal.timeout(30000),
       });
       setServiceUnavailable(res.status >= 500 || res.status === 429 || res.status === 409);
+      setLoginRequired(res.status === 403 && (await res.clone().json().catch(() => null))?.error === "login_required");
       if (res.ok) refreshProStatus();
       setStatus(res.ok ? "done" : "failed");
     } catch {
@@ -119,8 +127,8 @@ export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: b
     restore(normalized);
   }
 
-  const mailto = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Restore NativeApply Pro")}&body=${encodeURIComponent(
-    "Hi, please send me a link to restore NativeApply Pro. I'm writing from the email I used to pay."
+  const mailto = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Log in to NativeApply Pro")}&body=${encodeURIComponent(
+    "Hi, I cannot log in to NativeApply Pro. I'm writing from the email I used to pay."
   )}`;
 
   return (
@@ -129,14 +137,21 @@ export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: b
         <Container size="wide" className="py-14 sm:py-20">
           <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
             <div className="flex flex-col gap-5">
-              <Eyebrow>Restore Pro access</Eyebrow>
+              <Eyebrow>Log in</Eyebrow>
               <h1 className="text-[2rem] font-semibold leading-[1.1] tracking-[-0.03em] text-navy sm:text-[2.5rem]">
-                Already paid? <span className="na-accent-text">Get your Pro access back.</span>
+                Log in to <span className="na-accent-text">NativeApply Pro.</span>
               </h1>
               <p className="max-w-xl text-[1.0625rem] leading-7 text-muted">
-                NativeApply has no login or password. Pro is remembered in the browser you paid from.
-                Use this page after switching devices or clearing cookies to reconnect your existing purchase, without another charge.
+                {emailEnabled
+                  ? "There is no password. Enter the email you used to pay and we will send you a one-time login link. Use it on a new device, after clearing cookies, or whenever Pro is not showing. Logging in never charges you."
+                  : "There is no password. Pro is remembered in the browser you paid from. Use this page after switching devices or clearing cookies to reconnect your existing purchase, without another charge."}
               </p>
+              {NOTICES[notice] && (
+                <p role="status" className="flex items-center gap-2 rounded-2xl border border-success/25 bg-success-50 p-4 text-[0.9375rem] font-medium text-navy">
+                  <IconCheck className="h-4 w-4 shrink-0 text-success" />
+                  {NOTICES[notice]}
+                </p>
+              )}
 
               {emailEnabled && status !== "done" && <EmailRequest />}
               <Link href="#receipt-help" className="inline-flex min-h-11 items-center font-semibold text-brand-700 underline underline-offset-4">{emailEnabled ? "Need more help?" : "No purchase code? Get recovery help"}</Link>
@@ -157,7 +172,7 @@ export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: b
               ) : (
                 <form onSubmit={handleSubmit} className="mt-2 flex flex-col gap-3">
                   <label htmlFor="txn" className="text-sm font-semibold text-navy">
-                    {emailEnabled ? "Or use a purchase code or restore link" : "Purchase code or restore link"}
+                    {emailEnabled ? "Just paid? Use the purchase code from your receipt" : "Purchase code or restore link"}
                   </label>
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <input
@@ -173,11 +188,12 @@ export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: b
                       className="h-12 w-full rounded-full border border-line-strong bg-white px-5 font-mono text-[0.9375rem] text-ink placeholder:font-sans placeholder:text-muted-soft focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15 sm:flex-1"
                     />
                     <Button type="submit" size="lg" disabled={status === "working"} className="sm:w-auto">
-                      {status === "working" ? "Checking…" : "Restore Pro access"}
+                      {status === "working" ? "Checking…" : emailEnabled ? "Use purchase code" : "Log in with code"}
                     </Button>
                   </div>
                   <p id="txn-help" className="text-[0.8125rem] text-muted">
-                    The purchase code is called a transaction ID and begins with <code className="rounded bg-ivory px-1 py-0.5 font-mono">txn_</code>. You can also paste a restore link sent by support.
+                    The purchase code is called a transaction ID and begins with <code className="rounded bg-ivory px-1 py-0.5 font-mono">txn_</code>.{" "}
+                    {emailEnabled ? "It logs you in for 24 hours after payment. After that, use your email above." : "You can also paste a restore link sent by support."}
                   </p>
 
                   {fieldError && (
@@ -191,10 +207,10 @@ export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: b
                     <div role="alert" className="rounded-2xl border border-flag/25 bg-flag-50 p-4">
                       <p className="flex items-center gap-2 text-[0.9375rem] font-semibold text-navy">
                         <IconAlert className="h-4 w-4 text-flag" />
-                        {serviceUnavailable ? "We could not check your purchase right now" : "We could not find an active purchase with that ID"}
+                        {serviceUnavailable ? "We could not check your purchase right now" : loginRequired ? "Log in with your email instead" : "We could not find an active purchase with that ID"}
                       </p>
                       <p className="mt-1.5 text-[0.875rem] leading-6 text-muted">
-                        {serviceUnavailable ? "Please try again shortly. This does not mean your subscription has ended. You do not need to pay again." : "Check the full code from your receipt. If it still does not work, contact support from your purchase email. You do not need to pay again."}
+                        {serviceUnavailable ? "Please try again shortly. This does not mean your subscription has ended. You do not need to pay again." : loginRequired ? "Purchase codes work for 24 hours after payment. Enter the email you used to pay above and we will send you a login link. Your purchase is safe and you do not need to pay again." : "Check the full code from your receipt. If it still does not work, contact support from your purchase email. You do not need to pay again."}
                       </p>
                       <a
                         href={mailto}
@@ -209,8 +225,8 @@ export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: b
 
               <p className="flex items-start gap-2 text-[0.8125rem] leading-5 text-muted">
                 <IconLock className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-                Keep your transaction ID and restore link private: they unlock your subscription.
-                Restoring access does not charge you again or reveal your card details.
+                {emailEnabled ? "Keep your login links and receipts private." : "Keep your transaction ID and restore link private: they unlock your subscription."}{" "}
+                Logging in does not charge you again or reveal your card details.
               </p>
               <p className="text-sm leading-6 text-muted">This does not renew or cancel your subscription. To stop future payments, <Link href="/subscription#cancel" className="font-semibold text-brand-700 underline">see how to cancel</Link>.</p>
               {status !== "done" && !emailEnabled && (
@@ -247,9 +263,9 @@ export default function RestoreForm({ emailEnabled = false }: { emailEnabled?: b
       <Section tone="ivory" id="receipt-help" className="scroll-mt-24">
         <Container size="wide" className="py-12 sm:py-14">
           <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 text-center">
-            <h2 className="text-[1.0625rem] font-semibold text-navy">{emailEnabled ? "Still need help accessing Pro?" : "Recover access without a purchase code"}</h2>
+            <h2 className="text-[1.0625rem] font-semibold text-navy">{emailEnabled ? "Cannot log in?" : "Recover access without a purchase code"}</h2>
             <p className="text-[0.9375rem] leading-6 text-muted">
-              Email us from the address you used to pay. Our support team will verify the purchase and help restore access. This is a manual support request, not an automatic sign-in email. Do not buy again to recover a purchase. Have not bought Pro yet? The{" "}
+              Email us from the address you used to pay, or tell us if you no longer have access to it. Our support team will verify the purchase and help you log in. This is a manual support request, not an automatic login email. Do not buy again to recover a purchase. Have not bought Pro yet? The{" "}
               <Link href="/checkout" className="font-medium text-brand-700 underline underline-offset-4">
                 Pro pricing is here
               </Link>

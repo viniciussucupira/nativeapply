@@ -1,14 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { BILLING_COOKIE, readBillingSession, listBillingSubscriptions, cancelBillingSubscription } from "@/lib/billing";
+import { BILLING_COOKIE, readBillingSessionDetails, listBillingSubscriptions, cancelBillingSubscription } from "@/lib/billing";
 import { sessionSecret } from "@/lib/pro-cookie";
+import { sessionIsLive } from "@/lib/pro";
 import { allowRecoveryAttempt, revokeMonthlyForSubscription, capMonthlyForSubscription } from "@/lib/redis";
 import { RECOVERY_ORIGIN } from "@/lib/recovery";
 
 const reply = (body: object, status = 200) => NextResponse.json(body, { status, headers: { "Cache-Control": "no-store" } });
-function identity(req: NextRequest) { return readBillingSession(req.cookies.get(BILLING_COOKIE)?.value || "", sessionSecret()); }
+// A billing session ended by "Sign out on all devices" is refused like an expired one.
+async function identity(req: NextRequest) {
+  const session = readBillingSessionDetails(req.cookies.get(BILLING_COOKIE)?.value || "", sessionSecret());
+  return session && await sessionIsLive(session) ? session.email : null;
+}
 export async function GET(req: NextRequest) {
   try {
-    const email = identity(req);
+    const email = await identity(req);
     if (!email) return reply({ error: "verify_email" }, 401);
     if (!await allowRecoveryAttempt("billing-read", email, 60)) return reply({ error: "too_many_requests" }, 429);
     return reply({ subscriptions: await listBillingSubscriptions(email, process.env.NEXT_PUBLIC_PADDLE_PRICE_ID || "") });
@@ -17,7 +22,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   if (req.headers.get("origin") !== (process.env.NODE_ENV === "production" ? RECOVERY_ORIGIN : req.nextUrl.origin)) return reply({ error: "invalid_origin" }, 403);
   try {
-    const email = identity(req);
+    const email = await identity(req);
     if (!email) return reply({ error: "verify_email" }, 401);
     let body;
     try { body = await req.json(); } catch { return reply({ error: "invalid_request" }, 400); }

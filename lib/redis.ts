@@ -77,6 +77,24 @@ export const billingRecoveryStore: RecoveryStore = {
   async remove(hash) { await recoveryClient().del(`na:billing:token:${hash}`); },
 };
 
+// "Sign out on all devices": one timestamp per address. Every Pro or billing
+// session issued at or before it is refused. Keyed by a hash, so the store
+// holds no address in the clear. It outlives the longest session (one year)
+// and then expires on its own, since nothing older can still be valid.
+const SIGNOUT_TTL_SECONDS = 400 * DAY_SECONDS;
+const signoutKey = (email: string) => `na:signout:${recoveryHash(`nativeapply:signout:${email.trim().toLowerCase()}`)}`;
+
+/** Milliseconds of the last "sign out everywhere", or 0. Throws if the store cannot answer. */
+export async function signedOutAt(email: string): Promise<number> {
+  const value = await recoveryClient().get<number | string>(signoutKey(email));
+  const n = typeof value === "number" ? value : Number(value);
+  return value !== null && value !== undefined && Number.isFinite(n) && n > 0 ? n : 0;
+}
+
+export async function signOutEverywhere(email: string, now = Date.now()): Promise<void> {
+  await recoveryClient().set(signoutKey(email), now, { ex: SIGNOUT_TTL_SECONDS });
+}
+
 /** Atomic counter + expiry; no raw email/IP in rate-limit keys. Fail closed. */
 export async function allowRecoveryAttempt(scope: string, identity: string, limit: number, seconds = 3600): Promise<boolean> {
   const count = await recoveryClient().eval<[number], number>(

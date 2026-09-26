@@ -3,8 +3,18 @@ import { PRO_COOKIE_NAME, PRO_COOKIE_MAX_AGE_SECONDS, createProSession, sessionS
 import { fetchTransaction, grantProForTransaction } from "@/lib/paddle";
 import { allowRecoveryAttempt } from "@/lib/redis";
 import { RECOVERY_ORIGIN } from "@/lib/recovery";
+import { recoveryEmailReady } from "@/lib/recovery-email";
 
-// Called right after Paddle's checkout.completed event, and by the /restore
+// A purchase code (txn_…) is printed on every receipt, and a receipt is
+// forwarded, archived and searchable for years. So it logs a browser in only
+// while the purchase is fresh — long enough to finish a checkout, retry after
+// a dropped connection, or open the receipt on a phone the same day. After
+// that, logging in is by a one-time link sent to the purchase email, which
+// proves the inbox rather than possession of an old receipt. Without email
+// login configured there is no other way in, so the code keeps working.
+const RECENT_PURCHASE_MS = 24 * 60 * 60 * 1000;
+
+// Called right after Paddle's checkout.completed event, and by the /login
 // page. The transaction is always verified with Paddle's API, it must contain
 // a NativeApply price, and the email always comes from Paddle — never from
 // the client. The webhook stays an independent second source of truth.
@@ -32,6 +42,13 @@ export async function POST(req: NextRequest) {
   }
   if (tx.status === "paid") {
     return NextResponse.json({ error: "activation_pending", message: "Your payment is still being processed. Please retry shortly; do not pay again." }, { status: 409 });
+  }
+
+  if (recoveryEmailReady()) {
+    const paidAt = Date.parse(tx.billed_at || tx.created_at || "");
+    if (!Number.isFinite(paidAt) || Date.now() - paidAt > RECENT_PURCHASE_MS) {
+      return NextResponse.json({ error: "login_required", message: "Purchase codes work for 24 hours after payment. Log in with the email you used to pay." }, { status: 403, headers: { "Cache-Control": "private, no-store" } });
+    }
   }
 
   const email = await grantProForTransaction(tx);

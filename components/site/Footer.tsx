@@ -22,7 +22,7 @@ const WRITING = [
 const DOCUMENTS = [WRITING[0], WRITING[2], WRITING[4], WRITING[6], WRITING[7], WRITING[8]];
 const MESSAGES = [WRITING[1], WRITING[3], WRITING[5]];
 const HELP = [
-  ["/restore", "Restore Pro access"],
+  ["/login", "Log in"],
   ["/subscription", "Access & billing"],
   ["/subscription#cancel", "Cancel subscription"],
   ["/subscription#refund", "Request a refund"],

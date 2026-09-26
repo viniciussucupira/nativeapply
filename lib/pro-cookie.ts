@@ -16,11 +16,24 @@ function signature(payload: string, secret: string): string {
 
 export function createProSession(email: string, secret: string, now = Date.now()): string {
   if (!secret) throw new Error("Session secret required");
-  const payload = Buffer.from(JSON.stringify({ email: email.trim().toLowerCase(), expires: Math.floor(now / 1000) + PRO_COOKIE_MAX_AGE_SECONDS })).toString("base64url");
+  // `iat` (milliseconds) lets "Sign out on all devices" end every session
+  // issued before it without keeping a list of sessions.
+  const payload = Buffer.from(JSON.stringify({ email: email.trim().toLowerCase(), expires: Math.floor(now / 1000) + PRO_COOKIE_MAX_AGE_SECONDS, iat: now })).toString("base64url");
   return `${payload}.${signature(payload, secret)}`;
 }
 
+export type ProSession = { email: string; issuedAt: number };
+
 export function readProSession(value: string, secret: string, now = Date.now()): string | null {
+  return readProSessionDetails(value, secret, now)?.email ?? null;
+}
+
+/**
+ * The signed session with the moment it was issued. Sessions made before
+ * `iat` existed carry only their expiry, which was always issue time plus
+ * one year, so their issue time is derived from it and they keep working.
+ */
+export function readProSessionDetails(value: string, secret: string, now = Date.now()): ProSession | null {
   if (!secret || value.length > 2048) return null;
   const parts = value.split(".");
   if (parts.length !== 2) return null;
@@ -30,8 +43,12 @@ export function readProSession(value: string, secret: string, now = Date.now()):
   if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) return null;
   try {
     const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
-    return typeof data?.email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email) &&
-      typeof data.expires === "number" && data.expires > Math.floor(now / 1000) ? data.email : null;
+    if (typeof data?.email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email) ||
+      typeof data.expires !== "number" || data.expires <= Math.floor(now / 1000)) return null;
+    const issuedAt = typeof data.iat === "number" && Number.isFinite(data.iat) && data.iat > 0
+      ? data.iat
+      : (data.expires - PRO_COOKIE_MAX_AGE_SECONDS) * 1000;
+    return { email: data.email, issuedAt };
   } catch {
     return null;
   }

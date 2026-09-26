@@ -20,7 +20,7 @@ const products = [
 export default function MoreFromUs() {
   const pathname = usePathname() || "/";
   // Keep purchase, account, recovery, and customer-facing flows focused.
-  if (/^\/(checkout|subscription|restore|access|activate|signin|sign-in|welcome|join|team|studio|dashboard|start|thanks|success|recover|f|s|wall|embed|add|save)(\/|$)/.test(pathname) || pathname === "/products") return null;
+  if (/^\/(checkout|subscription|login|restore|access|activate|signin|sign-in|welcome|join|team|studio|dashboard|start|thanks|success|recover|f|s|wall|embed|add|save)(\/|$)/.test(pathname) || pathname === "/products") return null;
 
   return (
     <nav aria-label="More from us" className="mt-10 border-t border-line pt-7">

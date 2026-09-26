@@ -15,7 +15,7 @@ export default function SupportPage() {
     <p className="mt-4 leading-7 text-muted">Manage your purchase below, or email us if something is not working.</p>
     <div className="mt-8 grid gap-4 sm:grid-cols-2">
       {[
-        { title: "Access your Pro", text: "Use your purchase email to receive a secure access link. No password needed.", href: "/restore", label: "Recover Pro access" },
+        { title: "Log in", text: "Use your purchase email to receive a one-time login link. No password needed.", href: "/login", label: "Log in" },
         { title: "Stop your subscription", text: "Verify your purchase email and confirm cancellation. This stops future renewals.", href: "/subscription#cancel", label: "Cancel subscription" },
         { title: "Payments and receipts", text: "Find help with billing, payment details and a subscription you already have.", href: "/subscription", label: "Access & billing" },
         { title: "Request a refund", text: "Verify your purchase email and request an eligible payment refund directly. No support message needed.", href: "/subscription#refund", label: "Request a refund" },
