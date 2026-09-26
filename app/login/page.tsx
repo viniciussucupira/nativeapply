@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import LoginForm from "@/app/restore/RestoreForm";
 import SignedInPanel from "./SignedInPanel";
+import LogoutToast from "./LogoutToast";
 import { getProStatus } from "@/lib/pro";
 import { recoveryEmailReady } from "@/lib/recovery-email";
 
@@ -22,5 +23,10 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
     // If the session cannot be checked, offering the login form is the safe answer.
   }
   if (session) return <SignedInPanel email={session.email} pro={session.pro} />;
-  return <LoginForm emailEnabled={recoveryEmailReady()} notice={typeof notice === "string" ? notice : ""} />;
+  return (
+    <>
+      <LogoutToast notice={typeof notice === "string" ? notice : ""} />
+      <LoginForm emailEnabled={recoveryEmailReady()} />
+    </>
+  );
 }

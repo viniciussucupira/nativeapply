@@ -8,6 +8,7 @@ import "@fontsource-variable/inter/wght.css";
 import "./globals.css";
 import Header from "@/components/site/Header";
 import Footer from "@/components/site/Footer";
+import { Toaster } from "@/components/ui/Toast";
 import { Analytics } from "@vercel/analytics/next";
 
 const SITE_URL = "https://www.nativeapply.net";
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <Footer />
+        <Toaster />
         <Analytics />
       </body>
     </html>

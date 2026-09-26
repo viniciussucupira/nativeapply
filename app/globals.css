@@ -501,3 +501,90 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
   .na-editorial-note { font-size: .95rem; }
   .na-finale { margin: 16px 10px; border-radius: 23px; }
 }
+
+/* ------------------------------------------------------------------
+   Confirmation toast — see components/ui/Toast.tsx. Brand blue with
+   white text; above the sticky header and mobile action bar, below the
+   skip link. Motion is driven from the component (Web Animations).
+------------------------------------------------------------------- */
+.na-toast-viewport {
+  position: fixed;
+  z-index: 55;
+  left: 16px;
+  right: 16px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.na-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 420px;
+  padding: 12px 12px 12px 14px;
+  border-radius: 14px;
+  background: var(--color-brand);
+  color: #fff;
+  box-shadow: 0 16px 36px -12px rgba(36, 91, 199, 0.55), 0 2px 6px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 16px 36px -12px color-mix(in srgb, var(--color-brand) 55%, transparent), 0 2px 6px rgba(15, 23, 42, 0.12);
+}
+.na-toast[data-open="false"] {
+  opacity: 0;
+  pointer-events: none;
+}
+.na-toast[data-open="true"] {
+  pointer-events: auto;
+}
+.na-toast-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.18);
+}
+.na-toast-message {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  overflow-wrap: anywhere;
+}
+.na-toast-close {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.na-toast-close:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+.na-toast-close:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+@media (min-width: 640px) {
+  .na-toast-viewport {
+    left: auto;
+    right: 24px;
+    bottom: 24px;
+    justify-content: flex-end;
+  }
+  .na-toast {
+    width: auto;
+  }
+}

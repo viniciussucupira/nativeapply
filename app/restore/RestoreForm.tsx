@@ -64,12 +64,7 @@ function ReceiptIllustration() {
   );
 }
 
-const NOTICES: Record<string, string> = {
-  "signed-out": "You are logged out of this browser.",
-  "signed-out-everywhere": "You are logged out of every device. Log in again wherever you want to use Pro.",
-};
-
-export default function LoginForm({ emailEnabled = false, notice = "" }: { emailEnabled?: boolean; notice?: string }) {
+export default function LoginForm({ emailEnabled = false }: { emailEnabled?: boolean }) {
   const [transactionId, setTransactionId] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [fieldError, setFieldError] = useState("");
@@ -146,12 +141,6 @@ export default function LoginForm({ emailEnabled = false, notice = "" }: { email
                   ? "There is no password. Enter the email you used to pay and we will send you a one-time login link. Use it on a new device, after clearing cookies, or whenever Pro is not showing. Logging in never charges you."
                   : "There is no password. Pro is remembered in the browser you paid from. Use this page after switching devices or clearing cookies to reconnect your existing purchase, without another charge."}
               </p>
-              {NOTICES[notice] && (
-                <p role="status" className="flex items-center gap-2 rounded-2xl border border-success/25 bg-success-50 p-4 text-[0.9375rem] font-medium text-navy">
-                  <IconCheck className="h-4 w-4 shrink-0 text-success" />
-                  {NOTICES[notice]}
-                </p>
-              )}
 
               {emailEnabled && status !== "done" && <EmailRequest />}
               <Link href="#receipt-help" className="inline-flex min-h-11 items-center font-semibold text-brand-700 underline underline-offset-4">{emailEnabled ? "Need more help?" : "No purchase code? Get recovery help"}</Link>
