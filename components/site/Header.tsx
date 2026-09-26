@@ -48,6 +48,9 @@ export default function Header() {
           ? "border-line bg-white/85 backdrop-blur-md supports-[backdrop-filter]:bg-white/75"
           : "border-transparent bg-white")
       }
+      // A backdrop-filter makes the header the containing block of the fixed
+      // mobile menu and would clip it to the bar; drop it while the menu is open.
+      style={open ? { backdropFilter: "none", WebkitBackdropFilter: "none" } : undefined}
     >
       <Container size="wide">
         <div className="flex h-16 items-center justify-between gap-4 sm:h-[4.5rem]">
@@ -66,20 +69,17 @@ export default function Header() {
           </nav>
 
           <div className="hidden items-center gap-2.5 xl:flex">
-            <Link href="/subscription" className="rounded-full px-3 py-2 text-sm font-medium text-muted hover:text-navy">Billing & support</Link>
             {isPro ? (
               <Link href="/login" aria-label="Pro active. Your account" className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-success/25 bg-success-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-success hover:border-success/50">
                 <IconCheck className="h-3.5 w-3.5" />
                 Pro active
               </Link>
             ) : (
-              <>
-                <Link href="/login" className="rounded-full px-3 py-2 text-sm font-medium text-muted hover:text-navy">Log in</Link>
-                <ButtonLink href="/#tool" variant="primary">
-                  Start writing
-                </ButtonLink>
-              </>
+              <Link href="/login" className="rounded-full px-3 py-2 text-sm font-medium text-muted hover:text-navy">Log in</Link>
             )}
+            <ButtonLink href="/#tool" variant="primary">
+              Start writing
+            </ButtonLink>
           </div>
 
           <button
@@ -124,39 +124,36 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              href="/subscription"
-              onClick={() => setOpen(false)}
-              className="flex min-h-[3.25rem] items-center rounded-xl px-3 text-lg font-medium text-navy hover:bg-brand-50"
-            >
-              Billing & support
-            </Link>
-            <Link
-              href="/login"
-              onClick={() => setOpen(false)}
-              className="flex min-h-[3.25rem] items-center rounded-xl px-3 text-lg font-medium text-navy hover:bg-brand-50"
-            >
-              {isPro ? "Your account" : "Log in"}
-            </Link>
           </nav>
 
           <div className="border-t border-line px-5 py-5">
-            {isPro ? (
-              <p className="flex items-center justify-center gap-2 text-sm font-semibold text-success">
-                <IconCheck className="h-4 w-4" /> Pro active on this browser
+            <div onClick={() => setOpen(false)}>
+              <ButtonLink href="/#tool" size="lg" className="w-full" variant="primary">
+                Start writing
+              </ButtonLink>
+            </div>
+            {!isPro && (
+              <p className="mt-2 text-center text-[0.8125rem] text-muted">
+                1 free rewrite a day. No password required.
               </p>
-            ) : (
-              <>
-                <div onClick={() => setOpen(false)}>
-                  <ButtonLink href="/#tool" size="lg" className="w-full" variant="primary">
-                    Start writing
-                  </ButtonLink>
-                </div>
-                <p className="mt-3 text-center text-[0.8125rem] text-muted">
-                  1 free rewrite a day. No password required.
-                </p>
-              </>
             )}
+            <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              aria-label={isPro ? "Pro active. Your account" : undefined}
+              className={
+                "mt-2 flex min-h-[3.25rem] items-center justify-center gap-2 rounded-xl px-3 text-lg font-medium hover:bg-brand-50 " +
+                (isPro ? "text-success" : "text-navy")
+              }
+            >
+              {isPro ? (
+                <>
+                  <IconCheck className="h-4 w-4" /> Pro active · Your account
+                </>
+              ) : (
+                "Log in"
+              )}
+            </Link>
           </div>
         </div>
       )}
