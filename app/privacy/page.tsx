@@ -105,7 +105,9 @@ const sections: LegalSection[] = [
     heading: "6. Providers and international processing",
     body: (
       <>
-        <p>Vercel hosts NativeApply and processes technical request information. Upstash stores access,
+        <p>Vercel hosts NativeApply and processes technical request information, including, when a login link
+          is asked for, a check that a person&apos;s browser sent the request rather than a program, made by
+          reading the browser&apos;s answer to a small challenge. Upstash stores access,
           subscription, security, and usage records. Anthropic generates rewrites, Resend delivers access
           emails, and Paddle handles purchases. Support messages are processed to respond to your request.
           Hosting and delivery providers may retain operational logs under their own policies, separately

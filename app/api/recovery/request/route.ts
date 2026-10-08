@@ -3,6 +3,7 @@ import { issueRecovery, normalizeRecoveryEmail, RECOVERY_ORIGIN } from "@/lib/re
 import { recoveryEmailReady, sendRecoveryEmail } from "@/lib/recovery-email";
 import { allowRecoveryAttempt, recoveryStore, billingRecoveryStore } from "@/lib/redis";
 import { sessionSecret } from "@/lib/pro-cookie";
+import { isAutomated } from "@/lib/bot-check";
 
 export async function POST(req: NextRequest) {
   const reply = (body: object, status = 200) => NextResponse.json(body, { status, headers: { "Cache-Control": "no-store" } });
@@ -16,6 +17,12 @@ export async function POST(req: NextRequest) {
     sessionSecret();
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
     if (!await allowRecoveryAttempt("request-ip", ip, 10) || !await allowRecoveryAttempt("request-email", email, 3) || !await allowRecoveryAttempt("request-global", "all", 100)) return reply({ error: "too_many_requests" }, 429);
+    // A program asking on a stranger's behalf is refused, whatever the
+    // address: the answer depends on the browser alone (lib/bot-check.ts).
+    if (await isAutomated()) {
+      console.warn("login refused: the browser could not be confirmed");
+      return reply({ error: "unconfirmed" }, 403);
+    }
     // Same delivery and response regardless of purchase status; no account enumeration.
     await issueRecovery(email, purpose === "billing" ? billingRecoveryStore : recoveryStore, (to, url) => sendRecoveryEmail(to, url, purpose), purpose);
     return reply({ ok: true });

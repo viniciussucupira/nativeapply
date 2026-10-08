@@ -5,21 +5,23 @@ import Link from "next/link";
 import { Button, ButtonLink } from "@/components/ui/Primitives";
 import { refreshProStatus } from "@/components/ui/useProStatus";
 import { recoveryVerificationStatus } from "@/lib/recovery-response";
+import { checkedFetch, startChallenge } from "@/lib/bot-challenge";
 
 export function EmailRequest({ purpose = "pro" }: { purpose?: "pro" | "billing" }) {
   const billing = purpose === "billing";
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
+  useEffect(startChallenge, []);
   async function submit(event: FormEvent) {
     event.preventDefault();
     setStatus("working");
     setMessage("");
     try {
-      const response = await fetch("/api/recovery/request", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, purpose }), signal: AbortSignal.timeout(20000) });
+      const response = await checkedFetch("/api/recovery/request", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, purpose }), signal: AbortSignal.timeout(20000) });
       if (!response.ok) {
         setStatus("error");
-        setMessage(response.status === 400 ? "Enter a valid email address, including the full domain, such as name@example.com." : response.status === 429 ? "Too many requests. Please wait an hour before trying again, or contact support." : "We could not send the email right now. Try again shortly or contact support.");
+        setMessage(response.status === 400 ? "Enter a valid email address, including the full domain, such as name@example.com." : response.status === 429 ? "Too many requests. Please wait an hour before trying again, or contact support." : response.status === 403 ? "We could not confirm this browser, so nothing was sent. Reload the page and try again, or contact support." : "We could not send the email right now. Try again shortly or contact support.");
         return;
       }
       setStatus("sent");

@@ -1,3 +1,4 @@
+import { withBotId } from "botid/next/config";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -13,4 +14,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// withBotId adds the two addresses the login form's challenge is fetched
+// from, on this site's own name (lib/bot-check.ts), and nothing else.
+export default withBotId(nextConfig);
