@@ -73,7 +73,7 @@ export default function Footer() {
         </div>
         <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs leading-6 text-muted">Payments processed by Paddle, our merchant of record.</p>
-
+          <a href="https://turbo0.com/item/nativeapply" target="_blank" rel="noopener noreferrer" className="text-xs text-muted underline underline-offset-4">Listed on Turbo0 ↗</a>
         </div>
       </div>
     </div>
