@@ -3,18 +3,10 @@
 import { usePathname } from "next/navigation";
 
 const products = [
-  [
-    "Retone",
-    "https://retoneai.net/",
-    "Polish everyday work emails and messages."
-  ],
-  [
-    "NativeReply",
-    "https://nativereply.net/",
-    "Help your team write clear customer replies."
-  ],
-  ["Nimbus Labs","https://nimbuslabsai.com/","Create a store for digital products and services."],
-  ["Kudobox","https://getkudobox.com/","Collect and display customer testimonials."]
+  ["Fluentsmith","https://www.fluentsmith.com/","Polish everyday work emails and messages."],
+  ["Tactword","https://tactword.com/","Help your team write clear customer replies."],
+  ["Marktmorgen","https://marktmorgen.com/","Sell digital products, courses, and calls from one store."],
+  ["Hazelsong","https://hazelsong.com/","Collect and display customer testimonials."]
 ];
 
 export default function MoreFromUs() {
@@ -32,7 +24,7 @@ export default function MoreFromUs() {
         {products.map(([name, href, description]) => (
           <li key={href}>
             <a href={href} className="block h-full rounded-lg border border-line bg-white p-4 text-[0.8125rem] leading-relaxed transition-colors hover:border-brand/40 hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-offset-4">
-              <span className="family-product-heading"><span aria-hidden="true" className="family-product-mark" data-product={name}>{name === "NativeApply" ? "NA" : name === "NativeReply" ? "NR" : name === "Nimbus Labs" ? "N" : name === "Kudobox" ? "K" : "R"}</span><span>{name}</span><span aria-hidden="true" className="family-product-arrow">↗</span></span>
+              <span className="family-product-heading"><span aria-hidden="true" className="family-product-mark" data-product={name}>{name === "NativeApply" ? "NA" : name === "Tactword" ? "T" : name === "Marktmorgen" ? "M" : name === "Hazelsong" ? "H" : "F"}</span><span>{name}</span><span aria-hidden="true" className="family-product-arrow">↗</span></span>
               <span className="mt-1.5 block text-muted">{description}</span>
             </a>
           </li>

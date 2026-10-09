@@ -428,10 +428,10 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .family-footer nav[aria-label="More from us"] li > a:hover { border-color: var(--footer-accent); box-shadow: 0 10px 24px -16px #1e294c60; transform: translateY(-3px); }
 .family-product-heading { display: flex; align-items: center; gap: 10px; color: #233149; font-weight: 650; margin-bottom: 12px; }
 .family-product-mark { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; flex-shrink: 0; border-radius: 9px; background: #edf1fa; color: #295ec5; font-size: 10px; letter-spacing: -.025em; }
-.family-product-mark[data-product="Retone"] { background: #f0ebff; color: #7250d4; }
-.family-product-mark[data-product="NativeReply"] { background: #e6f5f1; color: #167660; }
-.family-product-mark[data-product="Nimbus Labs"] { background: #eef0f6; color: #465370; }
-.family-product-mark[data-product="Kudobox"] { background: #fff1e5; color: #a65c22; }
+.family-product-mark[data-product="Fluentsmith"] { background: #f0ebff; color: #7250d4; }
+.family-product-mark[data-product="Tactword"] { background: #e6f5f1; color: #167660; }
+.family-product-mark[data-product="Marktmorgen"] { background: #eef0f6; color: #465370; }
+.family-product-mark[data-product="Hazelsong"] { background: #fff1e5; color: #a65c22; }
 .family-product-arrow { margin-left: auto; color: #748095; font-size: 16px; }
 @media(min-width: 1024px) { .family-footer-grid nav li > a { min-height: 38px; } }
 @media(max-width: 1023px) { .family-footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
