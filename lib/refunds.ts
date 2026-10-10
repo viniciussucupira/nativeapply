@@ -37,7 +37,7 @@ function paidAt(tx: Transaction): number {
 function containsNative(tx: Transaction, price: string) { return tx.items?.some(i => (i.price?.id || i.price_id) === price); }
 function nativeOnly(tx: Transaction, price: string) { return Boolean(tx.items?.length && tx.items.every(i => (i.price?.id || i.price_id) === price)); }
 
-/** Find the latest paid NativeApply purchase across all Paddle customers for the verified email. */
+/** Find the latest paid Hireword purchase across all Paddle customers for the verified email. */
 async function latestPurchase(email: string, price: string, request: BillingTransport): Promise<Transaction | null> {
   if (!price) throw new Error("Refund product unavailable");
   const customers = await pages<{ id: string; email: string }>(`/customers?email=${encodeURIComponent(email)}&status=active,archived`, request);
@@ -91,7 +91,7 @@ export async function requestLatestPaymentRefund(email: string, transactionId: s
   try {
     const { data: adjustment } = await request<Adjustment>("/adjustments", {
       action: "refund", type: "full", transaction_id: tx.id,
-      reason: "NativeApply latest-payment 14-day guarantee requested by verified customer",
+      reason: "Hireword latest-payment 14-day guarantee requested by verified customer",
     });
     if (adjustment?.transaction_id !== tx.id || adjustment.action !== "refund" || adjustment.type !== "full" || !["pending_approval", "approved"].includes(adjustment.status)) throw new Error("Refund not confirmed");
     return { ...view, state: adjustment.status as "pending_approval" | "approved" };

@@ -27,7 +27,7 @@ export function BillingVerify() {
       setStatus(next === "invalid_link" ? "invalid" : "error");
     } catch { setStatus("error"); }
   }
-  return <div className="mx-auto max-w-xl px-5 py-16"><h1 className="text-3xl font-semibold text-navy">Manage your subscription</h1><p className="mt-4 leading-7 text-muted">Confirm your email to manage your NativeApply subscription or request a refund. This step does not cancel anything, request a refund, or charge you.</p>
+  return <div className="mx-auto max-w-xl px-5 py-16"><h1 className="text-3xl font-semibold text-navy">Manage your subscription</h1><p className="mt-4 leading-7 text-muted">Confirm your email to manage your Hireword subscription or request a refund. This step does not cancel anything, request a refund, or charge you.</p>
     {status === "loading" ? <p role="status">Preparing your link…</p> : status === "invalid" ? <p role="alert" className="mt-4">This link expired or was already used. Request a new billing link.</p> : <Button className="mt-6" disabled={status === "working"} onClick={verify}>{status === "working" ? "Verifying…" : "Manage my subscription"}</Button>}
     {status === "error" && <p role="alert" className="mt-4">We could not verify your email. Try again shortly, or request a new link.</p>}
     <ButtonLink href="/subscription#cancel" variant="secondary" className="mt-6">Request a new billing link</ButtonLink></div>;
@@ -63,9 +63,9 @@ export default function BillingManager() {
     {state === "loading" && <p role="status">Loading your subscription…</p>}
     {state === "verify" && <EmailRequest purpose="billing" />}
     {state === "error" && <p role="alert">We could not load your subscription right now. Try again or use the billing help below.</p>}
-    {state === "ready" && subscriptions.length === 0 && <><p>No NativeApply subscription was found for this email. If you subscribed to Pro, try the email used at checkout or contact support.</p><EmailRequest purpose="billing" /></>}
+    {state === "ready" && subscriptions.length === 0 && <><p>No Hireword subscription was found for this email. If you subscribed to Pro, try the email used at checkout or contact support.</p><EmailRequest purpose="billing" /></>}
     {state === "ready" && subscriptions.map(sub => <article key={sub.id} className="rounded-xl border border-line bg-white p-5">
-      <h3 className="font-semibold text-navy">NativeApply Pro · Monthly</h3>
+      <h3 className="font-semibold text-navy">Hireword Pro · Monthly</h3>
       {subscriptions.length > 1 && <p className="mt-1 text-xs text-muted">Subscription ending {sub.id.slice(-6)}</p>}
       {sub.status === "past_due" && <p className="mt-3 text-sm text-flag">Your latest payment is overdue. The billing-period date below does not confirm paid access. Use the payment link in your Paddle email or contact billing support.</p>}
       {sub.cancellationScheduled || sub.status === "canceled" ? <div role="status"><p className="mt-3 font-semibold text-navy">{sub.cancellationScheduled ? "Cancellation confirmed — renewal is off" : "Subscription canceled"}</p><p className="mt-2">{sub.cancellationScheduled && date(sub.paidAccessEndsAt) ? `The paid billing period ends ${date(sub.paidAccessEndsAt)}. Refunded payments do not provide access. ` : ""}This subscription will not renew.</p></div> : <>

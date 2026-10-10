@@ -8,8 +8,8 @@ import { recoveryEmailReady } from "@/lib/recovery-email";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Log in | NativeApply",
-  description: "Log in to NativeApply Pro on any device with the email you used to pay. No password.",
+  title: "Log in | Hireword",
+  description: "Log in to Hireword Pro on any device with the email you used to pay. No password.",
   robots: { index: false },
 };
 

@@ -15,7 +15,7 @@ function LaptopScreen() {
             <span className="h-2 w-2 rounded-full bg-line-strong" />
             <span className="h-2 w-2 rounded-full bg-line-strong" />
             <span className="ml-2 rounded-full bg-white px-2 py-0.5 text-[0.5625rem] font-medium text-muted-soft">
-              nativeapply.net
+              hireword.com
             </span>
           </div>
           <div className="grid grid-cols-2 gap-3 p-4">

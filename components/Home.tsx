@@ -97,19 +97,19 @@ const PRIVACY_POINTS = [
   {
     Icon: IconShield,
     title: "Drafts are not stored by us",
-    body: "We do not save your draft or rewrite in a NativeApply database or application log. Usage counts and payment records are separate.",
+    body: "We do not save your draft or rewrite in a Hireword database or application log. Usage counts and payment records are separate.",
     tint: "bg-jade-50 text-jade",
   },
   {
     Icon: IconLock,
     title: "Sent only to produce the rewrite",
-    body: "Anthropic processes your text to produce the rewrite. Its own data-retention terms apply; not storing text at NativeApply does not mean zero retention by the provider.",
+    body: "Anthropic processes your text to produce the rewrite. Its own data-retention terms apply; not storing text at Hireword does not mean zero retention by the provider.",
     tint: "bg-brand-50 text-brand",
   },
   {
     Icon: IconFacts,
     title: "No model training by default",
-    body: "NativeApply does not train models on your writing. Anthropic does not use API inputs and outputs for model training by default under its commercial terms.",
+    body: "Hireword does not train models on your writing. Anthropic does not use API inputs and outputs for model training by default under its commercial terms.",
     tint: "bg-violet-50 text-violet",
   },
   {
@@ -216,7 +216,7 @@ export default function Home() {
                 {[
                   "No email or card required",
                   "1 free rewrite every day",
-                  "Drafts not stored by NativeApply",
+                  "Drafts not stored by Hireword",
                   "Built-in number comparison",
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-1.5">
@@ -228,7 +228,7 @@ export default function Home() {
             </div>
 
             <div className="na-rise na-demo-stage" style={{ animationDelay: "0.12s" }}>
-              <div className="na-stage-caption"><span>A STRONGER FIRST IMPRESSION</span><span aria-hidden="true">01 / NATIVEAPPLY</span></div>
+              <div className="na-stage-caption"><span>A STRONGER FIRST IMPRESSION</span><span aria-hidden="true">01 / HIREWORD</span></div>
               <HeroDemo />
               <div aria-hidden="true" className="na-editorial-note">Still your story. Beautifully told.</div>
             </div>
@@ -267,7 +267,7 @@ export default function Home() {
                   You know what you want to say. This makes it sound that way.
                 </h2>
                 <p className="text-[1.0625rem] leading-7 text-muted">
-                  You bring the experience. NativeApply helps you explain it with natural phrasing and the right
+                  You bring the experience. Hireword helps you explain it with natural phrasing and the right
                   tone for each kind of application.
                 </p>
                 <p className="text-[1.0625rem] leading-7 text-muted">
@@ -485,7 +485,7 @@ export default function Home() {
             </Link>
           </div>
           <p className="mt-8 text-center text-[0.875rem] text-muted">
-            Secure payment by Paddle.com, our Merchant of Record. NativeApply never stores your card details.{" "}
+            Secure payment by Paddle.com, our Merchant of Record. Hireword never stores your card details.{" "}
             <Link href="/checkout" className="font-medium text-brand-700 underline underline-offset-4">
               Full pricing details
             </Link>

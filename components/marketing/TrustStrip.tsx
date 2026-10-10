@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/Primitives";
 import { IconFacts, IconLock, IconShield, IconGlobe } from "@/components/ui/Icons";
 
 const ITEMS = [
-  { Icon: IconShield, text: "Drafts not stored by NativeApply", tone: "bg-jade-50 text-jade" },
+  { Icon: IconShield, text: "Drafts not stored by Hireword", tone: "bg-jade-50 text-jade" },
   { Icon: IconFacts, text: "Built-in number comparison", tone: "bg-brand-50 text-brand" },
   { Icon: IconLock, text: "No email or card to try it", tone: "bg-violet-50 text-violet" },
   { Icon: IconGlobe, text: "Clear English for your job search", tone: "bg-amber-50 text-amber" },

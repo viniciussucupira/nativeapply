@@ -1,4 +1,4 @@
-# NativeApply
+# Hireword
 
 AI tool that rewrites cover letters, resume bullet points, and recruiter
 messages so they sound like a native English speaker wrote them — built for
@@ -64,7 +64,7 @@ The same way in as every Nimbus Labs product: **Log in** (`/login`) sends a one-
 
 ## On-site subscription cancellation
 
-The Access & billing page verifies the purchase email using a separate one-time billing link. A signed, HttpOnly billing session lasts 15 minutes. Pro cookies and receipt codes cannot authorize cancellation. The server verifies the customer email and NativeApply price for each request, cancels at the next billing period, and reads back Paddle status before confirming. Paused subscriptions cancel immediately.
+The Access & billing page verifies the purchase email using a separate one-time billing link. A signed, HttpOnly billing session lasts 15 minutes. Pro cookies and receipt codes cannot authorize cancellation. The server verifies the customer email and Hireword price for each request, cancels at the next billing period, and reads back Paddle status before confirming. Paused subscriptions cancel immediately.
 
 Requires existing RESEND_API_KEY, RECOVERY_EMAIL_FROM, Redis, signing secret, NEXT_PUBLIC_PADDLE_PRICE_ID, and PADDLE_API_KEY with customer.read and subscription.write. An optional PADDLE_BILLING_API_KEY can isolate billing permissions. Never expose API keys to the client.
 
@@ -81,7 +81,7 @@ Validation: unit tests cover ownership/product isolation, session separation and
    `transaction.completed`, `adjustment.created` and `adjustment.updated`
    events. Monthly Pro expires at the end of each paid period and is
    extended by every renewal, so `transaction.completed` must be delivered.
-5. Point the domain (e.g. `nativeapply.net`) at the Vercel project.
+5. Point the domain (e.g. `hireword.com`) at the Vercel project.
 
 ## What's not done yet
 

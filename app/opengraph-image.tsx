@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "NativeApply — job applications that read like native English";
+export const alt = "Hireword — job applications that read like native English";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -72,9 +72,12 @@ export default function Image() {
                 fontWeight: 700,
               }}
             >
-              N
+              <svg width="54" height="54" viewBox="0 0 32 32">
+                <path d="M10 23V10M10 16.5h11.6M21.6 23V8.6" fill="none" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="m18.8 11.4 2.8-2.8 2.8 2.8" fill="none" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
-            <div style={{ fontSize: 29, fontWeight: 600, color: "#10233F" }}>NativeApply</div>
+            <div style={{ fontSize: 29, fontWeight: 600, color: "#10233F" }}>Hireword</div>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -109,7 +112,7 @@ export default function Image() {
             >
               $19 a month, cancel anytime
             </div>
-            <div style={{ fontSize: 23, color: "#667085", display: "flex" }}>nativeapply.net</div>
+            <div style={{ fontSize: 23, color: "#667085", display: "flex" }}>hireword.com</div>
           </div>
         </div>
 

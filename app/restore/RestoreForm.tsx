@@ -14,7 +14,7 @@ type Status = "idle" | "working" | "done" | "failed";
 const STEPS = [
   {
     title: "Open your Paddle receipt",
-    body: "It is the email that arrived right after your payment, from Paddle.com, with the subject line naming NativeApply.",
+    body: "It is the email that arrived right after your payment, from Paddle.com, with the subject line naming Hireword.",
   },
   {
     title: "Copy the transaction ID",
@@ -122,8 +122,8 @@ export default function LoginForm({ emailEnabled = false }: { emailEnabled?: boo
     restore(normalized);
   }
 
-  const mailto = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Log in to NativeApply Pro")}&body=${encodeURIComponent(
-    "Hi, I cannot log in to NativeApply Pro. I'm writing from the email I used to pay."
+  const mailto = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Log in to Hireword Pro")}&body=${encodeURIComponent(
+    "Hi, I cannot log in to Hireword Pro. I'm writing from the email I used to pay."
   )}`;
 
   return (
@@ -134,7 +134,7 @@ export default function LoginForm({ emailEnabled = false }: { emailEnabled?: boo
             <div className="flex flex-col gap-5">
               <Eyebrow>Log in</Eyebrow>
               <h1 className="text-[2rem] font-semibold leading-[1.1] tracking-[-0.03em] text-navy sm:text-[2.5rem]">
-                Log in to <span className="na-accent-text">NativeApply Pro.</span>
+                Log in to <span className="na-accent-text">Hireword Pro.</span>
               </h1>
               <p className="max-w-xl text-[1.0625rem] leading-7 text-muted">
                 {emailEnabled

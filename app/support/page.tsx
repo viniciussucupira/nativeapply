@@ -4,8 +4,8 @@ import { Container, ButtonLink } from "@/components/ui/Primitives";
 import { SUPPORT_EMAIL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Help & contact — NativeApply",
-  description: "Get help with NativeApply Pro access, subscriptions, payments and refunds.",
+  title: "Help & contact — Hireword",
+  description: "Get help with Hireword Pro access, subscriptions, payments and refunds.",
   alternates: { canonical: "/support" },
 };
 
@@ -26,8 +26,8 @@ export default function SupportPage() {
       </section>)}
     </div>
     <section className="mt-8 rounded-2xl border border-brand-100 bg-brand-50 p-6">
-      <h2 className="text-xl font-semibold text-navy">Email NativeApply support</h2>
-      <a href={`mailto:${SUPPORT_EMAIL}?subject=NativeApply%20support`} className="mt-3 inline-flex min-h-11 break-all font-semibold text-brand-700 underline">{SUPPORT_EMAIL}</a>
+      <h2 className="text-xl font-semibold text-navy">Email Hireword support</h2>
+      <a href={`mailto:${SUPPORT_EMAIL}?subject=Hireword%20support`} className="mt-3 inline-flex min-h-11 break-all font-semibold text-brand-700 underline">{SUPPORT_EMAIL}</a>
       <p className="mt-2 text-sm leading-6 text-muted">If the link does not open your email app, copy this address into Gmail, Outlook, Yahoo Mail, or any email service you use.</p>
       <p className="mt-3 text-sm leading-6 text-muted">Tell us what happened and which page you were using. For purchase help, write from your checkout email and include the transaction reference from your receipt if available. Do not send passwords, access links, or full card details.</p>
       <p className="mt-3 text-sm leading-6 text-muted">Already paid but cannot access Pro? Recover your access above or contact us. Do not pay again to solve an access problem.</p>

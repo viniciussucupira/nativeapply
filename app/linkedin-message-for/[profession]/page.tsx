@@ -23,7 +23,7 @@ export async function generateMetadata({
   const description = `Improve your ${doc.label} as ${profession.singular}, then review the rewrite with a built-in number comparison. Pro is US$19/month. Try one free rewrite a day.`;
 
   return {
-    title: `${heading} | NativeApply`,
+    title: `${heading} | Hireword`,
     description,
     alternates: { canonical: `/${doc.urlPrefix}/${slug}` },
     openGraph: { title: heading, description },

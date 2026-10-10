@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { PROFESSIONS } from "@/lib/professions";
 
-const SITE_URL = "https://www.nativeapply.net";
+const SITE_URL = "https://hireword.com";
 
 const DOC_TYPE_PREFIXES = [
   "cover-letter-for",

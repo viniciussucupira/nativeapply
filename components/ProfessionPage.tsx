@@ -19,7 +19,7 @@ import {
   type DocKey,
 } from "@/lib/profession-content";
 
-const SITE_URL = "https://www.nativeapply.net";
+const SITE_URL = "https://hireword.com";
 
 export default function ProfessionPage({
   docKey,
@@ -41,7 +41,7 @@ export default function ProfessionPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "NativeApply", item: SITE_URL },
+      { "@type": "ListItem", position: 1, name: "Hireword", item: SITE_URL },
       {
         "@type": "ListItem",
         position: 2,

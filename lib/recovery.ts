@@ -1,7 +1,7 @@
 import { createHash, randomBytes } from "node:crypto";
 
 export const RECOVERY_TTL = 15 * 60;
-export const RECOVERY_ORIGIN = "https://nativeapply.net";
+export const RECOVERY_ORIGIN = "https://hireword.com";
 
 export function normalizeRecoveryEmail(value: unknown): string | null {
   if (typeof value !== "string") return null;

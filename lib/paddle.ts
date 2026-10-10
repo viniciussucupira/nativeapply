@@ -11,9 +11,9 @@ import {
 import { purchasePlan, purchaseRefunded, paidMonthlyExpiry, type Purchase, type PurchaseSubscription } from "./purchase-validation";
 
 // The Nimbus Labs Paddle account is shared by several products (Retone,
-// NativeApply, ...). Paddle sends every product's events to every webhook
-// destination, so a transaction only unlocks NativeApply Pro when it contains
-// one of NativeApply's own prices.
+// Hireword, ...). Paddle sends every product's events to every webhook
+// destination, so a transaction only unlocks Hireword Pro when it contains
+// one of Hireword's own prices.
 const MONTHLY_PRICE_ID = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID ?? "";
 const LIFETIME_PRICE_ID = process.env.NEXT_PUBLIC_PADDLE_LIFETIME_PRICE_ID ?? "";
 
@@ -56,7 +56,7 @@ export async function fetchCustomerEmail(customerId: string): Promise<string | n
   return customer?.email?.trim().toLowerCase() ?? null;
 }
 
-/** Which NativeApply plan this transaction bought, or null if it's another product. */
+/** Which Hireword plan this transaction bought, or null if it's another product. */
 export function planForTransaction(tx: PaddleTransaction): Plan | null {
   return purchasePlan(tx, MONTHLY_PRICE_ID, LIFETIME_PRICE_ID);
 }
@@ -113,8 +113,8 @@ export async function refreshMonthlyPro(email: string): Promise<boolean> {
 }
 
 /**
- * Grants Pro for a completed NativeApply transaction and returns the buyer's
- * email, or null when the transaction isn't a completed NativeApply purchase.
+ * Grants Pro for a completed Hireword transaction and returns the buyer's
+ * email, or null when the transaction isn't a completed Hireword purchase.
  */
 export async function grantProForTransaction(tx: PaddleTransaction): Promise<string | null> {
   if (tx.status !== "completed" && tx.status !== "paid") return null;

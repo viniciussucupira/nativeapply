@@ -29,7 +29,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
   "cover-letter-for-non-native-speakers": {
     slug: "cover-letter-for-non-native-speakers",
     context: "cover-letter",
-    metaTitle: "Cover Letter Rewriter for Non-Native English Speakers | NativeApply",
+    metaTitle: "Cover Letter Rewriter for Non-Native English Speakers | Hireword",
     metaDescription:
       "Rewrite your cover letter into the English a hiring manager expects — warm, confident, and free of translated phrasing. " +
       PRICE_LINE,
@@ -85,7 +85,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     faq: [
       {
         q: "Should I write the cover letter in my own language first?",
-        a: "Write it in English, in whatever English you have. NativeApply works from your own sentences, so the result still sounds like you. Translating a polished letter from another language usually produces phrasing that is harder to repair, not easier.",
+        a: "Write it in English, in whatever English you have. Hireword works from your own sentences, so the result still sounds like you. Translating a polished letter from another language usually produces phrasing that is harder to repair, not easier.",
       },
       {
         q: "Will it make my cover letter longer?",
@@ -111,7 +111,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
   "native-sounding-resume": {
     slug: "native-sounding-resume",
     context: "resume-bullet",
-    metaTitle: "Resume Rewriter — Make Your Resume Sound Native | NativeApply",
+    metaTitle: "Resume Rewriter — Make Your Resume Sound Native | Hireword",
     metaDescription:
       "Rewrite your resume bullet points into concise professional English, with a built-in number comparison and editable results. " +
       PRICE_LINE,
@@ -194,7 +194,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
   "cv-english-rewriter": {
     slug: "cv-english-rewriter",
     context: "resume-bullet",
-    metaTitle: "CV English Rewriter for UK and Europe | NativeApply",
+    metaTitle: "CV English Rewriter for UK and Europe | Hireword",
     metaDescription:
       "Improve your CV bullets in American or British English, then review the result alongside your original. " +
       PRICE_LINE,
@@ -254,7 +254,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Should my CV be different for each country?",
-        a: "Tailor your experience to the role and follow local and employer instructions about length and personal details. NativeApply improves the English; it does not check country-specific application requirements.",
+        a: "Tailor your experience to the role and follow local and employer instructions about length and personal details. Hireword improves the English; it does not check country-specific application requirements.",
       },
       {
         q: "Can it rewrite my personal statement too?",
@@ -276,7 +276,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
   "ats-friendly-resume-bullet-points": {
     slug: "ats-friendly-resume-bullet-points",
     context: "resume-bullet",
-    metaTitle: "ATS-Friendly Resume Bullet Points | NativeApply",
+    metaTitle: "ATS-Friendly Resume Bullet Points | Hireword",
     metaDescription:
       "Improve the English of your resume bullets and review practical formatting guidance. No ATS scan or score. " +
       PRICE_LINE,
@@ -332,7 +332,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     },
     faq: [
       {
-        q: "Does NativeApply score my resume against a job description?",
+        q: "Does Hireword score my resume against a job description?",
         a: "No, and we would rather say so than pretend. It rewrites the English of your bullets. Matching your experience to a specific posting is a judgement call that stays with you.",
       },
       {
@@ -359,7 +359,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
   "recruiter-message-rewriter": {
     slug: "recruiter-message-rewriter",
     context: "linkedin-message",
-    metaTitle: "Recruiter Message Rewriter | NativeApply",
+    metaTitle: "Recruiter Message Rewriter | Hireword",
     metaDescription:
       "Rewrite your message to a recruiter so it sounds natural and confident instead of stiff or over-formal. " + PRICE_LINE,
     ogTitle: "Recruiter Message Rewriter",
@@ -441,7 +441,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
   "linkedin-connection-message-rewriter": {
     slug: "linkedin-connection-message-rewriter",
     context: "linkedin-message",
-    metaTitle: "LinkedIn Connection Message Rewriter | NativeApply",
+    metaTitle: "LinkedIn Connection Message Rewriter | Hireword",
     metaDescription:
       "Rewrite your LinkedIn connection request or networking note so it sounds natural, warm, and worth accepting. " +
       PRICE_LINE,
@@ -502,7 +502,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Does it count characters for me?",
-        a: "Yes. Both versions have a character count. Check the limit shown in your LinkedIn composer, then shorten the editable result if needed. NativeApply does not automatically enforce LinkedIn's account-specific limit.",
+        a: "Yes. Both versions have a character count. Check the limit shown in your LinkedIn composer, then shorten the editable result if needed. Hireword does not automatically enforce LinkedIn's account-specific limit.",
       },
       {
         q: "Can I use it for InMail as well?",
@@ -524,7 +524,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
   "interview-follow-up-email-generator": {
     slug: "interview-follow-up-email-generator",
     context: "follow-up-email",
-    metaTitle: "Interview Follow-Up Email Rewriter | NativeApply",
+    metaTitle: "Interview Follow-Up Email Rewriter | Hireword",
     metaDescription:
       "Rewrite your post-interview thank-you or follow-up email so it sounds polite, natural, and never pushy. " + PRICE_LINE,
     ogTitle: "Interview Follow-Up Email Rewriter",
@@ -606,7 +606,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
   "job-application-letter-rewriter": {
     slug: "job-application-letter-rewriter",
     context: "cover-letter",
-    metaTitle: "Job Application Letter Rewriter | NativeApply",
+    metaTitle: "Job Application Letter Rewriter | Hireword",
     metaDescription:
       "Improve your application letter in clear, professional English, then review the editable result against your draft. " +
       PRICE_LINE,
@@ -662,7 +662,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
     faq: [
       {
         q: "Is an application letter the same as a cover letter?",
-        a: "The terms often overlap, but employers may ask for different content. Both NativeApply pages use the cover letter setting. Follow the requirements of the application you are preparing.",
+        a: "The terms often overlap, but employers may ask for different content. Both Hireword pages use the cover letter setting. Follow the requirements of the application you are preparing.",
       },
       {
         q: "Can I paste a letter that is already in English?",
@@ -688,7 +688,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
   "visa-sponsorship-cover-letter": {
     slug: "visa-sponsorship-cover-letter",
     context: "cover-letter",
-    metaTitle: "Visa Sponsorship Cover Letter Rewriter | NativeApply",
+    metaTitle: "Visa Sponsorship Cover Letter Rewriter | Hireword",
     metaDescription:
       "Rewrite the cover letter for a role that offers visa sponsorship — clear, professional English that states your situation plainly. " +
       PRICE_LINE,
@@ -718,7 +718,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         title: "Leads with your value, not your paperwork",
-        body: "Follow the employer’s instructions about sponsorship information. Arrange your own draft clearly before rewriting; NativeApply does not check immigration or hiring requirements.",
+        body: "Follow the employer’s instructions about sponsorship information. Arrange your own draft clearly before rewriting; Hireword does not check immigration or hiring requirements.",
       },
     ],
     guidance: {
@@ -753,7 +753,7 @@ export const TOOL_PAGES: Record<string, ToolPage> = {
       },
       {
         q: "Can it change how I describe my status?",
-        a: "It is instructed to preserve your description, but you must review the result carefully. NativeApply improves wording; it cannot verify your status or determine eligibility.",
+        a: "It is instructed to preserve your description, but you must review the result carefully. Hireword improves wording; it cannot verify your status or determine eligibility.",
       },
       {
         q: "Does this work for student and graduate visa routes too?",

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------
-   NativeApply design system
+   Hireword design system
    A professional blue leads, on ivory and white, with deep navy for
    structure. Four supporting hues — jade, violet, amber, and the
    reserved green for success — carry meaning in icons, markers, and
@@ -451,7 +451,7 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .family-header a:focus-visible, .family-header button:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 4px; }
 @media(max-width: 1279px) { .family-header > div:first-child, .family-header > div:first-child > div { min-height: 64px; } .family-header > div:first-child { padding-inline: 20px; } }
 
-/* NativeApply editorial identity, shared across marketing and product pages. */
+/* Hireword editorial identity, shared across marketing and product pages. */
 .na-hero { background: radial-gradient(ellipse at 100% 15%, #dbe7ed, transparent 58%), linear-gradient(115deg, #faf9f5 36%, #edf2f3); border-color: #dce4e8; }
 .na-hero > div { padding-top: 82px; padding-bottom: 86px; }
 .na-display { font-family: var(--font-sans); font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 550; letter-spacing: -.065em; line-height: 1.09; }

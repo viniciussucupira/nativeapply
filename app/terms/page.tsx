@@ -3,8 +3,8 @@ import LegalLayout, { type LegalSection } from "@/components/legal/LegalLayout";
 import { SUPPORT_EMAIL, PRO_BURST_LIMIT, PRO_BURST_SECONDS } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | NativeApply",
-  description: "Terms of Service for NativeApply.",
+  title: "Terms of Service | Hireword",
+  description: "Terms of Service for Hireword.",
   alternates: { canonical: "/terms" },
 };
 
@@ -14,10 +14,10 @@ const sections: LegalSection[] = [
     heading: "1. The Service",
     body: (
       <p>
-        NativeApply rewrites text you submit — such as cover letters, resume bullet points, and messages to
+        Hireword rewrites text you submit — such as cover letters, resume bullet points, and messages to
         recruiters — using artificial intelligence, so it reads more naturally to a native English speaker. Without a
         paid plan, use is limited to one rewrite per browser per day, resetting at midnight UTC. Failed generations
-        do not use this allowance. NativeApply Pro removes the daily limit. Each request supports up to 6,000 characters,
+        do not use this allowance. Hireword Pro removes the daily limit. Each request supports up to 6,000 characters,
         including spaces and line breaks. Some symbols, such as emoji, count as more than one character in the editor.
       </p>
     ),
@@ -38,10 +38,10 @@ const sections: LegalSection[] = [
     heading: "3. No guaranteed outcome",
     body: (
       <p>
-        NativeApply helps you write clearer, more natural English. It does not guarantee that you will get an
+        Hireword helps you write clearer, more natural English. It does not guarantee that you will get an
         interview, an offer, or any specific job-search outcome. AI can make mistakes or change the meaning of a
         sentence. Review every result before using it, especially names, dates, qualifications, and achievements.
-        NativeApply does not make hiring decisions or verify your credentials.
+        Hireword does not make hiring decisions or verify your credentials.
       </p>
     ),
   },
@@ -50,12 +50,12 @@ const sections: LegalSection[] = [
     heading: "4. Payments",
     body: (
       <>
-        <p>NativeApply offers one paid plan: Pro at US$19 per month. If you subscribe, it renews automatically
+        <p>Hireword offers one paid plan: Pro at US$19 per month. If you subscribe, it renews automatically
           each month until cancelled. Checkout shows the currency, applicable taxes, and total before you pay.
           Any future price change will be communicated before it applies, with consent where required by law.</p>
         <p>Paddle is our Merchant of Record and authorised reseller. It handles payment processing, billing,
           taxes, and refunds. Purchases are also subject to the <a href="https://www.paddle.com/legal/buyer-terms">Paddle Buyer Terms</a>.</p>
-        <p>You can <a href="/subscription#cancel">cancel on NativeApply</a> after verifying your purchase email.
+        <p>You can <a href="/subscription#cancel">cancel on Hireword</a> after verifying your purchase email.
           Confirm cancellation before the next renewal to stop future renewals. You normally keep Pro until the
           end of the paid billing period. Cancelling does not automatically request a refund. Every payment, including renewals,
           has a 14-day money-back guarantee; see our <a href="/refunds">Refund Policy</a>.</p>
@@ -67,7 +67,7 @@ const sections: LegalSection[] = [
     heading: "5. Access and responsible use",
     body: (
       <>
-        <p>No NativeApply password is required. To use your purchase in another browser or recover access,
+        <p>No Hireword password is required. To use your purchase in another browser or recover access,
           request a single-use login link at <a href="/login">Log in</a> using your purchase email.
           Links expire after 15 minutes. Keep login links private and contact support if you lose access to that email.
           You can log out of one browser, or of every device at once, from the same page.</p>
@@ -77,7 +77,7 @@ const sections: LegalSection[] = [
           Service interruptions can still occur.
           If you cannot use a paid service, contact us so we can restore access or address the payment.</p>
         <p>Our <a href="/privacy">Privacy Policy</a> explains how text, access details, and usage data are processed.</p>
-        <p>Copy, email, and WhatsApp tools help you move a result to another application. NativeApply does
+        <p>Copy, email, and WhatsApp tools help you move a result to another application. Hireword does
           not send job applications or messages on your behalf. You choose the recipient and confirm sending
           in the other application. Its availability and terms depend on that provider. Long results may
           need to be copied and pasted instead of opened through a link.</p>
@@ -114,7 +114,7 @@ export default function TermsPage() {
       updated="September 25, 2026"
       intro={
         <>
-          NativeApply is a product operated by Nimbus Labs (&quot;we&quot;, &quot;us&quot;). By using nativeapply.net
+          Hireword is a product operated by Nimbus Labs (&quot;we&quot;, &quot;us&quot;). By using hireword.com
           (the &quot;Service&quot;), you agree to these Terms.
         </>
       }

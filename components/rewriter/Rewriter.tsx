@@ -496,7 +496,7 @@ export default function Rewriter({
             <ul className="mt-4 flex flex-col gap-2 text-[0.8125rem] leading-5 text-muted">
               <li className="flex items-start gap-2">
                 <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-success" />
-                Your text is not stored on NativeApply servers.
+                Your text is not stored on Hireword servers.
               </li>
               <li className="flex items-start gap-2">
                 <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-success" />

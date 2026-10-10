@@ -16,14 +16,14 @@ import { IconArrowRight, IconCheck } from "@/components/ui/Icons";
 import { ACCENT_RULES } from "@/lib/accents";
 import type { ToolPage } from "@/lib/tool-pages";
 
-const SITE_URL = "https://www.nativeapply.net";
+const SITE_URL = "https://hireword.com";
 
 export default function ToolLanding({ page }: { page: ToolPage }) {
   const breadcrumbLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "NativeApply", item: SITE_URL },
+      { "@type": "ListItem", position: 1, name: "Hireword", item: SITE_URL },
       {
         "@type": "ListItem",
         position: 2,
@@ -86,7 +86,7 @@ export default function ToolLanding({ page }: { page: ToolPage }) {
       {/* ---------------- tool ---------------- */}
       <Section tone="white" id="tool" className="scroll-mt-20">
         <Container size="wide" className="py-12 sm:py-16">
-          <p className="mb-5 text-sm leading-6 text-muted">The NativeApply editor, set to this document type. Paste English text up to 6,000 characters; review and copy the result into your application.</p>
+          <p className="mb-5 text-sm leading-6 text-muted">The Hireword editor, set to this document type. Paste English text up to 6,000 characters; review and copy the result into your application.</p>
           <Rewriter key={page.slug} initialContext={page.context} initialEnglishVariant={page.slug === "cv-english-rewriter" ? "en-GB" : "en-US"} lockContext placeholder={page.placeholder} />
         </Container>
       </Section>

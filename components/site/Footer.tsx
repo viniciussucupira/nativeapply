@@ -46,7 +46,7 @@ export default function Footer() {
   if (SLIM.test(pathname)) {
     return <footer className="family-footer mt-auto border-t border-line bg-white">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-5 py-6 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-        <p className="text-xs leading-6 text-muted">© {year} NativeApply. A <a href="https://nimbuslabsai.com/products" target="_blank" rel="noopener noreferrer" className="text-ink underline underline-offset-4">Nimbus Labs</a> product.</p>
+        <p className="text-xs leading-6 text-muted">© {year} Hireword. A <a href="https://nimbuslabsai.com/products" target="_blank" rel="noopener noreferrer" className="text-ink underline underline-offset-4">Nimbus Labs</a> product.</p>
         <nav aria-label="Legal" className="flex flex-wrap gap-x-6">{[...LEGAL, ["/support", "Support"]].map(([href, label]) => <Link key={href} href={href} className={linkClass}>{label}</Link>)}</nav>
       </div>
     </footer>;
@@ -55,7 +55,7 @@ export default function Footer() {
     <div className="mx-auto w-full max-w-6xl px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
       <div className="family-footer-grid">
         <div className="footer-brand">
-          <Link href="/" aria-label="NativeApply — home" className="inline-flex"><Logo size={34} href={null}/></Link>
+          <Link href="/" aria-label="Hireword — home" className="inline-flex"><Logo size={34} href={null}/></Link>
           <p className="mt-5 max-w-[15rem] text-sm leading-7 text-muted">Clear, natural English.<br/>More confidence in your next application.</p>
           <p className="mt-4"><a href={`mailto:${SUPPORT_EMAIL}`} className={linkClass + " break-all"}>{SUPPORT_EMAIL}</a></p>
           <p className="mt-6 border-l-2 border-line pl-3 text-xs leading-6 text-muted">A <a href="https://nimbuslabsai.com/products" target="_blank" rel="noopener noreferrer" className="text-ink underline underline-offset-4">Nimbus Labs</a> product.</p>
@@ -68,7 +68,7 @@ export default function Footer() {
       <div className="text-muted"><MoreFromUs/></div>
       <div className="mt-8 border-t border-line pt-6">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <p className="text-xs leading-6 text-muted">© {year} NativeApply.</p>
+          <p className="text-xs leading-6 text-muted">© {year} Hireword.</p>
           <nav aria-label="Legal" className="flex flex-wrap gap-x-6">{LEGAL.map(([href,label])=><Link key={href} href={href} className={linkClass}>{label}</Link>)}</nav>
         </div>
         <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

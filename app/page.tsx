@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "NativeApply",
+  name: "Hireword",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   description:
