@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type FocusEvent, type KeyboardEvent } from "react";
 
 /**
- * Confirmation toast, shared by every Nimbus Labs product.
+ * Confirmation toast, shared by every Solrenning product.
  *
  * It confirms that an action the person just took has succeeded, only when
  * that success would otherwise be invisible (for example, logging out ends in

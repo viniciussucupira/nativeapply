@@ -17,8 +17,8 @@ export default function MoreFromUs() {
   return (
     <nav aria-label="More from us" className="mt-10 border-t border-line pt-7">
       <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 8 }}>
-        <div><h2 className="text-sm font-semibold text-ink">More from Nimbus Labs</h2><p className="family-products-intro">Thoughtful tools for your next step.</p></div>
-        <a href="https://nimbuslabsai.com/products" className="hover:underline focus-visible:outline-2 focus-visible:outline-offset-4" style={{ display: "inline-flex", alignItems: "center", minHeight: 44, fontSize: 13, textDecoration: "underline", textUnderlineOffset: 4 }}>Explore all our products <span aria-hidden="true" style={{ marginLeft: 6 }}>→</span></a>
+        <div><h2 className="text-sm font-semibold text-ink">More from Solrenning</h2><p className="family-products-intro">Thoughtful tools for your next step.</p></div>
+        <a href="https://solrenning.com/#products" className="hover:underline focus-visible:outline-2 focus-visible:outline-offset-4" style={{ display: "inline-flex", alignItems: "center", minHeight: 44, fontSize: 13, textDecoration: "underline", textUnderlineOffset: 4 }}>Explore all our products <span aria-hidden="true" style={{ marginLeft: 6 }}>→</span></a>
       </div>
       <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4" style={{ listStyle: "none", padding: 0, margin: 0 }}>
         {products.map(([name, href, description]) => (

@@ -24,7 +24,7 @@ const WRITING = [
 ];
 const DOCUMENTS = [WRITING[0], WRITING[2], WRITING[4], WRITING[6], WRITING[7], WRITING[8]];
 const MESSAGES = [WRITING[1], WRITING[3], WRITING[5]];
-// Same label and order in every Nimbus Labs product.
+// Same label and order in every Solrenning product.
 const ACCOUNT = [
   ["/login", "Log in"],
   ["/checkout", "Pricing"],
@@ -46,7 +46,7 @@ export default function Footer() {
   if (SLIM.test(pathname)) {
     return <footer className="family-footer mt-auto border-t border-line bg-white">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-5 py-6 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-        <p className="text-xs leading-6 text-muted">© {year} Hireword. A <a href="https://nimbuslabsai.com/products" target="_blank" rel="noopener noreferrer" className="text-ink underline underline-offset-4">Nimbus Labs</a> product.</p>
+        <p className="text-xs leading-6 text-muted">© {year} Hireword. A <a href="https://solrenning.com/#products" target="_blank" rel="noopener noreferrer" className="text-ink underline underline-offset-4">Solrenning</a> product.</p>
         <nav aria-label="Legal" className="flex flex-wrap gap-x-6">{[...LEGAL, ["/support", "Support"]].map(([href, label]) => <Link key={href} href={href} className={linkClass}>{label}</Link>)}</nav>
       </div>
     </footer>;
@@ -58,7 +58,7 @@ export default function Footer() {
           <Link href="/" aria-label="Hireword — home" className="inline-flex"><Logo size={34} href={null}/></Link>
           <p className="mt-5 max-w-[15rem] text-sm leading-7 text-muted">Clear, natural English.<br/>More confidence in your next application.</p>
           <p className="mt-4"><a href={`mailto:${SUPPORT_EMAIL}`} className={linkClass + " break-all"}>{SUPPORT_EMAIL}</a></p>
-          <p className="mt-6 border-l-2 border-line pl-3 text-xs leading-6 text-muted">A <a href="https://nimbuslabsai.com/products" target="_blank" rel="noopener noreferrer" className="text-ink underline underline-offset-4">Nimbus Labs</a> product.</p>
+          <p className="mt-6 border-l-2 border-line pl-3 text-xs leading-6 text-muted">A <a href="https://solrenning.com/#products" target="_blank" rel="noopener noreferrer" className="text-ink underline underline-offset-4">Solrenning</a> product.</p>
         </div>
         <nav aria-label="Get started"><h2 className={headingClass}>Get started</h2><Links items={EXPLORE}/></nav>
         <nav aria-label="Resumes and letters"><h2 className={headingClass}>Resumes &amp; letters</h2><Links items={DOCUMENTS}/></nav>

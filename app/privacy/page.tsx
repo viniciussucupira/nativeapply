@@ -135,7 +135,7 @@ const sections: LegalSection[] = [
     heading: "8. Your choices and contact",
     body: (
       <>
-        <p>Contact Nimbus Labs at <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> for privacy questions
+        <p>Contact Solrenning at <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> for privacy questions
           or requests. Depending on applicable law, you may have rights to access, correct, delete, or obtain
           a copy of your information, restrict processing, or object to it. You can withdraw consent for
           processing based on consent without affecting earlier lawful processing, and complain to your
@@ -156,7 +156,7 @@ export default function PrivacyPage() {
       updated="September 24, 2026"
       intro={
         <>
-          Hireword is operated by Nimbus Labs (&quot;we&quot;, &quot;us&quot;). This page explains what data we
+          Hireword is operated by Solrenning (&quot;we&quot;, &quot;us&quot;). This page explains what data we
           collect and why.
         </>
       }

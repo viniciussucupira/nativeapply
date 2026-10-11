@@ -411,7 +411,7 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 }
 
 
-/* Shared Nimbus Labs footer design. */
+/* Shared Solrenning footer design. */
 .family-footer { --footer-accent: #295ec5; background: linear-gradient(180deg, #f8f9fc, #fff); border-top: 1px solid #e3e7ef; }
 .family-footer-grid { display: grid; grid-template-columns: 1.05fr .75fr .95fr 1fr 1.1fr; gap: 24px; align-items: start; }
 .family-footer h2 { font-size: 14px; font-weight: 650; letter-spacing: -.015em; }
