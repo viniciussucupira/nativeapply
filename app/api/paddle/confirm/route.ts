@@ -16,7 +16,7 @@ const RECENT_PURCHASE_MS = 24 * 60 * 60 * 1000;
 
 // Called right after Paddle's checkout.completed event, and by the /login
 // page. The transaction is always verified with Paddle's API, it must contain
-// a NativeApply price, and the email always comes from Paddle — never from
+// a Hireword price, and the email always comes from Paddle — never from
 // the client. The webhook stays an independent second source of truth.
 export async function POST(req: NextRequest) {
   if (req.headers.get("origin") !== (process.env.NODE_ENV === "production" ? RECOVERY_ORIGIN : req.nextUrl.origin)) {

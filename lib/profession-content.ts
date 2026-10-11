@@ -167,7 +167,7 @@ export function professionBenefits(doc: DocType, p: Profession): { title: string
         },
         {
           title: `Clear descriptions of your work`,
-          body: "Improve the wording of skills and responsibilities already in your draft. NativeApply does not read the job description, add missing qualifications, or test ATS compatibility.",
+          body: "Improve the wording of skills and responsibilities already in your draft. Hireword does not read the job description, add missing qualifications, or test ATS compatibility.",
         },
         keepsFacts,
       ];
@@ -214,11 +214,11 @@ export function professionFaq(doc: DocType, p: Profession): FaqItem[] {
     },
     {
       q: `What does it cost for ${p.label.toLowerCase()}?`,
-      a: "NativeApply Pro is $19 a month, with unlimited rewrites and no lock-in. One free rewrite a day, with no email or card required, lets you see the result on your own text first.",
+      a: "Hireword Pro is $19 a month, with unlimited rewrites and no lock-in. One free rewrite a day, with no email or card required, lets you see the result on your own text first.",
     },
     {
       q: `Can I use the same rewrite for every application?`,
-      a: `Reuse relevant experience, but check the role, employer, and purpose each time. Add truthful details that fit the application before rewriting. NativeApply does not compare your text with the employer's job description.`,
+      a: `Reuse relevant experience, but check the role, employer, and purpose each time. Add truthful details that fit the application before rewriting. Hireword does not compare your text with the employer's job description.`,
     },
   ];
 }

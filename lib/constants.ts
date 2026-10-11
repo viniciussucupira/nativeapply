@@ -1,6 +1,6 @@
-export const APP_NAME = "NativeApply";
+export const APP_NAME = "Hireword";
 
-export const SUPPORT_EMAIL = "support@nimbuslabsai.com";
+export const SUPPORT_EMAIL = "support@hireword.com";
 
 export const FREE_LIMIT_PER_DAY = 1;
 export const MAX_INPUT_CHARS = 6000;

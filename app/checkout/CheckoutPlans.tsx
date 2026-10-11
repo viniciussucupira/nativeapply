@@ -223,12 +223,12 @@ export default function CheckoutPlans() {
           </div>
 
           <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-6 text-muted">Both plans use the same rewriting tool, English styles, and number comparison. Each request accepts up to 6,000 characters. Pro removes the daily rewrite limit, with a safeguard of {PRO_BURST_LIMIT} requests per {PRO_BURST_SECONDS} seconds per account.</p>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-6 text-muted">No NativeApply account or password to create. Pay securely with Paddle, keep your receipt, and Pro activates in this browser. <Link href="/subscription" className="font-semibold text-brand-700 underline">Access & billing help</Link> · <Link href="/subscription#cancel" className="font-semibold text-brand-700 underline">How to cancel</Link></p>
+          <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-6 text-muted">No Hireword account or password to create. Pay securely with Paddle, keep your receipt, and Pro activates in this browser. <Link href="/subscription" className="font-semibold text-brand-700 underline">Access & billing help</Link> · <Link href="/subscription#cancel" className="font-semibold text-brand-700 underline">How to cancel</Link></p>
 
           <ul className="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-x-7 gap-y-3 text-[0.875rem] text-muted">
             {[
               { Icon: IconLock, text: "Secure payment by Paddle", tone: "text-brand" },
-              { Icon: IconShield, text: "NativeApply never stores your card", tone: "text-jade" },
+              { Icon: IconShield, text: "Hireword never stores your card", tone: "text-jade" },
               { Icon: IconClock, text: "14-day refund policy", tone: "text-amber" },
               { Icon: IconCheck, text: "Cancel the monthly plan anytime", tone: "text-violet" },
             ].map(({ Icon, text, tone }) => (
@@ -248,7 +248,7 @@ export default function CheckoutPlans() {
               <h2 className="text-[1.0625rem] font-semibold text-navy">What you are paying for</h2>
               <p className="mt-2.5 text-[0.9375rem] leading-6 text-muted">
                 Unlimited rewrites while the subscription is active, all four document types, and no lock-in: you
-                cancel on the NativeApply Access & billing page and keep access until the end of the month you paid for.
+                cancel on the Hireword Access & billing page and keep access until the end of the month you paid for.
               </p>
               <p className="mt-3 text-[0.9375rem] leading-6 text-muted">
                 The full wording is in the{" "}

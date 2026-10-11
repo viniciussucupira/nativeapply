@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/checkout"],
     },
-    sitemap: "https://www.nativeapply.net/sitemap.xml",
+    sitemap: "https://hireword.com/sitemap.xml",
   };
 }

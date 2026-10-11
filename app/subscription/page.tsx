@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import BillingManager from "./BillingManager";
 import { ButtonLink } from "@/components/ui/Primitives";
-export const metadata: Metadata = { title: "Billing & support | NativeApply", description: "Cancel renewal, request a refund, or log in to NativeApply Pro. No password or Paddle login needed.", alternates: { canonical: "/subscription" } };
+export const metadata: Metadata = { title: "Billing & support | Hireword", description: "Cancel renewal, request a refund, or log in to Hireword Pro. No password or Paddle login needed.", alternates: { canonical: "/subscription" } };
 export default function SubscriptionPage() {
  return <div className="mx-auto w-full max-w-4xl px-5 py-12 sm:px-6 sm:py-16">
   <h1 className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">Billing &amp; support</h1>
-  <p className="mt-4 text-lg leading-7 text-muted">Manage your NativeApply subscription here. No password, Paddle login, or email to support required.</p>
+  <p className="mt-4 text-lg leading-7 text-muted">Manage your Hireword subscription here. No password, Paddle login, or email to support required.</p>
   <div className="mt-8 grid gap-4 sm:grid-cols-2">
    <article className="rounded-2xl border border-line bg-white p-6"><h2 className="text-xl font-semibold text-ink">Cancel subscription</h2><p className="mt-3 leading-7 text-muted">Stop future renewals. Keep access for the period already paid for, unless that payment is refunded. Cancellation does not return money.</p><ButtonLink href="#cancel" variant="secondary" className="mt-5">Cancel subscription</ButtonLink></article>
    <article className="rounded-2xl border border-line bg-white p-6"><h2 className="text-xl font-semibold text-ink">Request a refund</h2><p className="mt-3 leading-7 text-muted">A refund returns money to your original payment method. Every payment, including renewals, has a 14-day refund guarantee. Request a refund of your latest payment here. This also stops renewal; access from the refunded payment ends once approved.</p><ButtonLink href="#refund" variant="secondary" className="mt-5">Request a refund</ButtonLink></article>

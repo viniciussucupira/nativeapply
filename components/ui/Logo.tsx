@@ -19,7 +19,7 @@ export function LogoMark({ size = 34, className = "" }: { size?: number; classNa
       height={size}
       viewBox="0 0 32 32"
       role="img"
-      aria-label="NativeApply"
+      aria-label="Hireword"
       className={className}
     >
       <defs>
@@ -35,7 +35,7 @@ export function LogoMark({ size = 34, className = "" }: { size?: number; classNa
       <rect width="32" height="32" rx="9.5" fill="url(#na-mark-g)" />
       <rect width="32" height="32" rx="9.5" fill="url(#na-mark-sheen)" />
       <path
-        d="M10 23V11l8.4 10.4V8.6"
+        d="M10 23V10M10 16.5h11.6M21.6 23V8.6"
         fill="none"
         stroke="#ffffff"
         strokeWidth="2.4"
@@ -43,7 +43,7 @@ export function LogoMark({ size = 34, className = "" }: { size?: number; classNa
         strokeLinejoin="round"
       />
       <path
-        d="m15.6 11.2 2.8-2.8 2.8 2.8"
+        d="m18.8 11.4 2.8-2.8 2.8 2.8"
         fill="none"
         stroke="#ffffff"
         strokeWidth="2.4"
@@ -71,7 +71,7 @@ export default function Logo({
             (onDark ? "text-white" : "text-navy")
           }
         >
-          NativeApply
+          Hireword
         </span>
       )}
     </span>
@@ -80,7 +80,7 @@ export default function Logo({
   if (!href) return content;
 
   return (
-    <Link href={href} className="inline-flex rounded-xl" aria-label="NativeApply — home">
+    <Link href={href} className="inline-flex rounded-xl" aria-label="Hireword — home">
       {content}
     </Link>
   );

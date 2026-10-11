@@ -24,7 +24,7 @@ export default function MoreFromUs() {
         {products.map(([name, href, description]) => (
           <li key={href}>
             <a href={href} className="block h-full rounded-lg border border-line bg-white p-4 text-[0.8125rem] leading-relaxed transition-colors hover:border-brand/40 hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-offset-4">
-              <span className="family-product-heading"><span aria-hidden="true" className="family-product-mark" data-product={name}>{name === "NativeApply" ? "NA" : name === "Tactword" ? "T" : name === "Marktmorgen" ? "M" : name === "Hazelsong" ? "H" : "F"}</span><span>{name}</span><span aria-hidden="true" className="family-product-arrow">↗</span></span>
+              <span className="family-product-heading"><span aria-hidden="true" className="family-product-mark" data-product={name}>{name === "Hireword" ? "Hw" : name === "Tactword" ? "T" : name === "Marktmorgen" ? "M" : name === "Hazelsong" ? "H" : "F"}</span><span>{name}</span><span aria-hidden="true" className="family-product-arrow">↗</span></span>
               <span className="mt-1.5 block text-muted">{description}</span>
             </a>
           </li>

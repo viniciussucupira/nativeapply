@@ -3,8 +3,8 @@ import LegalLayout, { type LegalSection } from "@/components/legal/LegalLayout";
 import { SUPPORT_EMAIL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Refund Policy | NativeApply",
-  description: "Refund Policy for NativeApply.",
+  title: "Refund Policy | Hireword",
+  description: "Refund Policy for Hireword.",
   alternates: { canonical: "/refunds" },
 };
 
@@ -18,7 +18,7 @@ const sections: LegalSection[] = [
           Every Pro payment, including the initial payment and each monthly renewal, is fully refundable for 14 days. Request within 14 days of the charge for a full refund, no questions asked and no reason needed.
         </p>
         <p>
-          You can cancel at any time. Cancellation stops future renewals and keeps the remaining paid period unless refunded. Request a refund of your latest payment directly on this site; the confirmation also stops renewal. For another eligible payment, use <a href="https://paddle.net/contact">Paddle payment help</a>. You do not need to email NativeApply. This policy does not limit your statutory rights.
+          You can cancel at any time. Cancellation stops future renewals and keeps the remaining paid period unless refunded. Request a refund of your latest payment directly on this site; the confirmation also stops renewal. For another eligible payment, use <a href="https://paddle.net/contact">Paddle payment help</a>. You do not need to email Hireword. This policy does not limit your statutory rights.
         </p>
       </>
     ),
@@ -30,7 +30,7 @@ const sections: LegalSection[] = [
       <>
         <ol className="list-decimal space-y-2 pl-5">
           <li>Open <a href="/subscription#cancel">Billing &amp; support</a> and enter the email used for your purchase.</li>
-          <li>Open the secure link in your email to verify access. No NativeApply password or Paddle login is required.</li>
+          <li>Open the secure link in your email to verify access. No Hireword password or Paddle login is required.</li>
           <li>Select your subscription, choose Cancel subscription, and confirm. Check the confirmation and access end date.</li>
         </ol>
         <p>Cancel before your next renewal. A confirmed cancellation stops future renewals; it does not refund
@@ -59,7 +59,7 @@ const sections: LegalSection[] = [
         <p>Your request date determines whether you meet our 14-day guarantee, even if processing takes longer.
           If the automated option is unavailable, a request is unconfirmed, or another charge needs review,
           use <a href="https://paddle.net/contact">Paddle payment help</a> directly. Keep your request confirmation.
-          You do not need to email NativeApply. Never share a password or full card number.</p>
+          You do not need to email Hireword. Never share a password or full card number.</p>
       </>
     ),
   },
@@ -79,7 +79,7 @@ export default function RefundsPage() {
     <LegalLayout
       title="Refund Policy"
       updated="September 25, 2026"
-      intro="All payments for NativeApply are processed by Paddle.com, acting as Merchant of Record. Paddle handles billing and refunds on our behalf."
+      intro="All payments for Hireword are processed by Paddle.com, acting as Merchant of Record. Paddle handles billing and refunds on our behalf."
       sections={sections}
     />
   );

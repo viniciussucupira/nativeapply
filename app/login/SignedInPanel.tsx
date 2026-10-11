@@ -50,7 +50,7 @@ export default function SignedInPanel({ email, pro }: { email: string; pro: bool
         {pro ? (
           <div className="mt-6 rounded-2xl border border-success/25 bg-success-50 p-5" role="status">
             <p className="flex items-center gap-2.5 font-semibold text-navy">
-              <IconCheck className="h-5 w-5 text-success" /> NativeApply Pro is active in this browser
+              <IconCheck className="h-5 w-5 text-success" /> Hireword Pro is active in this browser
             </p>
             <ButtonLink href="/#tool" className="mt-4">Start rewriting</ButtonLink>
           </div>

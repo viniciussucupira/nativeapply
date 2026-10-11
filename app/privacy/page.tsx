@@ -3,8 +3,8 @@ import LegalLayout, { type LegalSection } from "@/components/legal/LegalLayout";
 import { SUPPORT_EMAIL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | NativeApply",
-  description: "Privacy Policy for NativeApply.",
+  title: "Privacy Policy | Hireword",
+  description: "Privacy Policy for Hireword.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -14,12 +14,12 @@ const sections: LegalSection[] = [
     heading: "1. Text you submit",
     body: (
       <p>
-        The text you paste into NativeApply is sent to our AI provider (Anthropic) solely to generate a rewritten
-        version. We do not save drafts or rewrites in NativeApply databases or application logs.
+        The text you paste into Hireword is sent to our AI provider (Anthropic) solely to generate a rewritten
+        version. We do not save drafts or rewrites in Hireword databases or application logs.
         Anthropic processes the text under its <a href="https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data">API data-retention terms</a>; our no-storage policy does not
         mean the provider has zero retention. We do not use your submissions to train AI models. The result
         stays in the open page so you can review and copy it. Only include personal information needed for
-        the rewrite. NativeApply does not make hiring decisions about you.
+        the rewrite. Hireword does not make hiring decisions about you.
       </p>
     ),
   },
@@ -31,7 +31,7 @@ const sections: LegalSection[] = [
         <p>Copy places the result on your device clipboard. Open email app passes the result to your
           configured email application. WhatsApp opens a third-party page with your result included in the
           link. Opening that link shares the text with WhatsApp even if you do not send a message.</p>
-        <p>These actions happen only when you choose them. NativeApply does not choose recipients or send
+        <p>These actions happen only when you choose them. Hireword does not choose recipients or send
           messages for you. Links containing text may remain in browser history. Your email provider and
           WhatsApp process information under their own policies. For sensitive text, consider copying it
           and pasting only the information you want to share. Links to our other products open separate
@@ -74,7 +74,7 @@ const sections: LegalSection[] = [
     heading: "4. Payment information",
     body: (
       <p>
-        If you purchase NativeApply Pro, your payment is handled entirely by Paddle.com, our Merchant of Record. We
+        If you purchase Hireword Pro, your payment is handled entirely by Paddle.com, our Merchant of Record. We
         never see or store your card details. Paddle shares your email address with us so we can activate your Pro
         access. We also receive transaction and subscription identifiers and status information to verify
         purchases, renewals, cancellations, and refunds. Monthly access records expire after the paid period
@@ -105,7 +105,7 @@ const sections: LegalSection[] = [
     heading: "6. Providers and international processing",
     body: (
       <>
-        <p>Vercel hosts NativeApply and processes technical request information, including, when a login link
+        <p>Vercel hosts Hireword and processes technical request information, including, when a login link
           is asked for, a check that a person&apos;s browser sent the request rather than a program, made by
           reading the browser&apos;s answer to a small challenge. Upstash stores access,
           subscription, security, and usage records. Anthropic generates rewrites, Resend delivers access
@@ -156,7 +156,7 @@ export default function PrivacyPage() {
       updated="September 24, 2026"
       intro={
         <>
-          NativeApply is operated by Nimbus Labs (&quot;we&quot;, &quot;us&quot;). This page explains what data we
+          Hireword is operated by Nimbus Labs (&quot;we&quot;, &quot;us&quot;). This page explains what data we
           collect and why.
         </>
       }
